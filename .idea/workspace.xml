@@ -2,13 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c982d4a5-4d34-4c17-a17b-1f7ec7f7b786" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public_html/assets/starsBG16384by2048.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public_html/src/MyGame/Background/Background.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public_html/index.html" afterPath="$PROJECT_DIR$/public_html/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public_html/src/MyGame/MyGame.js" afterPath="$PROJECT_DIR$/public_html/src/MyGame/MyGame.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js" afterPath="$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js" />
     </list>
     <ignored path="8.Projectiles.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,14 +24,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MyGame.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MyGame.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public_html/src/MyGame/MyGame.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8924731">
-              <caret line="137" column="88" selection-start-line="137" selection-start-column="88" selection-end-line="137" selection-end-column="88" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="127" column="84" selection-start-line="127" selection-start-column="84" selection-end-line="127" selection-end-column="84" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BackgroundSet.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.48387095">
+              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -67,9 +72,9 @@
         <option value="$PROJECT_DIR$/public_html/src/MyGame/Background/Background.js" />
         <option value="$PROJECT_DIR$/public_html/src/MyGame/Objects/Hero.js" />
         <option value="$PROJECT_DIR$/public_html/src/Engine/GameObjects/GameObjectSet.js" />
-        <option value="$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js" />
         <option value="$PROJECT_DIR$/public_html/src/Engine/Cameras/Camera_Manipulation.js" />
         <option value="$PROJECT_DIR$/public_html/src/MyGame/MyGame.js" />
+        <option value="$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js" />
       </list>
     </option>
   </component>
@@ -994,14 +999,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="65" selection-start-line="11" selection-start-column="65" selection-end-line="11" selection-end-column="65" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public_html/src/Engine/Utils/BoundingBox.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1034,11 +1031,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/public_html/src/MyGame/MyGame.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8924731">
-          <caret line="137" column="88" selection-start-line="137" selection-start-column="88" selection-end-line="137" selection-end-column="88" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="127" column="84" selection-start-line="127" selection-start-column="84" selection-end-line="127" selection-end-column="84" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public_html/src/MyGame/Background/BackgroundSet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48387095">
+          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

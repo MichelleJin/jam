@@ -13,11 +13,10 @@ BackgroundSet.prototype.update = function (aCamera) {
     if (cameraXPos >= this.mSet[this.currentBGIndex].getXform().getXPos())
     {
         var currentBGxForm = this.mSet[this.currentBGIndex].getXform();
-        var nextXPosition = currentBGxForm.getXPos() + currentBGxForm.getWidth();
+        var nextXPosition = currentBGxForm.getXPos() + currentBGxForm.getWidth()-10;
         this.mSet[nextBGIndex].getXform().setPosition(nextXPosition, currentBGxForm.getYPos());
         this.currentBGIndex = (this.currentBGIndex + 1)%this.mSet.length;
     }
-   // window.alert("happens");
 };
 
 BackgroundSet.prototype.draw = function (aCamera) {
