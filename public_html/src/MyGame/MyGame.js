@@ -50,6 +50,7 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
+    this.mCamera.setSpeed(1);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
@@ -95,13 +96,11 @@ MyGame.prototype.update = function () {
     this.mGhostSet.update(this.mHero, this.mCamera);
 //    this.mDyePackSet.update(this.mHero, this.mCamera);
 
-    this.mMsg.setText(this.mHero.getStatus());
-    var X = this.mMsg.getXform().getXPos();
+    this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHero.getStatus());
     var c = this.mCamera.getWCCenter();
     var w = this.mCamera.getWCWidth();
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
     this.mCamera.clampAtBoundary(this.mHero.getXform(), 1);
 
     this.mCamera.update();  // to ensure proper interpolated movement effects
-
 };
