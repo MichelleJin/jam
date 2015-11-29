@@ -14,11 +14,16 @@
 function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/particle.png";
+    this.kStarsBG = "assets/starsBG16384by2048.png";
     this.kStatus = "Status: ";
+
 
     // The camera to view the scene
     this.mCamera = null;
     this.mMsg = null;
+
+    // Alternating background images in a set
+    this.mBackgroundSet = null;
 
     this.mHero = null;
     this.mPath = null;
@@ -33,11 +38,13 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
+    gEngine.Textures.loadTexture(this.kStarsBG);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
+    gEngine.Textures.unloadTexture(this.kStarsBG);
 };
 
 MyGame.prototype.initialize = function () {
@@ -57,10 +64,25 @@ MyGame.prototype.initialize = function () {
     this.mMsg = new FontRenderable(this.kStatus);
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(2, 2);
-    this.mMsg.setTextHeight(3);
+    this.mMsg.setTextHeight(2);
+
+    // Being used to debug background scrolling
+    this.mMsg2 = new FontRenderable(this.kStatus);
+    this.mMsg2.setColor([1, 1, 1, 1]);
+    this.mMsg2.getXform().setPosition(2, 4);
+    this.mMsg2.setTextHeight(2);
 
     this.mPath = new LineSet();
     this.mHero = new Hero(this.kMinionSprite, this.mPath, 5, 5);
+
+    // Create background
+    var bg0 = new Background(this.kStarsBG, 300,35);
+    bg0.getXform().setSize(600,75);
+    var bg1 = new Background(this.kStarsBG, -300,35);
+    bg1.getXform().setSize(600,75);
+    this.mBackgroundSet = new BackgroundSet();
+    this.mBackgroundSet.addToSet(bg0);
+    this.mBackgroundSet.addToSet(bg1);
 
     this.mGhostSet = new GhostSet(this.kMinionSprite);
     var g = new Ghost(this.kMinionSprite, 50, 35);
@@ -75,32 +97,44 @@ MyGame.prototype.initialize = function () {
 // importantly, make sure to _NOT_ change any state.
 MyGame.prototype.draw = function () {
     // Step A: clear the canvas
-    gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
-
     this.mCamera.setupViewProjection();
-    this.mMsg.draw(this.mCamera);
+    gEngine.Core.clearCanvas([0.0, 0.0, 1, 1.0]); // clear to light gray
 
+    this.mBackgroundSet.draw(this.mCamera);
+    this.mMsg2.draw(this.mCamera);
+
+    this.mMsg.draw(this.mCamera);
     this.mPath.draw(this.mCamera);
     //this.mDyePackSet.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
     this.mHero.draw(this.mCamera);
+
 
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-
+    this.mBackgroundSet.update(this.mCamera);
     this.mPath.update(this.mCamera);
     this.mHero.update(this.mGhostSet, this.mCamera);
+
     this.mGhostSet.update(this.mHero, this.mCamera);
-//    this.mDyePackSet.update(this.mHero, this.mCamera);
+   // this.mDyePackSet.update(this.mHero, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHero.getStatus());
     var c = this.mCamera.getWCCenter();
     var w = this.mCamera.getWCWidth();
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
     this.mCamera.clampAtBoundary(this.mHero.getXform(), 1);
-
     this.mCamera.update();  // to ensure proper interpolated movement effects
+
+    // Second message being used to debug background alternation
+    this.mMsg2.setText("hero: " + this.mHero.getXform().getXPos().toPrecision(3)
+        + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
+        + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
+        + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
+        + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
+    this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
+
 };
