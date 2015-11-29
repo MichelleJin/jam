@@ -30,6 +30,8 @@ function PerRenderCache() {
 //  wcHeight = wcWidth * viewport[3]/viewport[2]
 //
 function Camera(wcCenter, wcWidth, viewportArray, bound) {
+    this.mSpeed = null;
+
     // WC and viewport position and size
     this.mCameraState = new CameraState(wcCenter, wcWidth);
     this.mCameraShake = null;

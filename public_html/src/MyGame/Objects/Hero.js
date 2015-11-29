@@ -13,7 +13,7 @@
 
 function Hero(spriteTexture, aPath, atX, atY) {
     this.kDelta = 0.6;
-    
+
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
     this.mDye.getXform().setPosition(atX, atY);
@@ -59,6 +59,8 @@ Hero.prototype.update = function(dyePackSet, aCamera) {
     
     // update hero path
     this._updatePath();
+    var X = this.getXform().getXPos();
+    this.getXform().setXPos(X + aCamera.getSpeed());
 };
 
 

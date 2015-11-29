@@ -10,8 +10,7 @@
 
 Camera.prototype.update = function () {
     var center = this.getWCCenter();
-    var distance = 1;
-    this.setWCCenter(center[0] + distance, center[1]);
+    this.setWCCenter(center[0] + this.mSpeed, center[1]);
     if (this.mCameraShake !== null) {
         if (this.mCameraShake.shakeDone()) {
             this.mCameraShake = null;
@@ -22,6 +21,9 @@ Camera.prototype.update = function () {
     }
     this.mCameraState.updateCameraState();
 };
+
+Camera.prototype.getSpeed = function () { return this.mSpeed; };
+Camera.prototype.setSpeed = function (s) { this.mSpeed = s;};
 
 Camera.prototype.panBy = function (dx, dy) {
     var newC = vec2.clone(this.getWCCenter());
