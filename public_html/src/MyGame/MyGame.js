@@ -16,6 +16,8 @@ function MyGame() {
     this.kProjectileTexture = "assets/particle.png";
     this.kStarsBG = "assets/starsBG16384by2048.png";
     this.kStatus = "Status: ";
+    this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
+    this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
 
 
     // The camera to view the scene
@@ -27,8 +29,8 @@ function MyGame() {
 
     this.mHero = null;
     this.mPath = null;
-//    this.mDyePackSet = null;
     this.mGhostSet = null;
+    this.mSpaceInvader = null;
 
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
@@ -39,12 +41,16 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
+   // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
+    gEngine.Textures.loadTexture(this.kSpaceInvader0);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
+    gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
+    gEngine.Textures.unloadTexture(this.kSpaceInvader0);
 };
 
 MyGame.prototype.initialize = function () {
@@ -75,7 +81,7 @@ MyGame.prototype.initialize = function () {
     this.mPath = new LineSet();
     this.mHero = new Hero(this.kMinionSprite, this.mPath, 5, 5);
 
-    // Create background
+    // Create background set
     var bg0 = new Background(this.kStarsBG, 300,35);
     bg0.getXform().setSize(600,75);
     var bg1 = new Background(this.kStarsBG, -300,35);
@@ -87,10 +93,9 @@ MyGame.prototype.initialize = function () {
     this.mGhostSet = new GhostSet(this.kMinionSprite);
     var g = new Ghost(this.kMinionSprite, 50, 35);
     this.mGhostSet.addToSet(g);
-//    this.mDyePackSet = new DyePackSet(this.kMinionSprite);
-//    var d = new DyePack(this.kMinionSprite, 50, 35);
-//    this.mDyePackSet.addToSet(d);
 
+    //this.mSpaceInvader = new SpaceInvader(this.kSpaceInvaderSprite, 100, 35);
+    this.mSpaceInvader = new SpaceInvader(this.kSpaceInvader0, 100, 35);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -102,13 +107,12 @@ MyGame.prototype.draw = function () {
 
     this.mBackgroundSet.draw(this.mCamera);
     this.mMsg2.draw(this.mCamera);
+    this.mSpaceInvader.draw(this.mCamera);
 
     this.mMsg.draw(this.mCamera);
     this.mPath.draw(this.mCamera);
-    //this.mDyePackSet.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
     this.mHero.draw(this.mCamera);
-
 
 };
 
@@ -116,11 +120,12 @@ MyGame.prototype.draw = function () {
 // anything from this function!
 MyGame.prototype.update = function () {
     this.mBackgroundSet.update(this.mCamera);
+    this.mSpaceInvader.update(this.mCamera);
+
     this.mPath.update(this.mCamera);
     this.mHero.update(this.mGhostSet, this.mCamera);
 
     this.mGhostSet.update(this.mHero, this.mCamera);
-   // this.mDyePackSet.update(this.mHero, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHero.getStatus());
     var c = this.mCamera.getWCCenter();
