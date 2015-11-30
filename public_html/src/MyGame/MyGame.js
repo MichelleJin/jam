@@ -12,6 +12,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.mDebugModeOn = true;
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/particle.png";
 
@@ -72,9 +73,10 @@ MyGame.prototype.initialize = function () {
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
     this.mMsg = new FontRenderable(this.kStatus);
-    this.mMsg.setColor([0, 0, 0, 1]);
+    this.mMsg.setColor([1, 1, 1, 1]);
     this.mMsg.getXform().setPosition(2, 2);
     this.mMsg.setTextHeight(2);
+
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);
@@ -104,11 +106,14 @@ MyGame.prototype.initialize = function () {
 MyGame.prototype.draw = function () {
     // Step A: clear the canvas
     this.mCamera.setupViewProjection();
-    gEngine.Core.clearCanvas([0.0, 0.0, 1, 1.0]); // clear to light gray
-    this.mBackgroundSet.draw(this.mCamera);
-    this.mMsg2.draw(this.mCamera);
+    gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1]); // clear to light gray
+    if (this.mDebugModeOn) {
+        this.mMsg.draw(this.mCamera);
+        this.mMsg2.draw(this.mCamera);
+    } else {
+        this.mBackgroundSet.draw(this.mCamera);
+    }
     this.mSpaceInvader.draw(this.mCamera);
-    this.mMsg.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
 };
@@ -129,12 +134,15 @@ MyGame.prototype.update = function () {
     this.mCamera.clampAtBoundary(this.mHeroGroup.getXform(), 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
 
-    // Second message being used to debug background alternation
-    this.mMsg2.setText("hero: " + this.mHero.getXform().getXPos().toPrecision(3)
+     //Second message being used to debug background alternation
+    this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
         + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
         + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
         + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
         + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
     this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
+        this.mDebugModeOn = !this.mDebugModeOn;
+    }
 };
