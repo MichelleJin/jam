@@ -14,15 +14,14 @@
 function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/particle.png";
+    //this.kHealthBarTexture = "assets/HealthBar.png"; // need to resize this
+    this.kHealthBarTexture = "assets/minion_sprite.png";
     this.kStatus = "Status: ";
 
     // The camera to view the scene
     this.mCamera = null;
     this.mMsg = null;
 
-    this.mHero = null;
-    this.mPath = null;
-//    this.mDyePackSet = null;
     this.mGhostSet = null;
 
     // Projectile.js has already been read in ...
@@ -33,11 +32,13 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
+    //gEngine.Textures.loadTexture(this.kHealthBarTexture);
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
+    //gEngine.Textures.unloadTexture(this.kHealthBarTexture);
 };
 
 MyGame.prototype.initialize = function () {
@@ -59,16 +60,9 @@ MyGame.prototype.initialize = function () {
     this.mMsg.getXform().setPosition(2, 2);
     this.mMsg.setTextHeight(3);
 
-    this.mPath = new LineSet();
-    this.mHero = new Hero(this.kMinionSprite, this.mPath, 5, 5);
-
     this.mGhostSet = new GhostSet(this.kMinionSprite);
-    var g = new Ghost(this.kMinionSprite, 50, 35);
-    this.mGhostSet.addToSet(g);
-//    this.mDyePackSet = new DyePackSet(this.kMinionSprite);
-//    var d = new DyePack(this.kMinionSprite, 50, 35);
-//    this.mDyePackSet.addToSet(d);
-
+    // herosprite, healthbar texture, x, y
+    this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kMinionSprite, 10, 10);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -80,27 +74,22 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     this.mMsg.draw(this.mCamera);
 
-    this.mPath.draw(this.mCamera);
-    //this.mDyePackSet.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
-    this.mHero.draw(this.mCamera);
-
+    this.mHeroGroup.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
 
-    this.mPath.update(this.mCamera);
-    this.mHero.update(this.mGhostSet, this.mCamera);
-    this.mGhostSet.update(this.mHero, this.mCamera);
-//    this.mDyePackSet.update(this.mHero, this.mCamera);
+    this.mGhostSet.update(this.mHeroGroup, this.mCamera);
+    this.mHeroGroup.update(this.mGhostSet, this.mCamera);
 
-    this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHero.getStatus());
+    this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHeroGroup.getStatus());
     var c = this.mCamera.getWCCenter();
     var w = this.mCamera.getWCWidth();
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
-    this.mCamera.clampAtBoundary(this.mHero.getXform(), 1);
+    this.mCamera.clampAtBoundary(this.mHeroGroup.getXform(), 1);
 
     this.mCamera.update();  // to ensure proper interpolated movement effects
 };

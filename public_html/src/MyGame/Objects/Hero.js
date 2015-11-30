@@ -11,8 +11,9 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Hero(spriteTexture, aPath, atX, atY) {
+function Hero(spriteTexture, atX, atY) {
     this.kDelta = 0.6;
+    this.kStartHealth = 10;
 
     this.mDye = new SpriteRenderable(spriteTexture);
     this.mDye.setColor([1, 1, 1, 0]);
@@ -22,27 +23,26 @@ function Hero(spriteTexture, aPath, atX, atY) {
     this.mDye.setElementPixelPositions(0, 120, 0, 180);
     GameObject.call(this, this.mDye);
     
-    // Support for following the path
-    this.mPath = aPath;
-    this.mPathIndex = 0;
-    this.mCurrentPathLength = 0;
-    this.mCurrentStartPos = null;
-    this._stopMovement();
-    
-    // Cover line segment in x-seconds
-    this.mCoverInSeconds = 2;
     this.mHit = 0;
     this.mNumDestroy = 0;
+    this.mHealth = this.kStartHealth;
     
     // Projectiles that the hero can shoot
     this.mProjectiles = new ProjectileSet();
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
+Hero.prototype.getHealth = function () {
+    return this.mHealth/this.kStartHealth;
+};
+
+Hero.prototype.setHealth = function (number) {
+    this.mHealth = number;
+};
 
 Hero.prototype.update = function(dyePackSet, aCamera) {
     this._moveByKeys(); // for now
-    
+
     // adjust per-segment speed
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
         this.mCoverInSeconds -= this.kDelta;
@@ -58,7 +58,6 @@ Hero.prototype.update = function(dyePackSet, aCamera) {
     this.mNumDestroy += num; 
     
     // update hero path
-    this._updatePath();
     var X = this.getXform().getXPos();
     this.getXform().setXPos(X + aCamera.getSpeed());
 };
@@ -72,6 +71,7 @@ Hero.prototype.draw = function(aCamera) {
 
 Hero.prototype.hitOnce = function() {
     this.mHit++;
+    this.mHealth--;
 };
 
 Hero.prototype.getStatus = function(){
