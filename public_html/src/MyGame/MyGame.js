@@ -57,7 +57,7 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
     gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
-    gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
+    //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
 };
 
@@ -86,7 +86,6 @@ MyGame.prototype.initialize = function () {
     this.mMsg.setColor([1, 1, 1, 1]);
     this.mMsg.getXform().setPosition(2, 2);
     this.mMsg.setTextHeight(2);
-
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);

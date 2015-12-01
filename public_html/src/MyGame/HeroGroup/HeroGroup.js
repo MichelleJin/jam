@@ -32,7 +32,7 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, aCamera) {
     this.mHealthBar.update(this);
 };
 
-Hero.prototype.update = function(enemySet, aCamera) {
+Hero.prototype.update = function(enemySet, enemySet2, aCamera) {
     this._moveByKeys(); // for now
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
@@ -40,7 +40,7 @@ Hero.prototype.update = function(enemySet, aCamera) {
     }
 
     // update Projectile
-    var num = this.mProjectiles.update(enemySet, aCamera);
+    var num = this.mProjectiles.update(enemySet, enemySet2, aCamera);
     this.mNumDestroy += num;
 
     // update hero path

@@ -230,7 +230,7 @@ Camera.prototype.clampHeroAtBoundary = function (hero, zone) {
             hero.setX((this.getWCCenter())[0] + (zone * this.getWCWidth() / 2) - (aXform.getWidth() / 2));
         }
         if ((status & BoundingBox.eboundCollideStatus.eCollideLeft) !== 0) {
-            hero.setX((this.getWCCenter())[0] - (zone * this.getWCWidth() / 2) + (aXform.getWidth() / 2));
+            hero.setX((this.getWCCenter())[0] - (zone * this.getWCWidth() / 2) + (aXform.getWidth() / 2 + this.getSpeed()));
         }
     }
     return status;
