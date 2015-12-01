@@ -28,6 +28,13 @@ Interpolate.prototype.setFinalValue = function (v) {
     this.mFinalValue = v;
     this.mCyclesLeft = this.mCycles;     // will trigger interpolation
 };
+Interpolate.prototype.setAllValue = function (v) {
+    this.mFinalValue = v;
+    this.mCurrentValue = v;
+    this.mCyclesLeft = 0;
+};
+
+Interpolate.prototype.getFinalValue = function () { return this.mFinalValue; };
 
 Interpolate.prototype.updateInterpolation = function () {
     if (this.mCyclesLeft <= 0) {

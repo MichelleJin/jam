@@ -16,6 +16,7 @@ function Hero(spriteTexture, atX, atY) {
     this.kStartHealth = 10;
 
     this.mShip = new TextureRenderable(spriteTexture);
+    this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(20, 20);
     this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
@@ -46,23 +47,15 @@ Hero.prototype.setHealth = function (number) {
 
 Hero.prototype.update = function(dyePackSet, dyePackSet2, aCamera) {
     this._moveByKeys(); // for now
-    
-    // adjust per-segment speed
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
-        this.mCoverInSeconds -= this.kDelta;
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
-        this.mCoverInSeconds += this.kDelta;
-    
+
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
-    
+
     // update Projectile
     var num = this.mProjectiles.update(dyePackSet, dyePackSet2, aCamera);
     this.mNumDestroy += num; 
     
-    // update hero path
-    //this._updatePath();
     var X = this.getXform().getXPos();
     this.getXform().setXPos(X + aCamera.getSpeed());
 };
@@ -80,7 +73,7 @@ Hero.prototype.hitOnce = function() {
 };
 
 Hero.prototype.getStatus = function(){
-    return  "Hero Hit: " + this.mHit + 
+    return  "Hero Hit: " + this.mHit +
             "  Num Destroy: " + this.mNumDestroy +
             "  Projectile: " + this.mProjectiles.size();
 };

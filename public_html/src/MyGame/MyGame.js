@@ -67,7 +67,6 @@ MyGame.prototype.initialize = function () {
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
         [0, 70, 1000, 700]        // viewport (orgX, orgY, width, height)
-        
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
@@ -98,7 +97,7 @@ MyGame.prototype.initialize = function () {
     this.mGhostSet = new GhostSet(this.kMinionSprite);
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     // herosprite, healthbar, texture, x, y
-    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 10, 10);
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
     //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
 
     // Create background set
@@ -144,11 +143,12 @@ MyGame.prototype.update = function () {
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mCamera);
 
-    this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHeroGroup.getStatus());
+    this.mMsg.setText("" + this.mCamera.getWCCenter()[0].toPrecision(4) + " " + this.mHeroGroup.getStatus());
     var c = this.mCamera.getWCCenter();
     var w = this.mCamera.getWCWidth();
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
-    this.mCamera.clampAtBoundary(this.mHeroGroup.getXform(), 1);
+
+    this.mCamera.clampHeroAtBoundary(this.mHeroGroup, 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
     this.mMiniCamera.update();
 
