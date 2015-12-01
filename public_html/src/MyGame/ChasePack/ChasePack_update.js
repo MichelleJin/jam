@@ -9,11 +9,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-ChasePack.prototype.update = function(hero) {
+ChasePack.prototype.update = function(hero, aCamera) {
     //this.hero = hero;
     switch (this.mCurrentState) {
         case ChasePack.eChasePackState.eNormalRegion:        
-            this._serviceNormalMove(hero);
+            this._serviceNormalMove(hero, aCamera);
             break;        
         case ChasePack.eChasePackState.eChaseState: 
             this._serviceChase(hero);
@@ -29,13 +29,19 @@ ChasePack.prototype._distToHero = function(hero) {
 };
 
 
-ChasePack.prototype._serviceNormalMove = function(hero) {
+ChasePack.prototype._serviceNormalMove = function(hero, aCamera) {
     //GameObject.prototype.update.call(this);
-    var deltaY = 0.03;
+    var cw = aCamera.getWCWidth();
+    var cc = aCamera.getWCCenter();
+    var deltaY = 0.15;
     var x = this.getXform().getXPos();
     var y = this.getXform().getYPos();
-    this.getXform().setPosition(x, y);
-    this.mStateTimeTick++;
+    
+    if((cc[0]+cw/2) > x){
+    
+        this.getXform().setPosition(x-deltaY, y);
+    //this.mStateTimeTick++;
+    }
     
     if (this._distToHero(hero) < 40){
         this.mCurrentState = ChasePack.eChasePackState.eChaseState;

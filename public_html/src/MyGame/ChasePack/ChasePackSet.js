@@ -54,7 +54,7 @@ ChasePackSet.prototype.update = function(hero, aCamera) {
     // update all objects
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        obj.update(hero);
+        obj.update(hero, aCamera);
     }
 };
 

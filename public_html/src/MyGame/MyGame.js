@@ -66,8 +66,8 @@ MyGame.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
-        [0, 100, 1000, 700],        // viewport (orgX, orgY, width, height)
-        2
+        [0, 70, 1000, 700]        // viewport (orgX, orgY, width, height)
+        
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
@@ -76,10 +76,10 @@ MyGame.prototype.initialize = function () {
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
-        [10, 10, 1000, 100],        // viewport (orgX, orgY, width, height)
-        3
+        [0, 0, 1000, 70]       // viewport (orgX, orgY, width, height)
+       
     );
-    this.mMiniCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
+    this.mMiniCamera.setBackgroundColor([0.4, 0.4, 0.4, 1]);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
