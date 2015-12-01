@@ -27,7 +27,7 @@ HeroGroup.prototype.draw = function(aCamera) {
     this.mHealthBar.draw(aCamera);
 };
 
-HeroGroup.prototype.update = function(enemySet, aCamera) {
-    Hero.prototype.update.call(this, enemySet, aCamera);
+HeroGroup.prototype.update = function(enemySet, enemySet2, aCamera) {
+    Hero.prototype.update.call(this, enemySet, enemySet2, aCamera);
     this.mHealthBar.update(this);
 };

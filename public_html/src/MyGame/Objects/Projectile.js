@@ -43,7 +43,7 @@ Projectile.prototype.hasExpired = function() {
 };
 
 
-Projectile.prototype.update = function(dyes, aCamera) {
+Projectile.prototype.update = function(dyes, dyes2, aCamera) {
     GameObject.prototype.update.call(this);
     var hit = false;
     
@@ -55,6 +55,16 @@ Projectile.prototype.update = function(dyes, aCamera) {
     var p = vec2.fromValues(0, 0);
     for (i=0; i<dyes.size(); i++) {
         obj = dyes.getObjectAt(i);
+        if (this.pixelTouches(obj, p)) {
+            this.setExpired();
+            obj.setExpired();
+            hit = true;
+        }
+    }
+    
+    var j;
+    for (j=0; j<dyes2.size(); j++) {
+        obj = dyes2.getObjectAt(j);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
             obj.setExpired();

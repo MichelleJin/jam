@@ -44,9 +44,9 @@ Hero.prototype.setHealth = function (number) {
     this.mHealth = number;
 };
 
-Hero.prototype.update = function(dyePackSet, aCamera) {
+Hero.prototype.update = function(dyePackSet, dyePackSet2, aCamera) {
     this._moveByKeys(); // for now
-
+    
     // adjust per-segment speed
     if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
         this.mCoverInSeconds -= this.kDelta;
@@ -58,10 +58,11 @@ Hero.prototype.update = function(dyePackSet, aCamera) {
     }
     
     // update Projectile
-    var num = this.mProjectiles.update(dyePackSet, aCamera);
+    var num = this.mProjectiles.update(dyePackSet, dyePackSet2, aCamera);
     this.mNumDestroy += num; 
     
     // update hero path
+    //this._updatePath();
     var X = this.getXform().getXPos();
     this.getXform().setXPos(X + aCamera.getSpeed());
 };

@@ -26,12 +26,14 @@ function MyGame() {
 
     // The camera to view the scene
     this.mCamera = null;
+    this.mMiniCamera = null;
     this.mMsg = null;
 
     // Alternating background images in a set
     this.mBackground = null;
 
     this.mGhostSet = null;
+    this.mChasePackSet = null;
     this.mSpaceInvader = null;
 
     // Projectile.js has already been read in ...
@@ -64,12 +66,20 @@ MyGame.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
-        [0, 0, 1000, 700],        // viewport (orgX, orgY, width, height)
+        [0, 100, 1000, 700],        // viewport (orgX, orgY, width, height)
         2
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
     this.mCamera.setSpeed(0.1);
+    
+    this.mMiniCamera = new Camera(
+        vec2.fromValues(500, 35),  // position of the camera
+        1000,                      // width of camera
+        [10, 10, 1000, 100],        // viewport (orgX, orgY, width, height)
+        3
+    );
+    this.mMiniCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
@@ -86,6 +96,7 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.setTextHeight(2);
 
     this.mGhostSet = new GhostSet(this.kMinionSprite);
+    this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     // herosprite, healthbar, texture, x, y
     this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 10, 10);
     //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
@@ -102,6 +113,7 @@ MyGame.prototype.initialize = function () {
 MyGame.prototype.draw = function () {
     // Step A: clear the canvas
     this.mCamera.setupViewProjection();
+    
     gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1]); // clear to light gray
     if (this.mDebugModeOn) {
         this.mMsg.draw(this.mCamera);
@@ -109,9 +121,17 @@ MyGame.prototype.draw = function () {
     } else {
         this.mBackground.draw(this.mCamera);
     }
+    
     this.mSpaceInvader.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
+    this.mChasePackSet.draw(this.mCamera);
+    
+    this.mMiniCamera.setupViewProjection();
+    this.mSpaceInvader.draw(this.mMiniCamera);
+    this.mGhostSet.draw(this.mMiniCamera);
+    this.mHeroGroup.draw(this.mMiniCamera);
+    this.mChasePackSet.draw(this.mMiniCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -120,8 +140,9 @@ MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mSpaceInvader.update(this.mCamera);
 
+    this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
-    this.mHeroGroup.update(this.mGhostSet, this.mCamera);
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0] + " " + this.mHeroGroup.getStatus());
     var c = this.mCamera.getWCCenter();
@@ -129,6 +150,7 @@ MyGame.prototype.update = function () {
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
     this.mCamera.clampAtBoundary(this.mHeroGroup.getXform(), 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
+    this.mMiniCamera.update();
 
      //Second message being used to debug background alternation
     //this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
