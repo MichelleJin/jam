@@ -12,25 +12,24 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
-    this.mDebugModeOn = true;
+    this.mDebugModeOn = false;
+    this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
-    this.kProjectileTexture = "assets/particle.png";
+    this.kProjectileTexture = "assets/Bullet.png";
 
-    //this.kHealthBarTexture = "assets/HealthBar.png"; // need to resize this
-    this.kHealthBarTexture = "assets/minion_sprite.png";
+    this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
     this.kStarsBG = "assets/starsBG16384by2048.png";
     this.kStatus = "Status: ";
     this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
 
-
     // The camera to view the scene
     this.mCamera = null;
     this.mMsg = null;
 
     // Alternating background images in a set
-    this.mBackgroundSet = null;
+    this.mBackground = null;
 
     this.mGhostSet = null;
     this.mSpaceInvader = null;
@@ -42,8 +41,9 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
+    gEngine.Textures.loadTexture(this.kHeroSprite);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
-    //gEngine.Textures.loadTexture(this.kHealthBarTexture);
+    gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
    // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.loadTexture(this.kSpaceInvader0);
@@ -51,8 +51,9 @@ MyGame.prototype.loadScene = function () {
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.kHeroSprite);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
-    //gEngine.Textures.unloadTexture(this.kHealthBarTexture);
+    gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
     gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
@@ -68,7 +69,7 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
-    this.mCamera.setSpeed(1);
+    this.mCamera.setSpeed(0.1);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
@@ -85,17 +86,12 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.setTextHeight(2);
 
     this.mGhostSet = new GhostSet(this.kMinionSprite);
-    // herosprite, healthbar texture, x, y
-    this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kMinionSprite, 10, 10);
+    // herosprite, healthbar, texture, x, y
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 10, 10);
+    //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
 
     // Create background set
-    var bg0 = new Background(this.kStarsBG, 300,35);
-    bg0.getXform().setSize(600,75);
-    var bg1 = new Background(this.kStarsBG, -300,35);
-    bg1.getXform().setSize(600,75);
-    this.mBackgroundSet = new BackgroundSet();
-    this.mBackgroundSet.addToSet(bg0);
-    this.mBackgroundSet.addToSet(bg1);
+    this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
     //this.mSpaceInvader = new SpaceInvader(this.kSpaceInvaderSprite, 100, 35);
     this.mSpaceInvader = new SpaceInvader(this.kSpaceInvader0, 100, 35);
@@ -111,7 +107,7 @@ MyGame.prototype.draw = function () {
         this.mMsg.draw(this.mCamera);
         this.mMsg2.draw(this.mCamera);
     } else {
-        this.mBackgroundSet.draw(this.mCamera);
+        this.mBackground.draw(this.mCamera);
     }
     this.mSpaceInvader.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
@@ -121,7 +117,7 @@ MyGame.prototype.draw = function () {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
-    this.mBackgroundSet.update(this.mCamera);
+    this.mBackground.update(this.mCamera);
     this.mSpaceInvader.update(this.mCamera);
 
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
@@ -135,12 +131,12 @@ MyGame.prototype.update = function () {
     this.mCamera.update();  // to ensure proper interpolated movement effects
 
      //Second message being used to debug background alternation
-    this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
-        + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
-        + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
-        + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
-        + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
-    this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
+    //this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
+    //    + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
+    //    + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
+    //    + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
+    //    + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
+    //this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
