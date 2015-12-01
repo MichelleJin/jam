@@ -53,5 +53,7 @@ TextureRenderable.prototype.setTexture = function (newTexture) {
     this.mTexLeftIndex = 0;
     this.mTexBottomIndex = 0;
 };
+
+TextureRenderable.prototype.getTextureInfo = function () { return this.mTextureInfo; };
 //--- end of Public Methods
 //</editor-fold>

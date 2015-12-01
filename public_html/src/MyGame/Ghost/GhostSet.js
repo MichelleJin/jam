@@ -25,15 +25,9 @@ GhostSet.prototype.update = function(hero, aCamera) {
         this.addToSet(d);
     }
 
-    var index, size;
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Z)) {
-        size = this.size();
-        if (size >= 1) {
-            index = Math.floor(Math.random() * size);
-            if (index >= size)
-                index = size - 1;
-            this.removeFromSet(this.getObjectAt(index));
-        }
+        var c = aCamera.getWCCenter();
+        this.spawnGhosts(5, c[0], c[1]);
     }
 
     // remove the expired ones
@@ -51,3 +45,15 @@ GhostSet.prototype.update = function(hero, aCamera) {
     }
 };
 
+GhostSet.prototype.spawnGhosts = function (numGhosts, atX, atY) {
+    /* spawn numGhosts width + padding apart,
+      at position x y
+       */
+    //alert("inside spawn ghosts");
+    var i;
+    for (i = 0; i < numGhosts; i++) {
+        var ghost = new Ghost(this.kSpriteSheet, atX, atY);
+        ghost.getXform().setXPos(ghost.getXform().getXPos() + i * ghost.getXform().getWidth());
+        this.addToSet(ghost);
+    }
+};

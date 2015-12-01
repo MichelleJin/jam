@@ -11,20 +11,31 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function Background(kTexture, atX, atY) {
-    this.kDelta = 0.2;
-    this.mBackground = new SpriteRenderable(kTexture);
-    this.mBackground.getXform().setPosition(atX, atY);
-    this.mBackground.getXform().setSize(1,1);
-    this.mBackground.setElementUVCoordinate(0, 1, 0, 1); // (left,right,bottom,top)
+function Background(kTexture, aCamera) {
+    this.mBackground = new TextureRenderable(kTexture);
     GameObject.call(this, this.mBackground);
+    var textInfo = gEngine.Textures.getTextureInfo(kTexture);
+    var height =  textInfo.mHeight;
+    var width = textInfo.mWidth;
+
+    // scale size to camera
+    var wcHeight = aCamera.getWCHeight();       //float is giving an off height
+    this.mWCWidth = width / height * wcHeight;
+    this.getXform().setSize(this.mWCWidth, wcHeight);
+    //set position relative to camera
+    var c = aCamera.getWCCenter();
+    // start position
+    this.getXform().setXPos(c[0] + this.mWCWidth/2 - aCamera.getWCWidth()/2);
+    this.getXform().setYPos(c[1]);
 }
 gEngine.Core.inheritPrototype(Background, GameObject);
 
 Background.prototype.update = function (aCamera) {
-
-};
-
-Background.prototype.draw = function (aCamera) {
-    this.mBackground.draw(aCamera);
+    var camCenter = aCamera.getWCCenter();
+    var camWidth = aCamera.getWCWidth();
+    // if reaches end of texture set start to current camera position
+    if (camCenter[0] > this.getXform().getXPos() + this.mWCWidth/2 - camWidth/2) {
+        //this.mXPos =
+        this.getXform().setXPos(camCenter[0] + this.mWCWidth/2 - camWidth/2);
+    }
 };
