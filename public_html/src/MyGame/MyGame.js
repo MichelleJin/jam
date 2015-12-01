@@ -13,17 +13,16 @@
 
 function MyGame() {
     this.mDebugModeOn = false;
+    this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
-    this.kProjectileTexture = "assets/particle.png";
+    this.kProjectileTexture = "assets/Bullet.png";
 
-    //this.kHealthBarTexture = "assets/HealthBar.png"; // need to resize this
-    this.kHealthBarTexture = "assets/minion_sprite.png";
+    this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
     this.kStarsBG = "assets/starsBG16384by2048.png";
     this.kStatus = "Status: ";
     this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
-
 
     // The camera to view the scene
     this.mCamera = null;
@@ -42,8 +41,9 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
+    gEngine.Textures.loadTexture(this.kHeroSprite);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
-    //gEngine.Textures.loadTexture(this.kHealthBarTexture);
+    gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
    // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.loadTexture(this.kSpaceInvader0);
@@ -51,8 +51,9 @@ MyGame.prototype.loadScene = function () {
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.kHeroSprite);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
-    //gEngine.Textures.unloadTexture(this.kHealthBarTexture);
+    gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
     gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
@@ -85,8 +86,9 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.setTextHeight(2);
 
     this.mGhostSet = new GhostSet(this.kMinionSprite);
-    // herosprite, healthbar texture, x, y
-    this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kMinionSprite, 10, 10);
+    // herosprite, healthbar, texture, x, y
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 10, 10);
+    //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);

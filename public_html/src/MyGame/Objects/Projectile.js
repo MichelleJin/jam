@@ -14,9 +14,10 @@ Projectile.kSpeed = 100 / (0.8 * 60);
 Projectile.kTexture = null;
 
 function Projectile(x, y) {
-    this.kRefWidth = 1.5;
-    this.kRefHeight = 1.5;
-            
+    var textInfo = gEngine.Textures.getTextureInfo(Projectile.kTexture);
+    this.kRefHeight = 6;
+    this.kRefWidth = this.kRefHeight / textInfo.mHeight * textInfo.mWidth;
+
     this.kDetectThreshold = 10;
     this.kChaseThreshold = 2 * this.kDetectThreshold;
     

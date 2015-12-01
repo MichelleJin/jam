@@ -16,7 +16,6 @@ Ghost.prototype.update = function(hero) {
             this._servicePatrolStates(hero);
             break;
     }
-
 };
 
 Ghost.prototype._servicePatrolStates = function(hero) {
@@ -40,7 +39,7 @@ Ghost.prototype._serviceRising = function () {
     this.getXform().setPosition(x, y + deltaY);
     this.mStateTimeTick++;
 
-    if (this.mStateTimeTick > 30) {
+    if (this.mStateTimeTick > 60) {
         this.mStateTimeTick = 0;
         this.mCurrentState = Ghost.eGhostState.eFalling;
     }
@@ -54,7 +53,7 @@ Ghost.prototype._serviceFalling = function () {
     this.getXform().setPosition(x, y + deltaY);
     this.mStateTimeTick++;
 
-    if (this.mStateTimeTick > 30) {
+    if (this.mStateTimeTick > 60) {
         this.mStateTimeTick = 0;
         this.mCurrentState = Ghost.eGhostState.eRising;
     }

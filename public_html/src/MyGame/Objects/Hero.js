@@ -15,13 +15,17 @@ function Hero(spriteTexture, atX, atY) {
     this.kDelta = 0.6;
     this.kStartHealth = 10;
 
-    this.mDye = new SpriteRenderable(spriteTexture);
-    this.mDye.setColor([1, 1, 1, 0]);
-    this.mDye.getXform().setPosition(atX, atY);
-    this.mDye.getXform().setZPos(5);
-    this.mDye.getXform().setSize(9, 12);
-    this.mDye.setElementPixelPositions(0, 120, 0, 180);
-    GameObject.call(this, this.mDye);
+    this.mShip = new TextureRenderable(spriteTexture);
+    this.mShip.getXform().setSize(20, 20);
+    this.mShip.getXform().setZPos(5);
+    GameObject.call(this, this.mShip);
+    //this.mDye = new SpriteRenderable(spriteTexture);
+    //this.mDye.setColor([1, 1, 1, 0]);
+    //this.mDye.getXform().setPosition(atX, atY);
+    //this.mDye.getXform().setZPos(5);
+    //this.mDye.getXform().setSize(9, 12);
+    //this.mDye.setElementPixelPositions(0, 120, 0, 180);
+    //GameObject.call(this, this.mDye);
     
     this.mHit = 0;
     this.mNumDestroy = 0;
