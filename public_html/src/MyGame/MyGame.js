@@ -16,6 +16,7 @@ function MyGame() {
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
+    this.kGoalStar = "assets/GoalStar.png";
 
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
@@ -50,6 +51,7 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kStarsBG);
    // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.loadTexture(this.kSpaceInvader0);
+    gEngine.Textures.loadTexture(this.kGoalStar);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -60,6 +62,7 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kStarsBG);
     //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
+    gEngine.Textures.unloadTexture(this.kGoalStar);
     
     switch (this.mNextScene) {
         case 0: 
@@ -100,6 +103,14 @@ MyGame.prototype.initialize = function () {
     this.mMsg.setColor([1, 1, 1, 1]);
     this.mMsg.getXform().setPosition(2, 2);
     this.mMsg.setTextHeight(2);
+    
+    var Star = new TextureRenderable(this.kGoalStar);
+    Star.setColor([1, 1, 1, 0]);
+    Star.getXform().setPosition(100, 35);
+    Star.getXform().setSize(10, 10);
+    Star.getXform().setZPos(10);
+    
+    this.mStar = new GameObject(Star);
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);
@@ -138,12 +149,14 @@ MyGame.prototype.draw = function () {
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
+    this.mStar.draw(this.mCamera);
     
     this.mMiniCamera.setupViewProjection();
     this.mSpaceInvader.draw(this.mMiniCamera);
     this.mGhostSet.draw(this.mMiniCamera);
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
+    this.mStar.draw(this.mMiniCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -177,12 +190,14 @@ MyGame.prototype.update = function () {
         this.mDebugModeOn = !this.mDebugModeOn;
     }
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+    if (this.mHeroGroup.getHealth() === 0) {
         this.mNextScene = 0;
         gEngine.GameLoop.stop();
     }
     
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) {
+    
+    var h = [];
+    if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
         this.mNextScene = 1;
         gEngine.GameLoop.stop();
     }
