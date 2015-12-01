@@ -28,6 +28,7 @@ function MyGame() {
     this.mCamera = null;
     this.mMiniCamera = null;
     this.mMsg = null;
+    this.mNextScene = 0;
 
     // Alternating background images in a set
     this.mBackground = null;
@@ -59,6 +60,19 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kStarsBG);
     //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
+    
+    switch (this.mNextScene) {
+        case 0: 
+            var nextLevel = new BlueLevel();  // next level to be loaded           
+            break;        
+        case 1: 
+            var nextLevel = new WinScene();
+            break;        
+    }
+    
+    gEngine.Core.startScene(nextLevel);
+    
+    
 };
 
 MyGame.prototype.initialize = function () {
@@ -161,5 +175,15 @@ MyGame.prototype.update = function () {
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+        this.mNextScene = 0;
+        gEngine.GameLoop.stop();
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) {
+        this.mNextScene = 1;
+        gEngine.GameLoop.stop();
     }
 };
