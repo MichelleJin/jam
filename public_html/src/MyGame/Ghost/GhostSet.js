@@ -18,6 +18,11 @@ function GhostSet(sprite) {
     GameObjectSet.call(this);
     this.kSpriteSheet = sprite;
     this.mWaitQueue = [];
+    var i;
+    for (i = 0; i < 5; i++) {
+        var ghost = new Ghost(sprite, i * 100, 35);
+        this.addToSet(ghost);
+    }
 }
 gEngine.Core.inheritPrototype(GhostSet, GameObjectSet);
 
@@ -54,7 +59,7 @@ GhostSet.prototype.update = function(hero, aCamera) {
     // update all objects
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        obj.update(hero);
+        obj.update(hero, aCamera);
     }
     this.updateWait(aCamera);
 };
@@ -67,7 +72,7 @@ GhostSet.prototype.spawnGhosts = function (numGhosts, atX, atY) {
     var i;
     for (i = 0; i < numGhosts; i++) {
         var ghost = new Ghost(this.kSpriteSheet, atX, atY);
-        this.addToWait(25 * i, ghost);
+        this.addToWait(60 * i, ghost);
     }
 };
 

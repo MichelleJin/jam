@@ -16,7 +16,7 @@ function MyGame() {
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
-
+    this.kGhostTexture = "assets/Ghost.png"
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
     this.kStarsBG = "assets/starsBG16384by2048.png";
@@ -44,6 +44,7 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kHeroSprite);
+    gEngine.Textures.loadTexture(this.kGhostTexture);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
     gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
@@ -54,6 +55,7 @@ MyGame.prototype.loadScene = function () {
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kHeroSprite);
+    gEngine.Textures.unloadTexture(this.kGhostTexture);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
     gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
@@ -93,7 +95,7 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.getXform().setPosition(2, 4);
     this.mMsg2.setTextHeight(2);
 
-    this.mGhostSet = new GhostSet(this.kMinionSprite);
+    this.mGhostSet = new GhostSet(this.kGhostTexture);
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     // herosprite, healthbar, texture, x, y
     this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
@@ -104,6 +106,8 @@ MyGame.prototype.initialize = function () {
 
     //this.mSpaceInvader = new SpaceInvader(this.kSpaceInvaderSprite, 100, 35);
     this.mSpaceInvader = new SpaceInvader(this.kSpaceInvader0, 100, 35);
+
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more

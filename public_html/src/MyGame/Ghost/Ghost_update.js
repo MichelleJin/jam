@@ -9,8 +9,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-Ghost.prototype.update = function(hero) {
+Ghost.prototype.update = function(hero, aCamera) {
     switch (this.mCurrentState) {
+        case Ghost.eGhostState.eWait:
+            this._serviceWait(aCamera);
+            break;
         case Ghost.eGhostState.eRising:
         case Ghost.eGhostState.eFalling:
             this._servicePatrolStates(hero);
@@ -18,7 +21,17 @@ Ghost.prototype.update = function(hero) {
     }
 };
 
-Ghost.prototype._servicePatrolStates = function(hero) {
+Ghost.prototype._distToCam = function (aCamera) {
+    return this.getXform().getXPos() - aCamera.getWCCenter()[0];
+};
+
+Ghost.prototype._serviceWait = function (aCamera) {
+    if (this._distToCam(aCamera) < aCamera.getWCWidth()/2) {
+        this.mCurrentState = Ghost.eGhostState.eRising;
+    }
+};
+
+Ghost.prototype._servicePatrolStates = function (hero) {
     // Check for collision
     var p = vec2.fromValues(0, 0);
     if (this.pixelTouches(hero, p)) {
