@@ -66,7 +66,7 @@ MyGame.prototype.unloadScene = function () {
     
     switch (this.mNextScene) {
         case 0: 
-            var nextLevel = new BlueLevel();  // next level to be loaded           
+            var nextLevel = new LoseScene();  // next level to be loaded           
             break;        
         case 1: 
             var nextLevel = new WinScene();
@@ -106,10 +106,9 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(100, 35);
+    Star.getXform().setPosition(950, 35);
     Star.getXform().setSize(10, 10);
-    Star.getXform().setZPos(10);
-    
+    Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
 
     // Being used to debug background scrolling

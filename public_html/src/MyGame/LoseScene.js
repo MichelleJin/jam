@@ -11,33 +11,23 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function BlueLevel() {
-    
-    //this.kStarsBG = "assets/starsBG16384by2048.png";
-    //this.kStatus = "Status: ";
-    // audio clips: supports both mp3 and wav formats
-    //this.kBgClip = "assets/sounds/BGClip.mp3";
-    //this.kCue = "assets/sounds/BlueLevel_cue.wav";
+function LoseScene() {
 
-    // scene file name
-    //this.kSceneFile = "assets/BlueLevel.xml";
-    // all squares
-    //this.mSqSet = [];        // these are the Renderable objects
 
     // The camera to view the scene
     this.mCamera = null;
     this.mMsg = null;
     this.kStatus = "Game over";
 }
-gEngine.Core.inheritPrototype(BlueLevel, Scene);
+gEngine.Core.inheritPrototype(LoseScene, Scene);
 
-BlueLevel.prototype.loadScene = function () {
+LoseScene.prototype.loadScene = function () {
     // load the scene file
     //gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
 
 };
 
-BlueLevel.prototype.unloadScene = function () {
+LoseScene.prototype.unloadScene = function () {
     
     //gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
     
@@ -46,7 +36,7 @@ BlueLevel.prototype.unloadScene = function () {
     gEngine.Core.startScene(nextLevel);
 };
 
-BlueLevel.prototype.initialize = function () {
+LoseScene.prototype.initialize = function () {
     
 
     // Step A: Read in the camera
@@ -71,7 +61,7 @@ BlueLevel.prototype.initialize = function () {
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-BlueLevel.prototype.draw = function () {
+LoseScene.prototype.draw = function () {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
@@ -85,7 +75,7 @@ BlueLevel.prototype.draw = function () {
 
 // The update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-BlueLevel.prototype.update = function () {
+LoseScene.prototype.update = function () {
     // For this very simple game, let's move the first square
     
     
