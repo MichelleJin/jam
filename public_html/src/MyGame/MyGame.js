@@ -112,7 +112,7 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(950, 35);
+    Star.getXform().setPosition(200, 35);
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
@@ -153,7 +153,7 @@ MyGame.prototype.draw = function () {
         this.mBackground.draw(this.mCamera);
     }
     
-    this.mSpaceInvader.draw(this.mCamera);
+    //this.mSpaceInvader.draw(this.mCamera);
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
@@ -161,7 +161,7 @@ MyGame.prototype.draw = function () {
     this.mGrenadeSet.draw(this.mCamera);
     
     this.mMiniCamera.setupViewProjection();
-    this.mSpaceInvader.draw(this.mMiniCamera);
+    //this.mSpaceInvader.draw(this.mMiniCamera);
     this.mGhostSet.draw(this.mMiniCamera);
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
@@ -178,7 +178,7 @@ MyGame.prototype.update = function () {
     this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
-    this.mHeroGroup.update(this.mGrenadeSet, this.mChasePackSet, this.mCamera);
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0].toPrecision(4) + " " + this.mHeroGroup.getStatus());
     var c = this.mCamera.getWCCenter();

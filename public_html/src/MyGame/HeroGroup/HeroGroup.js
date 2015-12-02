@@ -27,12 +27,12 @@ HeroGroup.prototype.draw = function(aCamera) {
     this.mHealthBar.draw(aCamera);
 };
 
-HeroGroup.prototype.update = function(enemySet, enemySet2, aCamera) {
-    Hero.prototype.update.call(this, enemySet, enemySet2, aCamera);
+HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, aCamera) {
+    Hero.prototype.update.call(this, enemySet, enemySet2, enemySet3, aCamera);
     this.mHealthBar.update(this);
 };
 
-Hero.prototype.update = function(enemySet, enemySet2, aCamera) {
+Hero.prototype.update = function(enemySet, enemySet2,enemySet3, aCamera) {
     this._moveByKeys(); // for now
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
@@ -40,7 +40,7 @@ Hero.prototype.update = function(enemySet, enemySet2, aCamera) {
     }
 
     // update Projectile
-    var num = this.mProjectiles.update(enemySet, enemySet2, aCamera);
+    var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, aCamera);
     this.mNumDestroy += num;
 
     // update hero path
