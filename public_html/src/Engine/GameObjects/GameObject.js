@@ -15,7 +15,14 @@ function GameObject(renderableObj) {
     this.mCurrentFrontDir = vec2.fromValues(0, 1);  // this is the current front direction of the object
     this.mSpeed = 0;
     this.mPhysicsComponent = null;
+    this.mHealth = -1;
 }
+
+GameObject.prototype.getHealth = function () { return this.mHealth; };
+GameObject.prototype.setHealth = function (h) { this.mHealth = h };
+
+GameObject.prototype.hitOnce = function () { this.mHealth--; };
+
 GameObject.prototype.getXform = function () { return this.mRenderComponent.getXform(); };
 GameObject.prototype.getBBox = function () {
     var xform = this.getXform();

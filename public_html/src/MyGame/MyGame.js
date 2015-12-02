@@ -13,20 +13,25 @@
 
 function MyGame() {
     this.mDebugModeOn = false;
+
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
-    this.kGhostTexture = "assets/Ghost.png"
+
+    this.kGhostTexture = "assets/Ghost.png";
+    this.kGhostDeadTexture = "assets/Scared.png";
+
     this.kGoalStar = "assets/GoalStar.png";
 
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
     this.kStarsBG = "assets/starsBG16384by2048.png";
-    this.kStatus = "Status: ";
+
     this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
     this.kGrenade = "assets/YellowCircle2.png";
 
+    this.kStatus = "Status: ";
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniCamera = null;
@@ -48,7 +53,10 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kHeroSprite);
+
     gEngine.Textures.loadTexture(this.kGhostTexture);
+    gEngine.Textures.loadTexture(this.kGhostDeadTexture);
+
     gEngine.Textures.loadTexture(this.kProjectileTexture);
     gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
@@ -61,7 +69,10 @@ MyGame.prototype.loadScene = function () {
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kHeroSprite);
+
     gEngine.Textures.unloadTexture(this.kGhostTexture);
+    gEngine.Textures.unloadTexture(this.kGhostDeadTexture);
+
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
     gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
@@ -123,7 +134,7 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.getXform().setPosition(2, 4);
     this.mMsg2.setTextHeight(2);
 
-    this.mGhostSet = new GhostSet(this.kGhostTexture);
+    this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     this.mGrenadeSet = new GrenadeSet(this.kGrenade);
     // herosprite, healthbar, texture, x, y
@@ -201,9 +212,9 @@ MyGame.prototype.update = function () {
         this.mDebugModeOn = !this.mDebugModeOn;
     }
     
-    if (this.mHeroGroup.getHealth() === 0) {
-        this.mNextScene = 0;
-        gEngine.GameLoop.stop();
+    if (this.mHeroGroup.getHealthRatio() === 0) {
+        //this.mNextScene = 0;
+        //gEngine.GameLoop.stop();
     }
     
     

@@ -14,13 +14,16 @@ function WaitNode(numTicks, enemy) {
     this.mEnemy = enemy;
 }
 
-function GhostSet(sprite) {
+function GhostSet(liveSprite, deadSprite) {
     GameObjectSet.call(this);
-    this.kSpriteSheet = sprite;
+
+    this.kSpriteSheet = liveSprite;
+    this.kDeadSprite = deadSprite;  // Use sprite sheet later
+
     this.mWaitQueue = [];
     var i;
     for (i = 0; i < 5; i++) {
-        var ghost = new Ghost(sprite, i * 100, 35);
+        var ghost = new Ghost(liveSprite, deadSprite, i * 100, 35);
         this.addToSet(ghost);
     }
 }
@@ -32,7 +35,7 @@ GhostSet.prototype.update = function(hero, aCamera) {
     if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
         x = aCamera.mouseWCX();
         y = aCamera.mouseWCY();
-        d = new Ghost(this.kSpriteSheet, x, y);
+        d = new Ghost(this.kSpriteSheet, this.kDeadSprite, x, y);
         this.addToSet(d);
     }
 
@@ -71,7 +74,7 @@ GhostSet.prototype.spawnGhosts = function (numGhosts, atX, atY) {
     //alert("inside spawn ghosts");
     var i;
     for (i = 0; i < numGhosts; i++) {
-        var ghost = new Ghost(this.kSpriteSheet, atX, atY);
+        var ghost = new Ghost(this.kSpriteSheet, this.kDeadSprite, atX, atY);
         this.addToWait(60 * i, ghost);
     }
 };

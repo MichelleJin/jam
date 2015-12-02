@@ -57,7 +57,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
         obj = dyes.getObjectAt(i);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
-            obj.setExpired();
+            obj.hitOnce();
             hit = true;
         }
     }

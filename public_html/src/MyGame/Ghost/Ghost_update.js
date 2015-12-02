@@ -18,7 +18,23 @@ Ghost.prototype.update = function(hero, aCamera) {
         case Ghost.eGhostState.eFalling:
             this._servicePatrolStates(hero);
             break;
+        case Ghost.eGhostState.eDied:
+            this._serviceDied(aCamera);
+            this._serviceFlee();
+            break;
     }
+};
+
+Ghost.prototype._serviceDied = function (aCamera) {
+    if(this.mDeadGhost.getXform().getXPos() < aCamera.getWCCenter()[0] - aCamera.getWCWidth()/2) {
+        this.setExpired();
+    }
+    this._serviceFlee();
+};
+
+Ghost.prototype._serviceFlee = function () {
+    var fleeSpeed = 1;
+    this.mDeadGhost.getXform().setXPos(this.mDeadGhost.getXform().getXPos() - fleeSpeed);
 };
 
 Ghost.prototype._distToCam = function (aCamera) {
@@ -36,10 +52,9 @@ Ghost.prototype._servicePatrolStates = function (hero) {
     var p = vec2.fromValues(0, 0);
     if (this.pixelTouches(hero, p)) {
         hero.hitOnce();
-        this.setExpired();
     }
     // Continue patrolling!
-    if (this.mCurrentState == Ghost.eGhostState.eRising) this._serviceRising();
+    if (this.mCurrentState === Ghost.eGhostState.eRising) this._serviceRising();
     else this._serviceFalling();
 
 };

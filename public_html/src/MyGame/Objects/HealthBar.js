@@ -24,7 +24,7 @@ function HealthBar(texture) {
 gEngine.Core.inheritPrototype(HealthBar, GameObject);
 
 HealthBar.prototype.update = function (hero) {
-    var healthRatio = hero.getHealth();
+    var healthRatio = hero.getHealthRatio();
     if (healthRatio < 0) {
         return;     // no negative health bar
     }

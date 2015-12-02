@@ -37,7 +37,7 @@ function Hero(spriteTexture, atX, atY) {
 }
 gEngine.Core.inheritPrototype(Hero, GameObject);
 
-Hero.prototype.getHealth = function () {
+Hero.prototype.getHealthRatio = function () {
     return this.mHealth/this.kStartHealth;
 };
 
