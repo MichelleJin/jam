@@ -37,8 +37,10 @@ ChasePack.prototype._serviceNormalMove = function(hero, aCamera) {
     var x = this.getXform().getXPos();
     var y = this.getXform().getYPos();
     
-    if((cc[0]+cw/2) > x){
+    if((cc[0]+cw/2) > x  && cc[0]-cw/2 < x){
+        var dir = vec2.fromValues(-1, 0);
     
+        this.setCurrentFrontDir(dir);
         this.getXform().setPosition(x-deltaY, y);
     //this.mStateTimeTick++;
     }
@@ -140,9 +142,15 @@ ChasePack.prototype._serviceChase = function(hero) {
         } else {
             // Give chase!
             
+            
             this.mTargetPosition = hero.getXform().getPosition();
             this.rotateObjPointTo(this.mTargetPosition, 0.5); // rotate rather quickly
             GameObject.prototype.update.call(this);
+            
+            if(this.mTargetPosition[0]-40 > this.getXform().getXPos()){
+                this.mCurrentState = ChasePack.eChasePackState.eNormalRegion;
+                
+            }
         }
    
 };

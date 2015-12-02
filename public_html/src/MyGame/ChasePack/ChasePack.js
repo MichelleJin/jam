@@ -36,7 +36,7 @@ function ChasePack(spriteTexture, x, y) {
     GameObject.call(this, this.mChasePack);
     
     
-    this.setSpeed(0.5);
+    this.setSpeed(0.15);
     //this.getXform().incRotationByRad(Math.PI/2);
     this.mChasePack.getXform().incRotationByRad(Math.PI/2);
     var dir = vec2.fromValues(-1, 0);

@@ -17,6 +17,8 @@ function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
     this.kGhostTexture = "assets/Ghost.png"
+    this.kGoalStar = "assets/GoalStar.png";
+
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
     this.kStarsBG = "assets/starsBG16384by2048.png";
@@ -28,6 +30,7 @@ function MyGame() {
     this.mCamera = null;
     this.mMiniCamera = null;
     this.mMsg = null;
+    this.mNextScene = 0;
 
     // Alternating background images in a set
     this.mBackground = null;
@@ -50,6 +53,7 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kStarsBG);
    // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.loadTexture(this.kSpaceInvader0);
+    gEngine.Textures.loadTexture(this.kGoalStar);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -61,6 +65,20 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kStarsBG);
     //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
+    gEngine.Textures.unloadTexture(this.kGoalStar);
+    
+    switch (this.mNextScene) {
+        case 0: 
+            var nextLevel = new LoseScene();  // next level to be loaded           
+            break;        
+        case 1: 
+            var nextLevel = new WinScene();
+            break;        
+    }
+    
+    gEngine.Core.startScene(nextLevel);
+    
+    
 };
 
 MyGame.prototype.initialize = function () {
@@ -88,6 +106,13 @@ MyGame.prototype.initialize = function () {
     this.mMsg.setColor([1, 1, 1, 1]);
     this.mMsg.getXform().setPosition(2, 2);
     this.mMsg.setTextHeight(2);
+    
+    var Star = new TextureRenderable(this.kGoalStar);
+    Star.setColor([1, 1, 1, 0]);
+    Star.getXform().setPosition(950, 35);
+    Star.getXform().setSize(10, 10);
+    Star.getXform().setZPos(10);    
+    this.mStar = new GameObject(Star);
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);
@@ -128,12 +153,14 @@ MyGame.prototype.draw = function () {
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
+    this.mStar.draw(this.mCamera);
     
     this.mMiniCamera.setupViewProjection();
     this.mSpaceInvader.draw(this.mMiniCamera);
     this.mGhostSet.draw(this.mMiniCamera);
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
+    this.mStar.draw(this.mMiniCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -165,5 +192,17 @@ MyGame.prototype.update = function () {
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
+    }
+    
+    if (this.mHeroGroup.getHealth() === 0) {
+        this.mNextScene = 0;
+        gEngine.GameLoop.stop();
+    }
+    
+    
+    var h = [];
+    if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
+        this.mNextScene = 1;
+        gEngine.GameLoop.stop();
     }
 };

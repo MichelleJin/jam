@@ -32,6 +32,6 @@ HealthBar.prototype.update = function (hero) {
     var h = hero.getXform().getHeight();
     var w = hero.getXform().getWidth();
     this.mBar.getXform().setWidth(w * healthRatio, 1);
-    this.getXform().setXPos(pos[0] - w / 2 * (1 - healthRatio));
+    this.getXform().setXPos(pos[0] - w * (1 - healthRatio)/2);
     this.getXform().setYPos(pos[1] + h/2 + 1); // <-- this should be based on the hight of the
 };
