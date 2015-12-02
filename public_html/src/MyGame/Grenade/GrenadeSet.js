@@ -9,27 +9,26 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ChasePackSet(sprite) {
+function GrenadeSet(texture) {
     GameObjectSet.call(this);
-    this.kSpriteSheet = sprite;
+    this.kSpriteSheet = texture;
     var i, x, y, c;
-    for(i=0; i<30; i++){
-        x = 100 + 50*i*Math.random();
-        y = 70 * Math.random();
-        c = new ChasePack(this.kSpriteSheet, x, y);
-        
+    x = 120;
+    y = 30;
+    for(i=0; i<8; i++){        
+        c = new Grenade(this.kSpriteSheet, x, y);        
         this.addToSet(c);
     }
 }
-gEngine.Core.inheritPrototype(ChasePackSet, GameObjectSet);
+gEngine.Core.inheritPrototype(GrenadeSet, GameObjectSet);
 
 
-ChasePackSet.prototype.update = function(hero, aCamera) {
+GrenadeSet.prototype.update = function(hero, aCamera) {
     var x, y, d;
     if (gEngine.Input.isButtonClicked(gEngine.Input.mouseButton.Left)) {
         x = aCamera.mouseWCX();
         y = aCamera.mouseWCY();
-        d = new ChasePack(this.kSpriteSheet, x, y);
+        d = new Grenade(this.kSpriteSheet, x, y);
         this.addToSet(d);
     }
     
@@ -48,14 +47,17 @@ ChasePackSet.prototype.update = function(hero, aCamera) {
     var i, obj;
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        if (obj.hasExpired())
+        if (obj.hasHit())
             this.removeFromSet(obj);
     }
     
     // update all objects
+    var i, obj;
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        obj.update(hero, aCamera);
+            if(obj.hasExpired()){
+            obj.update(hero, aCamera, i);
+        }
     }
 };
 

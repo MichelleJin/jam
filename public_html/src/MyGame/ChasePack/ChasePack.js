@@ -31,12 +31,13 @@ function ChasePack(spriteTexture, x, y) {
     this.mChasePack = new SpriteRenderable(spriteTexture);
     this.mChasePack.setColor([1, 1, 1, 0.1]);
     this.mChasePack.getXform().setPosition(x, y);
-    this.mChasePack.getXform().setSize(this.kRefWidth, this.kRefHeight);
+    this.mChasePack.getXform().setZPos(10);
+    this.mChasePack.getXform().setSize(this.kRefWidth*2, this.kRefHeight*2);
     this.mChasePack.setElementPixelPositions(510, 595, 23, 153);
     GameObject.call(this, this.mChasePack);
     
     
-    this.setSpeed(0.15);
+    this.setSpeed(0.3);
     //this.getXform().incRotationByRad(Math.PI/2);
     this.mChasePack.getXform().incRotationByRad(Math.PI/2);
     var dir = vec2.fromValues(-1, 0);

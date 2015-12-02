@@ -25,6 +25,7 @@ function MyGame() {
     this.kStatus = "Status: ";
     this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
+    this.kGrenade = "assets/YellowCircle2.png";
 
     // The camera to view the scene
     this.mCamera = null;
@@ -54,6 +55,7 @@ MyGame.prototype.loadScene = function () {
    // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.loadTexture(this.kSpaceInvader0);
     gEngine.Textures.loadTexture(this.kGoalStar);
+    gEngine.Textures.loadTexture(this.kGrenade);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -66,6 +68,7 @@ MyGame.prototype.unloadScene = function () {
     //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
     gEngine.Textures.unloadTexture(this.kSpaceInvader0);
     gEngine.Textures.unloadTexture(this.kGoalStar);
+    gEngine.Textures.unloadTexture(this.kGrenade);
     
     switch (this.mNextScene) {
         case 0: 
@@ -98,7 +101,7 @@ MyGame.prototype.initialize = function () {
         [0, 0, 1000, 70]       // viewport (orgX, orgY, width, height)
        
     );
-    this.mMiniCamera.setBackgroundColor([0.4, 0.4, 0.4, 1]);
+    this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
 
@@ -122,6 +125,7 @@ MyGame.prototype.initialize = function () {
 
     this.mGhostSet = new GhostSet(this.kGhostTexture);
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
+    this.mGrenadeSet = new GrenadeSet(this.kGrenade);
     // herosprite, healthbar, texture, x, y
     this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
     //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
@@ -154,6 +158,7 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
+    this.mGrenadeSet.draw(this.mCamera);
     
     this.mMiniCamera.setupViewProjection();
     this.mSpaceInvader.draw(this.mMiniCamera);
@@ -161,6 +166,7 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
     this.mStar.draw(this.mMiniCamera);
+    this.mGrenadeSet.draw(this.mMiniCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -168,10 +174,11 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mSpaceInvader.update(this.mCamera);
-
+    
+    this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mCamera);
+    this.mHeroGroup.update(this.mGrenadeSet, this.mChasePackSet, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0].toPrecision(4) + " " + this.mHeroGroup.getStatus());
     var c = this.mCamera.getWCCenter();

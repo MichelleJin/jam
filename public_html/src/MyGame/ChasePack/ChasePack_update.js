@@ -38,14 +38,12 @@ ChasePack.prototype._serviceNormalMove = function(hero, aCamera) {
     var y = this.getXform().getYPos();
     
     if((cc[0]+cw/2) > x  && cc[0]-cw/2 < x){
-        var dir = vec2.fromValues(-1, 0);
-    
-        this.setCurrentFrontDir(dir);
         this.getXform().setPosition(x-deltaY, y);
     //this.mStateTimeTick++;
     }
     
-    if (this._distToHero(hero) < 40){
+    var hp = hero.getXform().getPosition();
+    if (hp[0]+40 > this.getXform().getXPos() && hp[0]-5 < this.getXform().getXPos()){
         this.mCurrentState = ChasePack.eChasePackState.eChaseState;
         //this._serviceChase(hero);
     }
@@ -53,86 +51,6 @@ ChasePack.prototype._serviceNormalMove = function(hero, aCamera) {
        
 };
 
-//ChasePack.prototype._servicePatrolStates = function(hero) {
-//    if (this._distToHero(hero) < this.kDetectThreshold) {
-//        // transition to chase!
-//        this.mCurrentState = ChasePack.eChasePackState.eExcitedCWRotate;
-//        this.mStateTimeClick = 0;
-//        this.mTargetPosition = hero.getXform().getPosition();
-//    } else {
-//       // Continue patrolling!
-//       GameObject.prototype.update.call(this);
-//       var toTarget = [];
-//       vec2.subtract(toTarget, this.mTargetPosition, this.getXform().getPosition());
-//       var d = vec2.length(toTarget);
-//       if (d > 10) { 
-//           this.rotateObjPointTo(this.mTargetPosition, 0.05); // rotate rather quickly
-//       } else {
-//           
-//       }
-//   }
-//};
-
-ChasePack.prototype._serviceEnlarge = function() {
-    // 1. check for state transition
-    if (this.mStateTimeTick > this.kScaleTime) {
-        // done with current state, transition to next
-        // make sure state variables are properly initialized
-        this.mStateTimeTick = 0;
-        this.mCurrentState = ChasePack.eChasePackState.eCoolDownShrink;
-    } else {
-        // continue ...
-        this.mStateTimeTick++;
-        var xf = this.getXform();
-        xf.incSizeBy(this.kScaleRate);
-    }
-};
-
-ChasePack.prototype._serviceShrink = function() {
-    // 1. check for state transition
-    if (this.mStateTimeTick > this.kScaleTime) {
-        // done with current state, transition to next
-        // make sure state variables are properly initialized
-        this.mStateTimeTick = 0;
-        this._computeNextState();  // transition back into patrol
-    } else {
-        // continue ...
-        this.mStateTimeTick++;
-        var xf = this.getXform();
-        xf.incSizeBy(-this.kScaleRate);
-    }
-};
-
-ChasePack.prototype._serviceCWRotate = function() {
-    // 1. check for state transition
-    if (this.mStateTimeTick > this.kRotateTime) {
-        // done with current state, transition to next
-        // make sure state variables are properly initialized
-        this.mStateTimeTick = 0;
-        this.mCurrentState = ChasePack.eChasePackState.eExcitedCCWRotate;
-    } else {
-        // continue ...
-        this.mStateTimeTick++;
-        var xf = this.getXform();
-        xf.incRotationByRad(this.kRotateRate);
-    }
-};
-
-ChasePack.prototype._serviceCCWRotate = function() {
-    // 1. check for state transition
-    if (this.mStateTimeTick > this.kRotateTime) {
-        // done with current state, transition to next
-        // make sure state variables are properly initialized
-        this.mStateTimeTick = 0;
-        this.mChasePack.setColor(this.mChaseColor);
-        this.mCurrentState = ChasePack.eChasePackState.eChaseState;
-    } else {
-        // continue ...
-        this.mStateTimeTick++;
-        var xf = this.getXform();
-        xf.incRotationByRad(-this.kRotateRate);
-    }
-};
 
 ChasePack.prototype._serviceChase = function(hero) {    
         var p = vec2.fromValues(0, 0);
@@ -147,7 +65,7 @@ ChasePack.prototype._serviceChase = function(hero) {
             this.rotateObjPointTo(this.mTargetPosition, 0.5); // rotate rather quickly
             GameObject.prototype.update.call(this);
             
-            if(this.mTargetPosition[0]-40 > this.getXform().getXPos()){
+            if(this.mTargetPosition[0]-10 > this.getXform().getXPos()){
                 this.mCurrentState = ChasePack.eChasePackState.eNormalRegion;
                 
             }
