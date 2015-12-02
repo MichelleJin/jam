@@ -14,9 +14,10 @@ Projectile.kSpeed = 100 / (0.8 * 60);
 Projectile.kTexture = null;
 
 function Projectile(x, y) {
-    this.kRefWidth = 1.5;
-    this.kRefHeight = 1.5;
-            
+    var textInfo = gEngine.Textures.getTextureInfo(Projectile.kTexture);
+    this.kRefHeight = 6;
+    this.kRefWidth = this.kRefHeight / textInfo.mHeight * textInfo.mWidth;
+
     this.kDetectThreshold = 10;
     this.kChaseThreshold = 2 * this.kDetectThreshold;
     
@@ -42,7 +43,7 @@ Projectile.prototype.hasExpired = function() {
 };
 
 
-Projectile.prototype.update = function(dyes, aCamera) {
+Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
     GameObject.prototype.update.call(this);
     var hit = false;
     
@@ -54,6 +55,26 @@ Projectile.prototype.update = function(dyes, aCamera) {
     var p = vec2.fromValues(0, 0);
     for (i=0; i<dyes.size(); i++) {
         obj = dyes.getObjectAt(i);
+        if (this.pixelTouches(obj, p)) {
+            this.setExpired();
+            obj.hitOnce();
+            hit = true;
+        }
+    }
+    
+    var j;
+    for (j=0; j<dyes2.size(); j++) {
+        obj = dyes2.getObjectAt(j);
+        if (this.pixelTouches(obj, p)) {
+            this.setExpired();
+            obj.setExpired();
+            hit = true;
+        }
+    }
+    
+    var o;
+    for (o=0; o<dyes3.size(); o++) {
+        obj = dyes3.getObjectAt(o);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
             obj.setExpired();

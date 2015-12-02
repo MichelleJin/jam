@@ -9,25 +9,52 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-Ghost.prototype.update = function(hero) {
+Ghost.prototype.update = function(hero, aCamera) {
     switch (this.mCurrentState) {
+        case Ghost.eGhostState.eWait:
+            this._serviceWait(aCamera);
+            break;
         case Ghost.eGhostState.eRising:
         case Ghost.eGhostState.eFalling:
             this._servicePatrolStates(hero);
             break;
+        case Ghost.eGhostState.eDied:
+            this._serviceDied(aCamera);
+            this._serviceFlee();
+            break;
     }
-
 };
 
-Ghost.prototype._servicePatrolStates = function(hero) {
+Ghost.prototype._serviceDied = function (aCamera) {
+    if(this.mDeadGhost.getXform().getXPos() < aCamera.getWCCenter()[0] - aCamera.getWCWidth()/2) {
+        this.setExpired();
+    }
+    this._serviceFlee();
+};
+
+Ghost.prototype._serviceFlee = function () {
+    var fleeSpeed = 1;
+    this.mDeadGhost.getXform().setXPos(this.mDeadGhost.getXform().getXPos() - fleeSpeed);
+};
+
+Ghost.prototype._distToCam = function (aCamera) {
+    return this.getXform().getXPos() - aCamera.getWCCenter()[0];
+};
+
+Ghost.prototype._serviceWait = function (aCamera) {
+    if (this._distToCam(aCamera) < aCamera.getWCWidth()/2) {
+        this.mCurrentState = Ghost.eGhostState.eRising;
+    }
+};
+
+Ghost.prototype._servicePatrolStates = function (hero) {
     // Check for collision
     var p = vec2.fromValues(0, 0);
     if (this.pixelTouches(hero, p)) {
         hero.hitOnce();
-        this.setExpired();
     }
     // Continue patrolling!
-    if (this.mCurrentState == Ghost.eGhostState.eRising) this._serviceRising();
+    if (this.mCurrentState === Ghost.eGhostState.eRising) this._serviceRising();
     else this._serviceFalling();
 
 };
@@ -40,7 +67,7 @@ Ghost.prototype._serviceRising = function () {
     this.getXform().setPosition(x, y + deltaY);
     this.mStateTimeTick++;
 
-    if (this.mStateTimeTick > 30) {
+    if (this.mStateTimeTick > 60) {
         this.mStateTimeTick = 0;
         this.mCurrentState = Ghost.eGhostState.eFalling;
     }
@@ -54,7 +81,7 @@ Ghost.prototype._serviceFalling = function () {
     this.getXform().setPosition(x, y + deltaY);
     this.mStateTimeTick++;
 
-    if (this.mStateTimeTick > 30) {
+    if (this.mStateTimeTick > 60) {
         this.mStateTimeTick = 0;
         this.mCurrentState = Ghost.eGhostState.eRising;
     }

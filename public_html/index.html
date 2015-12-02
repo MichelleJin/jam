@@ -98,25 +98,39 @@
             
    
     <!-- Client game code -->
-        <script type="text/javascript" src="src/MyGame/MyGame.js"></script>        
+        <script type="text/javascript" src="src/MyGame/MyGame.js"></script>  
+        <script type="text/javascript" src="src/MyGame/LoseScene.js"></script> 
+        <script type="text/javascript" src="src/MyGame/WinScene.js"></script> 
         <!-- Objects -->
             <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
-            <script type="text/javascript" src="src/MyGame/Objects/Hero_path.js"></script>
+            <script type="text/javascript" src="src/MyGame/Objects/HealthBar.js"></script>
+            <script type="text/javascript" src="src/MyGame/HeroGroup/HeroGroup.js"></script>
+            <script type="text/javascript" src="src/MyGame/HeroGroup/HeroGroupState.js"></script>
+
             <script type="text/javascript" src="src/MyGame/Objects/Projectile.js"></script>
             <script type="text/javascript" src="src/MyGame/Objects/ProjectileSet.js"></script>
-            
-            <script type="text/javascript" src="src/MyGame/DyePack/DyePack.js"></script>
-            <script type="text/javascript" src="src/MyGame/DyePack/DyePack_update.js"></script>
-            <script type="text/javascript" src="src/MyGame/DyePack/DyePackSet.js"></script>
-            
+
             <script type="text/javascript" src="src/MyGame/Ghost/Ghost.js"></script>
             <script type="text/javascript" src="src/MyGame/Ghost/Ghost_update.js"></script>
             <script type="text/javascript" src="src/MyGame/Ghost/GhostSet.js"></script>
             
+            <script type="text/javascript" src="src/MyGame/ChasePack/ChasePack.js"></script>
+            <script type="text/javascript" src="src/MyGame/ChasePack/ChasePackSet.js"></script>
+            <script type="text/javascript" src="src/MyGame/ChasePack/ChasePack_update.js"></script>
+            
+            <script type="text/javascript" src="src/MyGame/Grenade/Grenade.js"></script>
+            <script type="text/javascript" src="src/MyGame/Grenade/GrenadeSet.js"></script>
+            <script type="text/javascript" src="src/MyGame/Grenade/Grenade_update.js"></script>
+            
+            <script type="text/javascript" src="src/MyGame/Background/Background.js"></script>
+
+            <script type="text/javascript" src="src/MyGame/SpaceInvaders/SpaceInvader.js"></script>
+            <script type="text/javascript" src="src/MyGame/SpaceInvaders/SpaceInvaderSet.js"></script>
+            
             <script type="text/javascript" src="src/MyGame/LineSet/LineSet.js"></script>
             <script type="text/javascript" src="src/MyGame/LineSet/LineSet_update.js"></script>
     
-    <canvas id="GLCanvas" width="1000" height="700">
+    <canvas id="GLCanvas" width="1000" height="770">
         <!-- GLCanvas is the area we will draw in: a 640x480 area. -->
         Your browser does not support the HTML5 canvas.
         <!-- this message will show only if WebGL clearing failed -->

@@ -30,6 +30,8 @@ function PerRenderCache() {
 //  wcHeight = wcWidth * viewport[3]/viewport[2]
 //
 function Camera(wcCenter, wcWidth, viewportArray, bound) {
+    this.mSpeed = null;
+
     // WC and viewport position and size
     this.mCameraState = new CameraState(wcCenter, wcWidth);
     this.mCameraShake = null;
@@ -207,6 +209,28 @@ Camera.prototype.clampAtBoundary = function (aXform, zone) {
         }
         if ((status & BoundingBox.eboundCollideStatus.eCollideLeft) !== 0) {
             pos[0] = (this.getWCCenter())[0] - (zone * this.getWCWidth() / 2) + (aXform.getWidth() / 2);
+        }
+    }
+    return status;
+};
+
+// clamp hero to boundary
+Camera.prototype.clampHeroAtBoundary = function (hero, zone) {
+    var aXform = hero.getXform();
+    var status = this.collideWCBound(aXform, zone);
+    if (status !== BoundingBox.eboundCollideStatus.eInside) {
+        var pos = aXform.getPosition();
+        if ((status & BoundingBox.eboundCollideStatus.eCollideTop) !== 0) {
+            hero.setY((this.getWCCenter())[1] + (zone * this.getWCHeight() / 2) - (aXform.getHeight() / 2));
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideBottom) !== 0) {
+            hero.setY((this.getWCCenter())[1] - (zone * this.getWCHeight() / 2) + (aXform.getHeight() / 2));
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideRight) !== 0) {
+            hero.setX((this.getWCCenter())[0] + (zone * this.getWCWidth() / 2) - (aXform.getWidth() / 2));
+        }
+        if ((status & BoundingBox.eboundCollideStatus.eCollideLeft) !== 0) {
+            hero.setX((this.getWCCenter())[0] - (zone * this.getWCWidth() / 2) + (aXform.getWidth() / 2 + this.getSpeed()));
         }
     }
     return status;
