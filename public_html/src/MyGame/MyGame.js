@@ -12,6 +12,11 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    var canvas = document.getElementById('GLCanvas');
+    this.kCanvasWidth = canvas.width;
+    this.kCanvasHeight = canvas.height;
+    this.kMiniMapHeight = 70;
+
     this.mDebugModeOn = false;
 
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
@@ -25,7 +30,7 @@ function MyGame() {
 
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
 
-    this.kStarsBG = "assets/starsBG16384by2048.png";
+    this.kStarsBG = "assets/bg_blend.jpg";
 
     this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
@@ -100,7 +105,7 @@ MyGame.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
-        [0, 70, 1000, 700]        // viewport (orgX, orgY, width, height)
+        [0, this.kMiniMapHeight, this.kCanvasWidth, this.kCanvasHeight - this.kMiniMapHeight]        // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
@@ -109,7 +114,7 @@ MyGame.prototype.initialize = function () {
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
-        [0, 0, 1000, 70]       // viewport (orgX, orgY, width, height)
+        [0, 0, this.kCanvasWidth, this.kMiniMapHeight]       // viewport (orgX, orgY, width, height)
        
     );
     this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
@@ -163,16 +168,16 @@ MyGame.prototype.draw = function () {
     } else {
         this.mBackground.draw(this.mCamera);
     }
-    
-    //this.mSpaceInvader.draw(this.mCamera);
+
+    // mainmap
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
     this.mGrenadeSet.draw(this.mCamera);
-    
+
+    // minimap
     this.mMiniCamera.setupViewProjection();
-    //this.mSpaceInvader.draw(this.mMiniCamera);
     this.mGhostSet.draw(this.mMiniCamera);
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
@@ -185,10 +190,12 @@ MyGame.prototype.draw = function () {
 MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mSpaceInvader.update(this.mCamera);
-    
+
+    // maybe have a class to update these
     this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
+    // should pass this an array of enemy
     this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mCamera);
 
     this.mMsg.setText("" + this.mCamera.getWCCenter()[0].toPrecision(4) + " " + this.mHeroGroup.getStatus());

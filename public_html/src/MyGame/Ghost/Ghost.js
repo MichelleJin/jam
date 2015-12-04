@@ -31,6 +31,7 @@ Ghost.eGhostState = Object.freeze({
 function Ghost(spriteTexture, deadSprite, x, y) {
     this.kRefWidth = 10;
     this.kRefHeight = 10;
+    this.mAlive = true;
     // drawn when dead
     this.mDeadGhost = new TextureRenderable(deadSprite);
     this.mDeadGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
@@ -63,6 +64,8 @@ Ghost.prototype.hasExpired = function() {
     return this.mExpired;
 };
 
+Ghost.prototype.isAlive = function() { return this.mAlive };
+
 Ghost.prototype.draw = function (aCamera) {
     if (this.mCurrentState === Ghost.eGhostState.eDied) {
         this.mDeadGhost.draw(aCamera);
@@ -71,10 +74,12 @@ Ghost.prototype.draw = function (aCamera) {
 };
 
 Ghost.prototype.hitOnce = function () {
-    this.mHealth--;
-    if (this.mHealth <= 0) {
+    if (this.mHealth > 0) {
+        this.mHealth--;
+        this.mCurrentState = Ghost.eGhostState.eDied;
         var pos = this.getXform().getPosition();
         this.mDeadGhost.getXform().setPosition(pos[0], pos[1]);
-        this.mCurrentState = Ghost.eGhostState.eDied;
+        this.getXform().setPosition(0, -100); // hacky off screen
     }
+
 };

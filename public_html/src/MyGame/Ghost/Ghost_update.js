@@ -19,20 +19,24 @@ Ghost.prototype.update = function(hero, aCamera) {
             this._servicePatrolStates(hero);
             break;
         case Ghost.eGhostState.eDied:
-            this._serviceDied(aCamera);
-            this._serviceFlee();
+            this._serviceDied();
+            this._serviceFlee(hero, aCamera);
             break;
     }
 };
 
-Ghost.prototype._serviceDied = function (aCamera) {
-    if(this.mDeadGhost.getXform().getXPos() < aCamera.getWCCenter()[0] - aCamera.getWCWidth()/2) {
-        this.setExpired();
-    }
-    this._serviceFlee();
+Ghost.prototype._serviceDied = function () {
+    //if (this.mAlive) {
+    //    this.mAlive = false;
+    //
+    //    return;
+    //}
 };
 
-Ghost.prototype._serviceFlee = function () {
+Ghost.prototype._serviceFlee = function (hero, aCamera) {
+    if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside) {
+        this.setExpired();
+    }
     var fleeSpeed = 1;
     this.mDeadGhost.getXform().setXPos(this.mDeadGhost.getXform().getXPos() - fleeSpeed);
 };

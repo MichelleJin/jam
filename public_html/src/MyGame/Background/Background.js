@@ -14,14 +14,12 @@
 function Background(kTexture, aCamera) {
     this.mBackground = new TextureRenderable(kTexture);
     GameObject.call(this, this.mBackground);
-    var textInfo = gEngine.Textures.getTextureInfo(kTexture);
-    var height =  textInfo.mHeight;
-    var width = textInfo.mWidth;
 
     // scale size to camera
     var wcHeight = aCamera.getWCHeight();       //float is giving an off height
-    this.mWCWidth = width / height * wcHeight;
+    this.mWCWidth = aCamera.getWCWidth() * 2;       // looks slightly compressed widthwise use a slightly wider canvas
     this.getXform().setSize(this.mWCWidth, wcHeight);
+
     //set position relative to camera
     var c = aCamera.getWCCenter();
     // start position
