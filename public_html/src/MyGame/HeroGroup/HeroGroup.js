@@ -8,6 +8,11 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+HeroGroup.eHeroGroupState = Object.freeze({
+    eNormal: 0,
+    eInvicible: 1
+});
+
 function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
     this.mShip = new TextureRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
@@ -27,6 +32,9 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
     // Projectiles that the hero can shoot
     this.mProjectiles = new ProjectileSet();
 
+    // state for behavior
+    this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
+    this.mCurrentTick = 0;
 
     this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
     this.setHealth(this.kStartHealth);
@@ -39,23 +47,13 @@ HeroGroup.prototype.draw = function(aCamera) {
     this.mHealthBar.draw(aCamera);
 };
 
-HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, aCamera) {
-    this._moveByKeys(); // for now
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.mProjectiles.newAt(this.getXform().getPosition());
+// hero hit once by enemy/projectile
+HeroGroup.prototype.hitOnce = function () {
+    if (this.mCurrentState != HeroGroup.eHeroGroupState.eInvicible) {
+        this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
+        this.setHealth(this.getHealth() - 1);
+        this.mCurrentTick = 0;
     }
-
-    // update Projectile
-    var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, aCamera);
-    this.mNumDestroy += num;
-
-    // update hero path
-    this.shiftX(aCamera.getSpeed());
-    this.mHealthBar.update(this);
-
-    this.mHeroGroupState.update();
-    this.getXform().setXPos(this.getX());
-    this.getXform().setYPos(this.getY());
 };
 
 HeroGroup.prototype.getStatus = function(){

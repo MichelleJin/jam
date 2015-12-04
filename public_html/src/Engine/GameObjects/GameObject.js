@@ -17,7 +17,7 @@ function GameObject(renderableObj) {
     this.mPhysicsComponent = null;
     this.mHealth = -1;
 }
-
+GameObject.prototype.getColor = function () { return this.mRenderComponent.getColor(); };
 GameObject.prototype.getHealth = function () { return this.mHealth; };
 GameObject.prototype.setHealth = function (h) { this.mHealth = h; };
 
