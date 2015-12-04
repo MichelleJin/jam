@@ -50,6 +50,9 @@ function MyGame() {
     this.mChasePackSet = null;
     this.mSpaceInvader = null;
 
+    // ambient lighting tick
+    this.mAmbientTick = 0;
+
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
 }
@@ -230,4 +233,11 @@ MyGame.prototype.update = function () {
         this.mNextScene = 1;
         gEngine.GameLoop.stop();
     }
+
+    // ambient lighting
+    //if (this.mHeroGroup.getHealth() <= 2) {
+    //    if (this.mAmbientTick < 30) {
+    //        this.mPortal.getColor()[1] + 0.1;
+    //    }
+    //}
 };
