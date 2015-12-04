@@ -128,7 +128,7 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(200, 35);
+    Star.getXform().setPosition(180, 35);
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
@@ -220,8 +220,8 @@ MyGame.prototype.update = function () {
     }
     
     if (this.mHeroGroup.getHealthRatio() === 0) {
-        //this.mNextScene = 0;
-        //gEngine.GameLoop.stop();
+        this.mNextScene = 0;
+        gEngine.GameLoop.stop();
     }
     
     
