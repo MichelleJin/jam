@@ -12,12 +12,12 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function MyGame() {
+    this.mDebugModeOn = true;
+
     var canvas = document.getElementById('GLCanvas');
     this.kCanvasWidth = canvas.width;
     this.kCanvasHeight = canvas.height;
     this.kMiniMapHeight = 70;
-
-    this.mDebugModeOn = false;
 
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
@@ -123,7 +123,7 @@ MyGame.prototype.initialize = function () {
 
     this.mMsg = new FontRenderable(this.kStatus);
     this.mMsg.setColor([1, 1, 1, 1]);
-    this.mMsg.getXform().setPosition(2, 2);
+    this.mMsg.getXform().setPosition(2, 10);
     this.mMsg.setTextHeight(2);
     
     var Star = new TextureRenderable(this.kGoalStar);
@@ -198,7 +198,7 @@ MyGame.prototype.update = function () {
     // should pass this an array of enemy
     this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mCamera);
 
-    this.mMsg.setText("" + this.mCamera.getWCCenter()[0].toPrecision(4) + " " + this.mHeroGroup.getStatus());
+    this.mMsg.setText("Camera CenterXPos:" + this.mCamera.getWCCenter()[0].toPrecision(4));
     var c = this.mCamera.getWCCenter();
     var w = this.mCamera.getWCWidth();
     this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());

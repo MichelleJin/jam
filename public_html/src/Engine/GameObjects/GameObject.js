@@ -19,7 +19,7 @@ function GameObject(renderableObj) {
 }
 
 GameObject.prototype.getHealth = function () { return this.mHealth; };
-GameObject.prototype.setHealth = function (h) { this.mHealth = h };
+GameObject.prototype.setHealth = function (h) { this.mHealth = h; };
 
 GameObject.prototype.hitOnce = function () { this.mHealth--; };
 

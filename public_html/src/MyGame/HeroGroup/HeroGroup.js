@@ -1,12 +1,6 @@
 /**
  * Created by MetaBlue on 11/29/15.
  */
-/* File: Hero.js
- *
- * Creates and initializes the Hero (Dye)
- * overrides the update function of GameObject to define
- * simple Dye behavior
- */
 
 /*jslint node: true, vars: true */
 /*global gEngine, GameObject, SpriteRenderable, vec2 */
@@ -15,26 +9,38 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
-    Hero.call(this, heroTexture, atX, atY);
-    this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
+    this.mShip = new TextureRenderable(heroTexture);
+    this.mShip.getXform().setPosition(atX, atY);
+    this.mShip.getXform().setSize(20, 20);
+    this.mShip.getXform().setZPos(5);
+    GameObject.call(this, this.mShip);
+
+    //Hero.call(this, heroTexture, atX, atY);
+    this.kDelta = 0.6;
+    this.kStartHealth = 10;
+
     this.mHealthBar = new HealthBar(healthBarTexture);
+
+    this.mHit = 0;
+    this.mNumDestroy = 0;
+
+    // Projectiles that the hero can shoot
+    this.mProjectiles = new ProjectileSet();
+
+
+    this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
+    this.setHealth(this.kStartHealth);
 }
-gEngine.Core.inheritPrototype(HeroGroup, Hero);
+gEngine.Core.inheritPrototype(HeroGroup, GameObject);
 
 HeroGroup.prototype.draw = function(aCamera) {
-    Hero.prototype.draw.call(this, aCamera);
+    GameObject.prototype.draw.call(this, aCamera);
     this.mProjectiles.draw(aCamera);
     this.mHealthBar.draw(aCamera);
 };
 
 HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, aCamera) {
-    Hero.prototype.update.call(this, enemySet, enemySet2, enemySet3, aCamera);
-    this.mHealthBar.update(this);
-};
-
-Hero.prototype.update = function(enemySet, enemySet2,enemySet3, aCamera) {
     this._moveByKeys(); // for now
-
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
@@ -51,6 +57,22 @@ Hero.prototype.update = function(enemySet, enemySet2,enemySet3, aCamera) {
     this.getXform().setXPos(this.getX());
     this.getXform().setYPos(this.getY());
 };
+
+//HeroGroup.prototype.hitOnce = function() {
+//    this.setHealth(this.getHealth() - 1);
+//};
+
+HeroGroup.prototype.getStatus = function(){
+    return  "Hero Hit: " + this.mHit +
+        "  Num Destroy: " + this.mNumDestroy +
+        "  Projectile: " + this.mProjectiles.size();
+};
+
+// returns percent of health left
+//HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
+//HeroGroup.prototype.getHealth = function () { return this.mHealth; };
+
+HeroGroup.prototype.getHealthRatio = function () { this.mHealth/this.kStartHealth; };
 
 HeroGroup.prototype.getX = function () { return this.mHeroGroupState.getX(); };
 HeroGroup.prototype.setX = function (xPos) { this.mHeroGroupState.setX(xPos); };
