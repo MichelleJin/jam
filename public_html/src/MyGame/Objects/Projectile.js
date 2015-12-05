@@ -43,7 +43,7 @@ Projectile.prototype.hasExpired = function() {
 };
 
 
-Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
+Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera) {
     GameObject.prototype.update.call(this);
     var hit = false;
     
@@ -51,12 +51,19 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
             BoundingBox.eboundCollideStatus.eInside)
             this.setExpired();
     
+//    obj.rotateObjPointTo(p, 0.8);
+//        if (obj.pixelTouches(this, collisionPt)) {
+//            dyePacks.removeFromSet(obj);
+//            allParticles.addEmitterAt(collisionPt, 200, func);
+//        }
+    
     var i, obj;
     var p = vec2.fromValues(0, 0);
     for (i=0; i<dyes.size(); i++) {
         obj = dyes.getObjectAt(i);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
+            //particle.addEmitterAt(p, 100, func);
             obj.hitOnce();
             hit = true;
         }
@@ -67,6 +74,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
         obj = dyes2.getObjectAt(j);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
+            particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
         }
@@ -77,6 +85,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, aCamera) {
         obj = dyes3.getObjectAt(o);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
+            //particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
         }
