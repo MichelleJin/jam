@@ -29,8 +29,8 @@ Ghost.eGhostState = Object.freeze({
 });
 
 function Ghost(spriteTexture, deadSprite, x, y) {
-    this.kRefWidth = 10;
-    this.kRefHeight = 10;
+    this.kRefWidth = 14;
+    this.kRefHeight = 14;
     this.mAlive = true;
     // drawn when dead
     this.mDeadGhost = new LightRenderable(deadSprite);

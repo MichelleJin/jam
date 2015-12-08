@@ -25,11 +25,12 @@ function MyGame() {
 
     this.kHeroSprite = "assets/Hero.png";
     this.kMinionSprite = "assets/minion_sprite.png";
+    this.kChaseTexture = "assets/Chase.png";
     this.kProjectileTexture = "assets/Projectile.png";
     this.kAstroidTexture = "assets/Astroid.png";
     this.kAstroidNormalMap = "assets/NormalMap.png";
-    this.kGhostTexture = "assets/Ghost_Small.png";
-    this.kGhostDeadTexture = "assets/Scared.png";
+    this.kGhostTexture = "assets/Ghost_2.png";
+    this.kGhostDeadTexture = "assets/Ghost_Dead.png";
 
     this.kGoalStar = "assets/GoalStar.png";
 
@@ -71,6 +72,8 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
 
+    gEngine.Textures.loadTexture(this.kChaseTexture);
+
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kHeroSprite);
 
@@ -88,6 +91,9 @@ MyGame.prototype.loadScene = function () {
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
+
+    gEngine.Textures.unloadTexture(this.kChaseTexture);
+
 
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kHeroSprite);
@@ -160,12 +166,14 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.setTextHeight(2);
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
+
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     
     var i;
     for(i=0; i<10; i++){
         this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 70 * Math.random());
     }
+
     // herosprite, healthbar, texture, x, y
     var lightOne = this.mGlobalLightSet.getLightAt(1);
     var lightThree = this.mGlobalLightSet.getLightAt(3);
