@@ -175,7 +175,7 @@ MyGame.prototype.initialize = function () {
     
     var i;
     for(i=0; i<10; i++){
-        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 70 * Math.random());
+        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 50 * Math.random());
     }
 
     // herosprite, healthbar, texture, x, y
@@ -227,7 +227,7 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
     this.mStar.draw(this.mMiniCamera);
-    for(var i=0; i<6; i++){
+    for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mMiniCamera);
     }
     
