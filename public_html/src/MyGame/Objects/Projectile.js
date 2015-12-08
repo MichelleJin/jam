@@ -63,7 +63,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCame
         obj = dyes.getObjectAt(i);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
-            //particle.addEmitterAt(p, 100, func);
+            particle.addEmitterAt(p, 200, func);
             obj.hitOnce();
             hit = true;
         }

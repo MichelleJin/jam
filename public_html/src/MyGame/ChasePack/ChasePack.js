@@ -64,18 +64,12 @@ gEngine.Core.inheritPrototype(ChasePack, GameObject);
 ChasePack.prototype.setExpired = function() {
     this.mExpired = true;
 };
+
 ChasePack.prototype.hasExpired = function() {
     return this.mExpired;
 };
-
-
     
 ChasePack.prototype._computeSpeed = function() {
-    // var toNextPos = [];
-    // vec2.subtract(toNextPos, this.mTargetPosition, this.getXform().getPosition());
-    // DO NOT set this now! Move there gradually
-    //      this.setCurrentFrontDir(toNextPos);
-    // 
     this.setSpeed((0.8 + 0.4 * Math.random()) * this.kReferenceSpeed);
         // +-20% variation from covering 100 units in 5 seconds
 };

@@ -22,7 +22,7 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
 
     //Hero.call(this, heroTexture, atX, atY);
     this.kDelta = 0.6;
-    this.kStartHealth = 10;
+    this.kStartHealth = 5;
 
     this.mHealthBar = new HealthBar(healthBarTexture);
 

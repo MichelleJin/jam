@@ -13,7 +13,7 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
 
 HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera) {
     // can fire
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+    if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
 };
@@ -27,7 +27,7 @@ HeroGroup.prototype._serviceInvulnerable = function () {
     this.mCurrentTick++;
     var c = this.getColor();
     c[3] += 0.01;
-    if (this.mCurrentTick > 120) {
+    if (this.mCurrentTick > 60) {
         this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
         this.getColor()[3] = 0;
     }
@@ -38,9 +38,9 @@ HeroGroup.prototype._updatePosition = function (aCamera) {
     this._moveByKeys();
     // Adjust for camera movement
     this.shiftX(aCamera.getSpeed());
-    this.mHealthBar.update(this);
     // Manual movement
     this.mHeroGroupState.update();
     this.getXform().setXPos(this.getX());
     this.getXform().setYPos(this.getY());
+    this.mHealthBar.update(this);
 };

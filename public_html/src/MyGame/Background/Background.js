@@ -12,7 +12,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function Background(kTexture, aCamera) {
-    this.mBackground = new TextureRenderable(kTexture);
+    this.mBackground = new LightRenderable(kTexture);
     GameObject.call(this, this.mBackground);
 
     // scale size to camera

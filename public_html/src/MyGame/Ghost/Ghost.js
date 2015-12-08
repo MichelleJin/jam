@@ -11,15 +11,15 @@
 
 
 Ghost.eGhostState = Object.freeze({
-    eTopLeftRegion: 0,
-    eTopRightRegion: 1,
-    eBottomLeftRegion: 2,
-    eBottomRightRegion: 3,
-    eExcitedCWRotate: 10,
-    eExcitedCCWRotate: 11,
-    eChaseState: 12,
-    eCoolDownEnlarge: 13,
-    eCoolDownShrink: 14,
+    //eTopLeftRegion: 0,
+    //eTopRightRegion: 1,
+    //eBottomLeftRegion: 2,
+    //eBottomRightRegion: 3,
+    //eExcitedCWRotate: 10,
+    //eExcitedCCWRotate: 11,
+    //eChaseState: 12,
+    //eCoolDownEnlarge: 13,
+    //eCoolDownShrink: 14,
     eWaveMovement: 15,
     eRising: 16,
     eFalling: 17,
@@ -33,10 +33,10 @@ function Ghost(spriteTexture, deadSprite, x, y) {
     this.kRefHeight = 10;
     this.mAlive = true;
     // drawn when dead
-    this.mDeadGhost = new TextureRenderable(deadSprite);
+    this.mDeadGhost = new LightRenderable(deadSprite);
     this.mDeadGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
 
-    this.mGhost = new TextureRenderable(spriteTexture);
+    this.mGhost = new LightRenderable(spriteTexture);
     this.mGhost.setColor([1, 1, 1, 0.1]);
     this.mGhost.getXform().setPosition(x, y);
     this.mGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
@@ -50,7 +50,7 @@ function Ghost(spriteTexture, deadSprite, x, y) {
     this.mHealth = 1;
     this.mCurrentState = Ghost.eGhostState.eWait;
 
-    // state is goverened by time
+    // state is governed by time
     this.mStateTimeTick = 0;  // this is the time
     // Expired to remove
     this.mExpired = false;
@@ -77,9 +77,5 @@ Ghost.prototype.hitOnce = function () {
     if (this.mHealth > 0) {
         this.mHealth--;
         this.mCurrentState = Ghost.eGhostState.eDied;
-        var pos = this.getXform().getPosition();
-        this.mDeadGhost.getXform().setPosition(pos[0], pos[1]);
-        this.getXform().setPosition(0, -100); // hacky off screen
     }
-
 };

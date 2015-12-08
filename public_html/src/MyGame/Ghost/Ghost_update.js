@@ -19,43 +19,51 @@ Ghost.prototype.update = function(hero, aCamera) {
             this._servicePatrolStates(hero);
             break;
         case Ghost.eGhostState.eDied:
-            this._serviceDied();
+            this._serviceDied(hero);
             this._serviceFlee(hero, aCamera);
             break;
     }
 };
 
-Ghost.prototype._serviceDied = function () {
-    //if (this.mAlive) {
-    //    this.mAlive = false;
-    //
-    //    return;
-    //}
+Ghost.prototype._serviceDied = function (hero) {
+    var pos = this.getXform().getPosition();
+    this.mDeadGhost.getXform().setPosition(pos[0], pos[1]);
 };
 
 Ghost.prototype._serviceFlee = function (hero, aCamera) {
+    // remove projectile if exits the screen
     if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside) {
         this.setExpired();
     }
+    // hit hero on collision with ghost
+    var p = vec2.fromValues(0, 0);
+    if (this.pixelTouches(hero, p)) {
+        hero.hitOnce();
+    }
+    // fly left at 60wc per second
     var fleeSpeed = 1;
-    this.mDeadGhost.getXform().setXPos(this.mDeadGhost.getXform().getXPos() - fleeSpeed);
+    this.getXform().setXPos(this.getXform().getXPos() - fleeSpeed);
 };
 
+// distance from ghost to middle of the screen
 Ghost.prototype._distToCam = function (aCamera) {
     return this.getXform().getXPos() - aCamera.getWCCenter()[0];
 };
 
+// sets ghost to wait until reaching the screen
 Ghost.prototype._serviceWait = function (aCamera) {
     if (this._distToCam(aCamera) < aCamera.getWCWidth()/2) {
         this.mCurrentState = Ghost.eGhostState.eRising;
     }
 };
 
+//on collision hit both the hero and the ghost
 Ghost.prototype._servicePatrolStates = function (hero) {
     // Check for collision
     var p = vec2.fromValues(0, 0);
     if (this.pixelTouches(hero, p)) {
         hero.hitOnce();
+        this.hitOnce();
     }
     // Continue patrolling!
     if (this.mCurrentState === Ghost.eGhostState.eRising) this._serviceRising();
