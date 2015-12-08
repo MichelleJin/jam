@@ -9,12 +9,12 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function GrenadeSet(texture) {
+function GrenadeSet(texture, x, y) {
     GameObjectSet.call(this);
     this.kSpriteSheet = texture;
-    var i, x, y, c;
-    x = 120;
-    y = 30;
+    var i, c;
+    //x = 120;
+    //y = 30;
     for(i=0; i<8; i++){        
         c = new Grenade(this.kSpriteSheet, x, y);        
         this.addToSet(c);

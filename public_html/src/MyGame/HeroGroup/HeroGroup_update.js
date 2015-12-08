@@ -6,7 +6,9 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
             this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera);
             break;
         case HeroGroup.eHeroGroupState.eInvicible:
+            //turn light on
             this._serviceInvulnerable();
+            //turn light off
             break;
     }
 };
@@ -14,6 +16,8 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
 // allows hero to fire projectiles
 HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera) {
     // one projectile at a time
+    //turn light off
+    this.mBarrier.setLightTo(false);
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
@@ -29,6 +33,8 @@ HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3
 // hero cannot fire
 HeroGroup.prototype._serviceInvulnerable = function () {
     this.mCurrentTick++;
+    //turn light on
+    this.mBarrier.setLightTo(true);
     var c = this.getColor();
     if (this.mCurrentTick < 15) c[3] += 0.1;
     if (this.mCurrentTick < 30 && this.mCurrentTick >= 15) c[3] -= 0.1;

@@ -54,6 +54,7 @@ function MyGame() {
 
     this.mGhostSet = null;
     this.mChasePackSet = null;
+    this.mGrenadeSet = [];
     this.mAllParticles = new ParticleGameObjectSet();
 
     // ambient lighting tick
@@ -144,7 +145,7 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(180, 35);
+    Star.getXform().setPosition(950, 35);
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
@@ -160,10 +161,15 @@ MyGame.prototype.initialize = function () {
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
-    this.mGrenadeSet = new GrenadeSet(this.kGrenade);
+    
+    var i;
+    for(i=0; i<10; i++){
+        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 70 * Math.random());
+    }
     // herosprite, healthbar, texture, x, y
     var lightOne = this.mGlobalLightSet.getLightAt(1);
-    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne);
+    var lightThree = this.mGlobalLightSet.getLightAt(3);
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne, lightThree);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
@@ -196,7 +202,9 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
-    this.mGrenadeSet.draw(this.mCamera);
+    for(var i=0; i<10; i++){
+        this.mGrenadeSet[i].draw(this.mCamera);
+    }
     this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
 
@@ -207,7 +215,10 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
     this.mStar.draw(this.mMiniCamera);
-    this.mGrenadeSet.draw(this.mMiniCamera);
+    for(var i=0; i<6; i++){
+        this.mGrenadeSet[i].draw(this.mMiniCamera);
+    }
+    
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -217,7 +228,16 @@ MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mAllParticles.update();
     // maybe have a class to update these
-    this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
+    for(var i=0; i<10; i++){
+        this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
+    }
+    var x = this.mHeroGroup.mHeroGroupState.getX();
+    var y = this.mHeroGroup.mHeroGroupState.getY();
+    var lightThree = this.mGlobalLightSet.getLightAt(3);
+    lightThree.setXPos(x+8);
+    lightThree.setYPos(y);
+    
+    //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     // should pass this an array of enemy

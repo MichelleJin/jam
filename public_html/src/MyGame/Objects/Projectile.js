@@ -56,7 +56,7 @@ Projectile.prototype.hasExpired = function() {
 };
 
 
-Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera) {
+Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCamera) {
     GameObject.prototype.update.call(this);
     this.mLight.setXPos(this.getXform().getXPos());
     this.mLight.setYPos(this.getXform().getYPos());
@@ -98,6 +98,9 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCame
         }
     }
     
+    var q;
+    for(q=0;q<6;q++){
+        var dyes3 = dyes3Set[q];
     var o;
     for (o=0; o<dyes3.size(); o++) {
         obj = dyes3.getObjectAt(o);
@@ -107,6 +110,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCame
             obj.setExpired();
             hit = true;
         }
+    }
     }
     
     return hit;

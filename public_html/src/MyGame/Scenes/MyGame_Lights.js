@@ -65,10 +65,10 @@ MyGame.prototype._initializeLights = function () {
     this.mGlobalLightSet.addToSet(l);
 
     l = this._createALight(Light.eLightType.eSpotLight,
-            [80, 18, 10],            // Right minion position
+            [10, 10, 10],            // Right minion position
             [-0.07,  0, -1],     // direction
             [0.5, 0.5, 0.5, 1],     // color
-            100, 100,                  // near and far distances
+            8, 20,                  // near and far distances
             1.65, 1.7,               // inner outter angles (in radius)
             5,                     // intensity
             1.2                     // drop off
