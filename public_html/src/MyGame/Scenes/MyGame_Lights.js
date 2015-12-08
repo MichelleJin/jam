@@ -37,28 +37,31 @@ MyGame.prototype._initializeLights = function () {
             5,                   // intensity
             1.0                  // drop off
             );
+    //l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
     var l = this._createALight(Light.eLightType.ePointLight,
             [10, 10, 5],         // position
             [0, 0, -1],          // Direction
-            [0.6, 1.0, 0.0, 1],  // some color
-            5, 15,               // near and far distances
+            [1.0, 1.0, 1.0, 1],  // some color
+            3, 7,               // near and far distances
             0.1, 0.2,             // inner and outer cones
-            5,                   // intensity
+            10,                   // intensity
             1.0                  // drop off
             );
+    l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
     l = this._createALight(Light.eLightType.eDirectionalLight,
             [15, 50, 4],           // position (not used by directional)
             [-0.2, -0.2, -1],      // Pointing direction upwards
-            [0.7, 0.7, 0.0, 1],    // color
+            [0.0, 0.0, 0.0, 1],    // color
             500, 500,              // near anf far distances: essentially switch this off
             0.1, 0.2,              // inner and outer cones
             2,                     // intensity
             1.0                    // drop off
             );
+    //l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
     l = this._createALight(Light.eLightType.eSpotLight,
@@ -70,6 +73,7 @@ MyGame.prototype._initializeLights = function () {
             5,                     // intensity
             1.2                     // drop off
             );
+    l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
      l = this._createALight(Light.eLightType.eSpotLight,
@@ -81,5 +85,6 @@ MyGame.prototype._initializeLights = function () {
             2,                       // intensity
             1                      // drop off
             );
+    l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 };

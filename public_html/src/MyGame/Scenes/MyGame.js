@@ -162,7 +162,8 @@ MyGame.prototype.initialize = function () {
     this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
     this.mGrenadeSet = new GrenadeSet(this.kGrenade);
     // herosprite, healthbar, texture, x, y
-    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
+    var lightOne = this.mGlobalLightSet.getLightAt(1);
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);

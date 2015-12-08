@@ -13,7 +13,7 @@ Projectile.kSpeed = 100 / (0.8 * 60);
         // across the entire screen in 0.5 seconds
 Projectile.kTexture = null;
 
-function Projectile(x, y) {
+function Projectile(x, y, light) {
     var textInfo = gEngine.Textures.getTextureInfo(Projectile.kTexture);
     this.kRefHeight = 6;
     this.kRefWidth = this.kRefHeight / textInfo.mHeight * textInfo.mWidth;
@@ -32,6 +32,10 @@ function Projectile(x, y) {
     
     // Expired to remove
     this.mExpired = false;
+    this.mLight = light;
+    this.mLight.setXPos(x);
+    this.mLight.setYPos(y);
+    this.mLight.setLightTo(true);
     
 //    this.mTheLight = new Light();
 //    this.mTheLight.setRadius(8);
@@ -54,6 +58,8 @@ Projectile.prototype.hasExpired = function() {
 
 Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera) {
     GameObject.prototype.update.call(this);
+    this.mLight.setXPos(this.getXform().getXPos());
+    this.mLight.setYPos(this.getXform().getYPos());
     var hit = false;
     
     if (aCamera.collideWCBound(this.getXform(), 1.1) !== 
