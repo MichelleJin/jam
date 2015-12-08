@@ -23,9 +23,9 @@ function MyGame() {
     this.kCanvasHeight = canvas.height;
     this.kMiniMapHeight = 70;
 
-    this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
+    this.kHeroSprite = "assets/Hero.png";
     this.kMinionSprite = "assets/minion_sprite.png";
-    this.kProjectileTexture = "assets/Bullet.png";
+    this.kProjectileTexture = "assets/Projectile.png";
     this.kAstroidTexture = "assets/Astroid.png";
     this.kAstroidNormalMap = "assets/NormalMap.png";
     this.kGhostTexture = "assets/Ghost_Small.png";

@@ -16,7 +16,7 @@ HeroGroup.eHeroGroupState = Object.freeze({
 function HeroGroup(heroTexture, healthBarTexture, atX, atY, light) {
     this.mShip = new TextureRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
-    this.mShip.getXform().setSize(18, 10);
+    this.mShip.getXform().setSize(15, 15);
     this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
 
