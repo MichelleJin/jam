@@ -1,13 +1,6 @@
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-
 /*
- * File: BlueLevel.js 
- * This is the logic of our game. 
+ * File: BlueLevel.js
+ * This is the logic of our game.
  * Yixuan Jin
  * CSS490C
  * MP3
@@ -15,102 +8,101 @@
 /*jslint node: true, vars: true */
 /*global gEngine: false, Scene: false, MyGame: false, SceneFileParser: false */
 /* find out more about jslint: http://www.jslint.com/help.html */
-
-"use strict";  // Operate in Strict mode such that variables must be declared before used!
+"use strict";
+var WIN_SCENE = 0;
+var LOSE_SCENE = 1;
+var START_SCENE = 2;
+var GAME_SCENE = 3;
 
 function WinScene() {
-    this.mCountDownTimer = 30;
+    var canvas = document.getElementById('GLCanvas');
+    this.kCanvasWidth = canvas.width;
+    this.kCanvasHeight = canvas.height;
 
-    // The camera to view the scene
-    this.mSecondCamera = null;
-    this.mMsg = null;
-    this.mMsgTwo = null;
-    this.kStatusOne = "Congratulations";
-    this.kStatusTwo = "You Save the World!!";
+    this.kYouWinLogo = "assets/youwin.png";
+    this.kStarsBG = "assets/bg_blend.jpg";
+    this.kStarsCelebrate = "assets/starSprite.png";
 
+    this.mCamera = null;
+    this.mGameOverMsg = null;
 
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
 
-WinScene.prototype.startCountDown = function ()
-{
-    var counter=setInterval(timer, 1000);
-}
-
 WinScene.prototype.loadScene = function () {
-    // load the scene file
-    //gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
-
+    gEngine.Textures.loadTexture(this.kYouWinLogo);
+    gEngine.Textures.loadTexture(this.kStarsBG);
+    gEngine.Textures.loadTexture(this.kStarsCelebrate);
 };
 
 WinScene.prototype.unloadScene = function () {
-    
-    //gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
-    
+    gEngine.Textures.unloadTexture(this.kYouWinLogo);
+    gEngine.Textures.unloadTexture(this.kStarsBG);
+    gEngine.Textures.unloadTexture(this.kStarsCelebrate);
 
-    var nextLevel = new MyGame();  // load the next level
-    gEngine.Core.startScene(nextLevel);
+
+    switch (this.mNextScene) {
+        case GAME_SCENE:
+            var nextLevel = new MyGame();
+            break;
+        case LOSE_SCENE:
+            var nextLevel = new LoseScene();
+            break;
+        case WIN_SCENE:
+            var nextLevel = new WinScene();
+            break;
+    }
 };
 
 WinScene.prototype.initialize = function () {
-    
-
     // Step A: Read in the camera
-    
-    this.mSecondCamera = new Camera(
-            vec2.fromValues(20, 60),   // position of the camera
-            100,                        // width of camera
-            [0, 0, 1000, 770]                    
-            );
-    this.mSecondCamera.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
-    
-    this.mMsg = new FontRenderable(this.kStatusOne);
-    this.mMsg.setColor([1, 1, 1, 1]);
-    this.mMsg.getXform().setPosition(-15, 70);
-    this.mMsg.setTextHeight(7);
-    // Step B: Read all the squares
-    this.mMsgTwo = new FontRenderable(this.kStatusTwo);
-    this.mMsgTwo.setColor([1, 1, 1, 1]);
-    this.mMsgTwo.getXform().setPosition(-25, 50);
-    this.mMsgTwo.setTextHeight(7);
+    this.mCamera = new Camera(
+        vec2.fromValues(20, 60),   // position of the camera
+        100,                        // width of camera
+        [0, 0, this.kCanvasWidth, this.kCanvasHeight]
+    );
+    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
 
-    
+    this.mBackground = new Background(this.kStarsBG, this.mCamera);
+
+    this.mYouWinLogoRender = new TextureRenderable(this.kYouWinLogo);
+    this.mYouWinLogo = new GameObject(this.mYouWinLogoRender);
+    this.mYouWinLogo.getXform().setSize(80,45);
+    this.mYouWinLogo.getXform().setPosition(20,73);
+
+    this.mYayStarRender = new SpriteAnimateRenderable(this.kStarsCelebrate);
+    this.mYayStarRender.setSpriteSequence(420, 5, 430, 396, 19, 0);
+    this.mYayStarRender.setAnimationSpeed(14);
+    this.mYayStarRender.setAnimationType(0);
+    this.mYayStar = new GameObject(this.mYayStarRender);
+    this.mYayStar.getXform().setSize(20,20);
+    this.mYayStar.getXform().setPosition(20,45);
 };
 
-// This is the draw function, make sure to setup proper drawing environment, and more
-// importantly, make sure to _NOT_ change any state.
+
 WinScene.prototype.draw = function () {
-    // Step A: clear the canvas
-    gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
+    // Clear the entire canvas to light gray.
+    gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
-    // Step  B: Activate the drawing Camera
-    this.mSecondCamera.setupViewProjection();
-    this.mMsg.draw(this.mSecondCamera);
-    this.mMsgTwo.draw(this.mSecondCamera);
+    // Draw on all camera.
+    this.drawCamera(this.mCamera);
 
-    // Step  C: draw all the squares
-    
 };
 
-// The update function, updates the application state. Make sure to _NOT_ draw
-// anything from this function!
+WinScene.prototype.drawCamera = function (camera) {
+    camera.setupViewProjection();
+
+    this.mBackground.draw(camera);
+
+    this.mYayStar.draw(camera);
+  //  this.mYayStarRender.draw(camera);
+    this.mYouWinLogo.draw(camera);
+};
+
 WinScene.prototype.update = function () {
-    // For this very simple game, let's move the first square
-    
-    if (this.mCountDownTimer = 0)
-    {
-        gEngine.GameLoop.stop();
-    }
 
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) {
-        gEngine.GameLoop.stop();
-    }
-};
+    this.mBackground.update(this.mCamera);
+   // this.mYouWinLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+5);
+    this.mYayStar.mRenderComponent.updateAnimation();
 
-WinScene.prototype.startCountDown = function () {
-    // create a timer that calls update timer
-};
-
-WinScene.prototype.updateTimer = function () {
-    // do Timer = Timer - 1 second;
 };

@@ -19,7 +19,7 @@ function StartScene() {
     var canvas = document.getElementById('GLCanvas');
     this.kCanvasWidth = canvas.width;
     this.kCanvasHeight = canvas.height;
-    this.kMiniMapHeight = 70;
+
 
     this.kStarsBG = "assets/bg_blend.jpg";
     this.kStatus = "Status: ";
@@ -71,7 +71,7 @@ StartScene.prototype.initialize = function () {
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
-        [0, this.kMiniMapHeight, this.kCanvasWidth, this.kCanvasHeight - this.kMiniMapHeight]        // viewport (orgX, orgY, width, height)
+        [0, 0, this.kCanvasWidth, this.kCanvasHeight]        // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     this.mCamera.setSpeed(0.1);
@@ -102,7 +102,7 @@ StartScene.prototype.update = function () {
     this.mSpaceShooter2015Logo.update(this.mCamera);
     this.mSpaceShooter2015Logo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+5);
 
-    this.mPressSpaceToBeginLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]-20);
+    this.mPressSpaceToBeginLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]-22);
     this.mPressSpaceToBeginLogo.visibilityCount = (this.mPressSpaceToBeginLogo.visibilityCount + 1)%100;
 
     if(this.mPressSpaceToBeginLogo.visibilityCount < 80)
@@ -121,6 +121,11 @@ StartScene.prototype.update = function () {
     //TODO: change
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mNextScene = GAME_SCENE;
+        gEngine.GameLoop.stop();
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) {
+        this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }
 

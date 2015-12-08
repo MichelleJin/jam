@@ -103,10 +103,10 @@ MyGame.prototype.unloadScene = function () {
     
     switch (this.mNextScene) {
         case LOSE_SCENE:
-            var nextLevel = new LoseScene();  // next level to be loaded           
+            var nextLevel = new LoseScene();  // next level to be loaded
             break;        
         case WIN_SCENE:
-            var nextLevel = new WinScene();
+            var nextLevel = new LoseScene();
             break;        
     }
     
@@ -240,11 +240,7 @@ MyGame.prototype.update = function () {
     }
     
     if (this.mHeroGroup.getHealthRatio() === 0) {
-<<<<<<< HEAD:public_html/src/MyGame/MyGame.js
         this.mNextScene = LOSE_SCENE;
-=======
-        this.mNextScene = 0;
->>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b:public_html/src/MyGame/Scenes/MyGame.js
         gEngine.GameLoop.stop();
     }
 

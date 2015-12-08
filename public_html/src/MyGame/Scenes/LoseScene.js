@@ -12,113 +12,112 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function LoseScene() {
-    // The camera to view the scene
-    this.mFrameSkip = 0;
+    var canvas = document.getElementById('GLCanvas');
+    this.kCanvasWidth = canvas.width;
+    this.kCanvasHeight = canvas.height;
+
+    this.kYouLostLogo = "assets/gameoverlogo.png";
+    this.kStarsBG = "assets/bg_blend.jpg";
+
+
     this.mCamera = null;
-    this.mMsg = null;
+    this.mGameOverMsg = null;
 
-    this.mCountdownTimer = null;
-    this.mCountdownTimeLeft = 10;
-
-    this.kStatus = "Game over!";
-    //this.kStatus = this.mCountdownTimeLeft.toString();
 }
 gEngine.Core.inheritPrototype(LoseScene, Scene);
 
 LoseScene.prototype.loadScene = function () {
-    // load the scene file
-    //gEngine.TextFileLoader.loadTextFile(this.kSceneFile, gEngine.TextFileLoader.eTextFileType.eXMLFile);
-
+    gEngine.Textures.loadTexture(this.kYouLostLogo);
+    gEngine.Textures.loadTexture(this.kStarsBG);
 };
 
 LoseScene.prototype.unloadScene = function () {
-    
-    //gEngine.TextFileLoader.unloadTextFile(this.kSceneFile);
-    var nextLevel = new MyGame();  // load the next level
-    gEngine.Core.startScene(nextLevel);
+    gEngine.Textures.unloadTexture(this.kYouLostLogo);
+    gEngine.Textures.unloadTexture(this.kStarsBG);
+
+
+    switch (this.mNextScene) {
+        case GAME_SCENE:
+            var nextLevel = new MyGame();
+            break;
+        case LOSE_SCENE:
+            var nextLevel = new LoseScene();  // next level to be loaded
+            break;
+        case WIN_SCENE:
+            var nextLevel = new LoseScene();
+            break;
+    }
 };
 
 LoseScene.prototype.initialize = function () {
     // Step A: Read in the camera
-    this.mSecondCamera = new Camera(
+    this.mCamera = new Camera(
             vec2.fromValues(20, 60),   // position of the camera
             100,                        // width of camera
-            [0, 0, 1000, 770]                    
+            [0, 0, this.kCanvasWidth, this.kCanvasHeight]
             );
-    this.mSecondCamera.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
-    
-    this.mMsg = new FontRenderable(this.kStatus);
-    this.mMsg.setColor([1, 1, 1, 1]);
-    this.mMsg.getXform().setPosition(0, 60);
-    this.mMsg.setTextHeight(10);
+    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1.0]);
 
-    this.mTimerCountMsg = new FontRenderable(this.kStatus);
+    this.mBackground = new Background(this.kStarsBG, this.mCamera);
+
+    this.kGameOverMsg = "Game over!";
+    this.mGameOverMsg = new FontRenderable(this.kGameOverMsg);
+    this.mGameOverMsg.setColor([1, 1, 1, 1]);
+    this.mGameOverMsg.getXform().setPosition(-5, 40);
+    this.mGameOverMsg.setTextHeight(10);
+
+    this.mTimerCountMsg = new FontRenderable("20");
     this.mTimerCountMsg.setColor([1, 1, 1, 1]);
-    this.mTimerCountMsg.getXform().setPosition(20, 40);
+    this.mTimerCountMsg.getXform().setPosition(20, 60);
     this.mTimerCountMsg.setTextHeight(10);
+    this.mTimerCountMsg.frameSkip = 0;
+    this.mTimerCountMsg.countdownTimeLeft = 20;
 
-    //this.startCountdown();
-    // now start the bg music ...
-    //gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
+    this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
+    this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
+    this.mYouLostLogo.getXform().setSize(40,20);
 };
-/*
-LoseScene.prototype.startCountdown = function () {
-    // create a timer that calls update timer
-    var that = this;
-    this.mCountdownTimer = setInterval(  function(){that.updateTimer(that);}, 100) ;
-
-
-   // window.alert("startCountDown");
-};
-*/
-
 
 
 LoseScene.prototype.draw = function () {
-    // Step A: clear the canvas
-    gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
+    // Clear the entire canvas to light gray.
+    gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
-    // Step  B: Activate the drawing Camera
-    this.mSecondCamera.setupViewProjection();
-    this.mMsg.draw(this.mSecondCamera);
-    this.mTimerCountMsg.draw(this.mSecondCamera);
+    // Draw on all camera.
+    this.drawCamera(this.mCamera);
 
-    // Step  C: draw all the squares
-    
 };
 
+LoseScene.prototype.drawCamera = function (camera) {
+    camera.setupViewProjection();
+
+    this.mBackground.draw(camera);
+    this.mGameOverMsg.draw(camera);
+    this.mTimerCountMsg.draw(camera);
+    this.mYouLostLogo.draw(camera);
+};
 
 LoseScene.prototype.update = function () {
 
-    if(this.mFrameSkip > 40)
+    this.mBackground.update(this.mCamera);
+    this.mYouLostLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+25);
+
+    if(this.mTimerCountMsg.frameSkip > 40)
     {
-        this.mFrameSkip = 0;
-        this.mCountdownTimeLeft--;
-        this.mMsg.mText = this.mCountdownTimeLeft.toString();
+        this.mTimerCountMsg.frameSkip = 0;
+        this.mTimerCountMsg.countdownTimeLeft--;
+        this.mTimerCountMsg.mText = this.mTimerCountMsg.countdownTimeLeft.toString();
+
     }
-    this.mFrameSkip++;
+    this.mTimerCountMsg.frameSkip++;
 
     // If countdown is 0, player gives up. Start the Start Scene.
-    if (this.mCountdownTimeLeft  == 0) {
+    if (this.mTimerCountMsg.countdownTimeLeft == 0) {
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
     }
-
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
         gEngine.GameLoop.stop();
     }
-};
-
-/*
-LoseScene.prototype.updateTimer = function () {
-    window.alert("updateTimer called");
-
-    that.mCountdownTimeLeft--;
-    //window.alert(this.mCountdownTimeLeft);
-    this.kStatus = that.mCountdownTimeLeft.toString();
-    if (that.mCountdownTimeLeft == 0) {
-        clearTimeout(this.mCountdownTimer);
-    }
 
 };
- */
