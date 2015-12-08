@@ -11,22 +11,28 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
     }
 };
 
+// allows hero to fire projectiles
 HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera) {
-    // can fire
+    // one projectile at a time
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
 };
 
+// updates projectile with enemy
 HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3, particleSet, func, aCamera) {
     var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, particleSet, func, aCamera);
     this.mNumDestroy += num;
 };
 
+// sets hero to invulnerable state
+// hero cannot fire
 HeroGroup.prototype._serviceInvulnerable = function () {
     this.mCurrentTick++;
     var c = this.getColor();
-    c[3] += 0.01;
+    if (this.mCurrentTick < 15) c[3] += 0.1;
+    if (this.mCurrentTick < 30 && this.mCurrentTick >= 15) c[3] -= 0.1;
+    if (this.mCurrentTick < 45 && this.mCurrentTick >= 30) c[3] += 0.1;
     if (this.mCurrentTick > 60) {
         this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
         this.getColor()[3] = 0;

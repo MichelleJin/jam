@@ -28,7 +28,7 @@ function MyGame() {
     this.kProjectileTexture = "assets/Bullet.png";
     this.kAstroidTexture = "assets/Astroid.png";
     this.kAstroidNormalMap = "assets/NormalMap.png";
-    this.kGhostTexture = "assets/Ghost.png";
+    this.kGhostTexture = "assets/Ghost_Small.png";
     this.kGhostDeadTexture = "assets/Scared.png";
 
     this.kGoalStar = "assets/GoalStar.png";
