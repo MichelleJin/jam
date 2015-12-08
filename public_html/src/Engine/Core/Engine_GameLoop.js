@@ -21,6 +21,7 @@ gEngine.GameLoop = (function () {
     var mCurrentTime;
     var mElapsedTime;
 
+
     // The current loop state (running or should stop)
     var mIsLoopRunning = false;
 

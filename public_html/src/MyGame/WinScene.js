@@ -19,8 +19,7 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 function WinScene() {
-    
-    
+    this.mCountDownTimer = 30;
 
     // The camera to view the scene
     this.mSecondCamera = null;
@@ -28,8 +27,15 @@ function WinScene() {
     this.mMsgTwo = null;
     this.kStatusOne = "Congratulations";
     this.kStatusTwo = "You Save the World!!";
+
+
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
+
+WinScene.prototype.startCountDown = function ()
+{
+    var counter=setInterval(timer, 1000);
+}
 
 WinScene.prototype.loadScene = function () {
     // load the scene file
@@ -91,8 +97,20 @@ WinScene.prototype.draw = function () {
 WinScene.prototype.update = function () {
     // For this very simple game, let's move the first square
     
-    
+    if (this.mCountDownTimer = 0)
+    {
+        gEngine.GameLoop.stop();
+    }
+
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) {
         gEngine.GameLoop.stop();
     }
+};
+
+WinScene.prototype.startCountDown = function () {
+    // create a timer that calls update timer
+};
+
+WinScene.prototype.updateTimer = function () {
+    // do Timer = Timer - 1 second;
 };

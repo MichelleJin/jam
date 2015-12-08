@@ -58,9 +58,9 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, aCamera) {
     this.getXform().setYPos(this.getY());
 };
 
-//HeroGroup.prototype.hitOnce = function() {
-//    this.setHealth(this.getHealth() - 1);
-//};
+HeroGroup.prototype.hitOnce = function() {
+    this.setHealth(this.getHealth() - 1);
+};
 
 HeroGroup.prototype.getStatus = function(){
     return  "Hero Hit: " + this.mHit +
@@ -69,10 +69,11 @@ HeroGroup.prototype.getStatus = function(){
 };
 
 // returns percent of health left
-//HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
-//HeroGroup.prototype.getHealth = function () { return this.mHealth; };
+HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
+HeroGroup.prototype.getHealth = function () { return this.mHealth; };
 
-HeroGroup.prototype.getHealthRatio = function () { this.mHealth/this.kStartHealth; };
+HeroGroup.prototype.getHealthRatio = function () {
+    return this.getHealth()/this.kStartHealth; };
 
 HeroGroup.prototype.getX = function () { return this.mHeroGroupState.getX(); };
 HeroGroup.prototype.setX = function (xPos) { this.mHeroGroupState.setX(xPos); };

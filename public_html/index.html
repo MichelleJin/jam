@@ -5,10 +5,10 @@
 <!--Use embedded shader code for now, in order to remove async loading complexity.-->
 
 <body onload="
-        var myGame = new MyGame();
+        var myGame = new StartScene();
+        //var myGame = new MyGame();
         gEngine.Core.initializeEngineCore('GLCanvas', myGame);
             ">
-    
     <!-- the following says there are javascript source code contained in 
          the external source files
     -->
@@ -98,10 +98,12 @@
             
    
     <!-- Client game code -->
-        <script type="text/javascript" src="src/MyGame/MyGame.js"></script>  
+        <script type="text/javascript" src="src/MyGame/StartScene.js"></script>
+        <script type="text/javascript" src="src/MyGame/MyGame.js"></script>
         <script type="text/javascript" src="src/MyGame/LoseScene.js"></script> 
-        <script type="text/javascript" src="src/MyGame/WinScene.js"></script> 
-        <!-- Objects -->
+        <script type="text/javascript" src="src/MyGame/WinScene.js"></script>
+
+    <!-- Objects -->
             <script type="text/javascript" src="src/MyGame/Objects/Hero.js"></script>
             <script type="text/javascript" src="src/MyGame/Objects/HealthBar.js"></script>
             <script type="text/javascript" src="src/MyGame/HeroGroup/HeroGroup.js"></script>

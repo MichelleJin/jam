@@ -10,6 +10,10 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
+var WIN_SCENE = 0;
+var LOSE_SCENE = 1;
+var START_SCENE = 2;
+var GAME_SCENE = 3;
 
 function MyGame() {
     this.mDebugModeOn = true;
@@ -87,10 +91,10 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kGrenade);
     
     switch (this.mNextScene) {
-        case 0: 
+        case LOSE_SCENE:
             var nextLevel = new LoseScene();  // next level to be loaded           
             break;        
-        case 1: 
+        case WIN_SCENE:
             var nextLevel = new WinScene();
             break;        
     }
@@ -220,14 +224,13 @@ MyGame.prototype.update = function () {
     }
     
     if (this.mHeroGroup.getHealthRatio() === 0) {
-        //this.mNextScene = 0;
-        //gEngine.GameLoop.stop();
+        this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
     }
-    
-    
+
     var h = [];
     if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
-        this.mNextScene = 1;
+        this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }
 };

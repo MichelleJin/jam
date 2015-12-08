@@ -57,6 +57,8 @@ gEngine.Core = (function () {
 
     // initialize all of the EngineCore components
     var initializeEngineCore = function (htmlCanvasID, myGame) {
+
+
         _initializeWebGL(htmlCanvasID);
         gEngine.VertexBuffer.initialize();
         gEngine.Input.initialize(htmlCanvasID);
