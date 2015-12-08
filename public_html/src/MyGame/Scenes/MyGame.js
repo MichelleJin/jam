@@ -284,6 +284,7 @@ MyGame.prototype.createParticle = function(atX, atY) {
     var life = 30 + Math.random() * 50;
     var p = new ParticleGameObject("assets/particle.png", atX, atY, life);
     p.getRenderable().setColor([1, 0, 0, 1]);
+    //p.getRenderable().getXform().setZPos(20);
     
     // size of the particle
     var r = 3.5 + Math.random() * 2.5;
