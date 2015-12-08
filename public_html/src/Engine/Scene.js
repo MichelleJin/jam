@@ -1,7 +1,11 @@
 /* 
  * The template for a scene.
  */
-
+var WIN_SCENE = 0;
+var LOSE_SCENE = 1;
+var START_SCENE = 2;
+var GAME_SCENE = 3;
+var GAMEOVER_SCENE = 4;
 /*jslint node: true, vars: true */
 /*global gEngine: false, Transform: false */
 /* find out more about jslint: http://www.jslint.com/help.html */

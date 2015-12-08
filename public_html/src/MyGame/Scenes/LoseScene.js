@@ -19,7 +19,6 @@ function LoseScene() {
     this.kYouLostLogo = "assets/gameoverlogo.png";
     this.kStarsBG = "assets/bg_blend.jpg";
 
-
     this.mCamera = null;
     this.mGameOverMsg = null;
 
@@ -41,12 +40,19 @@ LoseScene.prototype.unloadScene = function () {
             var nextLevel = new MyGame();
             break;
         case LOSE_SCENE:
-            var nextLevel = new LoseScene();  // next level to be loaded
-            break;
-        case WIN_SCENE:
             var nextLevel = new LoseScene();
             break;
+        case WIN_SCENE:
+            var nextLevel = new WinScene();
+            break;
+        case START_SCENE:
+            var nextLevel = new StartScene();
+            break;
+        case GAMEOVER_SCENE:
+            var nextLevel = new GameOverScene();
     }
+
+    gEngine.Core.startScene(nextLevel);
 };
 
 LoseScene.prototype.initialize = function () {
@@ -60,11 +66,11 @@ LoseScene.prototype.initialize = function () {
 
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
-    this.kGameOverMsg = "Game over!";
+    this.kGameOverMsg = "You died!";
     this.mGameOverMsg = new FontRenderable(this.kGameOverMsg);
     this.mGameOverMsg.setColor([1, 1, 1, 1]);
-    this.mGameOverMsg.getXform().setPosition(-5, 40);
-    this.mGameOverMsg.setTextHeight(10);
+    this.mGameOverMsg.getXform().setPosition(0, 70);
+    this.mGameOverMsg.setTextHeight(12);
 
     this.mTimerCountMsg = new FontRenderable("20");
     this.mTimerCountMsg.setColor([1, 1, 1, 1]);
@@ -75,7 +81,7 @@ LoseScene.prototype.initialize = function () {
 
     this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
     this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
-    this.mYouLostLogo.getXform().setSize(40,20);
+    this.mYouLostLogo.getXform().setSize(50,20);
 };
 
 
@@ -100,7 +106,6 @@ LoseScene.prototype.drawCamera = function (camera) {
 LoseScene.prototype.update = function () {
 
     this.mBackground.update(this.mCamera);
-    this.mYouLostLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+25);
 
     if(this.mTimerCountMsg.frameSkip > 40)
     {
@@ -113,10 +118,13 @@ LoseScene.prototype.update = function () {
 
     // If countdown is 0, player gives up. Start the Start Scene.
     if (this.mTimerCountMsg.countdownTimeLeft == 0) {
-        this.mNextScene = START_SCENE;
+        this.mNextScene = GAMEOVER_SCENE;
         gEngine.GameLoop.stop();
     }
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+
+    // Press space to stop timer from running out.
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+        this.mNextScene = GAME_SCENE;
         gEngine.GameLoop.stop();
     }
 

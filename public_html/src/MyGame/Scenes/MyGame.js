@@ -10,10 +10,7 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-var WIN_SCENE = 0;
-var LOSE_SCENE = 1;
-var START_SCENE = 2;
-var GAME_SCENE = 3;
+
 
 function MyGame() {
     this.mDebugModeOn = false;
@@ -102,12 +99,20 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kParticleTexture);
     
     switch (this.mNextScene) {
+        case GAME_SCENE:
+                var nextLevel = new MyGame();
+            break;
         case LOSE_SCENE:
-            var nextLevel = new LoseScene();  // next level to be loaded
-            break;        
+                var nextLevel = new LoseScene();
+            break;
         case WIN_SCENE:
-            var nextLevel = new LoseScene();
-            break;        
+                var nextLevel = new WinScene();
+            break;
+        case START_SCENE:
+                var nextLevel = new StartScene();
+            break;
+        case GAMEOVER_SCENE:
+                var nextLevel = new GameOverScene();
     }
     
     gEngine.Core.startScene(nextLevel);
@@ -125,8 +130,8 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
-    //this.mCamera.setSpeed(0.1);
-    this.mCamera.setSpeed(0);
+    this.mCamera.setSpeed(0.1);
+   // this.mCamera.setSpeed(0);
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera

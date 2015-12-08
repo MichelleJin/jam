@@ -10,11 +10,12 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";
+/*
 var WIN_SCENE = 0;
 var LOSE_SCENE = 1;
 var START_SCENE = 2;
 var GAME_SCENE = 3;
-
+*/
 function StartScene() {
     var canvas = document.getElementById('GLCanvas');
     this.kCanvasWidth = canvas.width;
@@ -56,15 +57,20 @@ StartScene.prototype.unloadScene = function () {
             var nextLevel = new MyGame();
             break;
         case LOSE_SCENE:
-            var nextLevel = new LoseScene();  // next level to be loaded
+            var nextLevel = new LoseScene();
             break;
         case WIN_SCENE:
             var nextLevel = new WinScene();
             break;
+        case START_SCENE:
+            var nextLevel = new StartScene();
+            break;
+        case GAMEOVER_SCENE:
+            var nextLevel = new GameOverScene();
     }
-
     gEngine.Core.startScene(nextLevel);
 };
+
 
 StartScene.prototype.initialize = function () {
     // Initialize the cameras.
@@ -129,6 +135,16 @@ StartScene.prototype.update = function () {
         gEngine.GameLoop.stop();
     }
 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
+        this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.O)) {
+        this.mNextScene = GAMEOVER_SCENE;
+        gEngine.GameLoop.stop();
+    }
+
 };
 
 
@@ -147,7 +163,6 @@ StartScene.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
 
     this.mBackground.draw(camera);
-   // this.mMsg.draw(camera);
     this.mSpaceShooter2015Logo.draw(camera);
     this.mPressSpaceToBeginLogo.draw(camera);
 };
