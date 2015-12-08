@@ -62,8 +62,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
     this.mLight.setYPos(this.getXform().getYPos());
     var hit = false;
     
-    if (aCamera.collideWCBound(this.getXform(), 1.1) !== 
-            BoundingBox.eboundCollideStatus.eInside)
+    if (aCamera.collideWCBound(this.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside)
             this.setExpired();
     
 //    obj.rotateObjPointTo(p, 0.8);
@@ -78,10 +77,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
         obj = dyes.getObjectAt(i);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
-
             particle.addEmitterAt(p, 200, func);
-
-
             obj.hitOnce();
             hit = true;
         }
@@ -106,7 +102,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
         obj = dyes3.getObjectAt(o);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
-            //particle.addEmitterAt(p, 200, func);
+            particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
         }
