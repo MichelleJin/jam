@@ -23,6 +23,7 @@ function MyGame() {
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
     this.kAstroidTexture = "assets/Astroid.png";
+    this.kAstroidNormalMap = "assets/NormalMap.png";
     this.kGhostTexture = "assets/Ghost.png";
     this.kGhostDeadTexture = "assets/Scared.png";
 
@@ -63,6 +64,8 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kAstroidTexture);
+    gEngine.Textures.loadTexture(this.kAstroidNormalMap);
+
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kHeroSprite);
 
@@ -79,6 +82,8 @@ MyGame.prototype.loadScene = function () {
 
 MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
+    gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
+
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kHeroSprite);
 
@@ -155,10 +160,11 @@ MyGame.prototype.initialize = function () {
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
-    this.mAstroid = new Astroid(this.kAstroidTexture, 50, 35);
+    this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
     var i;
     for (i = 0; i < 4; i++) {
         this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+        this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
     }
 };
 

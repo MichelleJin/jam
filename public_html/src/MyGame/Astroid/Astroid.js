@@ -1,9 +1,11 @@
-function Astroid(spriteTexture, atX, atY) {
-    //var norm = new IllumRenderable(spriteTexture, normalMap);
-    var norm = new TextureRenderable(spriteTexture);
+function Astroid(spriteTexture, normalMap, atX, atY) {
+    var norm = new IllumRenderable(spriteTexture, normalMap);
+    //var norm = new TextureRenderable(spriteTexture);
+    norm.setElementPixelPositions(0, 512, 0, 512);
+
     norm.getXform().setPosition(50, 35);
     norm.getXform().setSize(25, 25);
-    norm.getXform().setZPos(10);
+    //norm.getXform().setZPos(10);
     GameObject.call(this, norm);
 }
 gEngine.Core.inheritPrototype(Astroid, GameObject);
