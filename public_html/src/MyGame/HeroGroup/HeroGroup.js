@@ -13,7 +13,7 @@ HeroGroup.eHeroGroupState = Object.freeze({
     eInvicible: 1
 });
 
-function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
+function HeroGroup(heroTexture, healthBarTexture, atX, atY, light) {
     this.mShip = new TextureRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(18, 10);
@@ -30,7 +30,7 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
     this.mNumDestroy = 0;
 
     // Projectiles that the hero can shoot
-    this.mProjectiles = new ProjectileSet();
+    this.mProjectiles = new ProjectileSet(light);
 
     // state for behavior
     this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;

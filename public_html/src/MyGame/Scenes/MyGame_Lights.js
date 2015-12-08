@@ -27,13 +27,24 @@ MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, o
 
 MyGame.prototype._initializeLights = function () {
     this.mGlobalLightSet = new LightSet();
-
+    
     var l = this._createALight(Light.eLightType.ePointLight,
-            [15, 50, 5],         // position
+            [10, 10, 5],         // position
             [0, 0, -1],          // Direction
             [0.6, 1.0, 0.0, 1],  // some color
             8, 20,               // near and far distances
             0.1, 0.2,            // inner and outer cones
+            5,                   // intensity
+            1.0                  // drop off
+            );
+    this.mGlobalLightSet.addToSet(l);
+
+    var l = this._createALight(Light.eLightType.ePointLight,
+            [10, 10, 5],         // position
+            [0, 0, -1],          // Direction
+            [0.6, 1.0, 0.0, 1],  // some color
+            5, 15,               // near and far distances
+            0.1, 0.2,             // inner and outer cones
             5,                   // intensity
             1.0                  // drop off
             );

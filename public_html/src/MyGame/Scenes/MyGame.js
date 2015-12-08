@@ -126,7 +126,7 @@ MyGame.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
     //this.mCamera.setSpeed(0.1);
-    this.mCamera.setSpeed(0);
+    this.mCamera.setSpeed(0.1);
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
@@ -148,6 +148,9 @@ MyGame.prototype.initialize = function () {
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
+    var lightZero = this.mGlobalLightSet.getLightAt(0);
+    lightZero.setXPos(this.mStar.getXform().getXPos());
+    lightZero.setYPos(this.mStar.getXform().getYPos());
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);
@@ -163,6 +166,7 @@ MyGame.prototype.initialize = function () {
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
+    
 
     this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
     var i;

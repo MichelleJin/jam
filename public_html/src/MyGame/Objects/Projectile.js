@@ -32,6 +32,15 @@ function Projectile(x, y) {
     
     // Expired to remove
     this.mExpired = false;
+    
+//    this.mTheLight = new Light();
+//    this.mTheLight.setRadius(8);
+//    this.mTheLight.setZPos(2);
+//    this.mTheLight.setXPos(x);
+//    this.mTheLight.setYPos(y);  // Position above LMinion
+//    this.mTheLight.setColor([0.9, 0.9, 0.2, 1]);
+    //this.mTheLight.
+    
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 

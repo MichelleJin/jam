@@ -9,7 +9,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ProjectileSet() {
+function ProjectileSet(lightsource) {
     GameObjectSet.call(this);
 }
 gEngine.Core.inheritPrototype(ProjectileSet, GameObjectSet);
