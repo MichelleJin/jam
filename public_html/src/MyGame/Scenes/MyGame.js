@@ -20,13 +20,13 @@ function MyGame() {
     this.kCanvasHeight = canvas.height;
     this.kMiniMapHeight = 70;
 
-    this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
-    this.kMinionSprite = "assets/minion_sprite.png";
-    this.kProjectileTexture = "assets/Bullet.png";
+    this.kHeroSprite = "assets/Hero.png";
+    this.kChaseTexture = "assets/Chase.png";
+    this.kProjectileTexture = "assets/Projectile.png";
     this.kAstroidTexture = "assets/Astroid.png";
     this.kAstroidNormalMap = "assets/NormalMap.png";
     this.kGhostTexture = "assets/Ghost.png";
-    this.kGhostDeadTexture = "assets/Scared.png";
+    this.kGhostDeadTexture = "assets/Ghost_Dead.png";
 
     this.kGoalStar = "assets/GoalStar.png";
 
@@ -51,6 +51,7 @@ function MyGame() {
 
     this.mGhostSet = null;
     this.mChasePackSet = null;
+    this.mGrenadeSet = [];
     this.mAllParticles = new ParticleGameObjectSet();
 
     // ambient lighting tick
@@ -67,14 +68,15 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
 
-    gEngine.Textures.loadTexture(this.kMinionSprite);
+    gEngine.Textures.loadTexture(this.kChaseTexture);
+
     gEngine.Textures.loadTexture(this.kHeroSprite);
+    gEngine.Textures.loadTexture(this.kHealthBarTexture);
 
     gEngine.Textures.loadTexture(this.kGhostTexture);
     gEngine.Textures.loadTexture(this.kGhostDeadTexture);
 
     gEngine.Textures.loadTexture(this.kProjectileTexture);
-    gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
     gEngine.Textures.loadTexture(this.kGoalStar);
     gEngine.Textures.loadTexture(this.kGrenade);
@@ -85,7 +87,9 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
 
-    gEngine.Textures.unloadTexture(this.kMinionSprite);
+    gEngine.Textures.unloadTexture(this.kChaseTexture);
+
+
     gEngine.Textures.unloadTexture(this.kHeroSprite);
 
     gEngine.Textures.unloadTexture(this.kGhostTexture);
@@ -130,8 +134,10 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
+
+    //this.mCamera.setSpeed(0.1);
     this.mCamera.setSpeed(0.1);
-   // this.mCamera.setSpeed(0);
+
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
@@ -149,10 +155,13 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(180, 35);
+    Star.getXform().setPosition(950, 35);
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
+    var lightZero = this.mGlobalLightSet.getLightAt(0);
+    lightZero.setXPos(this.mStar.getXform().getXPos());
+    lightZero.setYPos(this.mStar.getXform().getYPos());
 
     // Being used to debug background scrolling
     this.mMsg2 = new FontRenderable(this.kStatus);
@@ -161,13 +170,22 @@ MyGame.prototype.initialize = function () {
     this.mMsg2.setTextHeight(2);
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
-    this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
-    this.mGrenadeSet = new GrenadeSet(this.kGrenade);
+
+    this.mChasePackSet = new ChasePackSet(this.kChaseTexture);
+    
+    var i;
+    for(i=0; i<10; i++){
+        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 70 * Math.random());
+    }
+
     // herosprite, healthbar, texture, x, y
-    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
+    var lightOne = this.mGlobalLightSet.getLightAt(1);
+    var lightThree = this.mGlobalLightSet.getLightAt(3);
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne, lightThree);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
+    
 
     this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
     var i;
@@ -196,7 +214,9 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
-    this.mGrenadeSet.draw(this.mCamera);
+    for(var i=0; i<10; i++){
+        this.mGrenadeSet[i].draw(this.mCamera);
+    }
     this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
 
@@ -207,7 +227,10 @@ MyGame.prototype.draw = function () {
     this.mHeroGroup.draw(this.mMiniCamera);
     this.mChasePackSet.draw(this.mMiniCamera);
     this.mStar.draw(this.mMiniCamera);
-    this.mGrenadeSet.draw(this.mMiniCamera);
+    for(var i=0; i<6; i++){
+        this.mGrenadeSet[i].draw(this.mMiniCamera);
+    }
+    
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -217,7 +240,16 @@ MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mAllParticles.update();
     // maybe have a class to update these
-    this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
+    for(var i=0; i<10; i++){
+        this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
+    }
+    var x = this.mHeroGroup.mHeroGroupState.getX();
+    var y = this.mHeroGroup.mHeroGroupState.getY();
+    var lightThree = this.mGlobalLightSet.getLightAt(3);
+    lightThree.setXPos(x+8);
+    lightThree.setYPos(y);
+    
+    //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     // should pass this an array of enemy
@@ -289,6 +321,7 @@ MyGame.prototype.createParticle = function(atX, atY) {
     var life = 30 + Math.random() * 50;
     var p = new ParticleGameObject("assets/particle.png", atX, atY, life);
     p.getRenderable().setColor([1, 0, 0, 1]);
+    //p.getRenderable().getXform().setZPos(20);
     
     // size of the particle
     var r = 3.5 + Math.random() * 2.5;

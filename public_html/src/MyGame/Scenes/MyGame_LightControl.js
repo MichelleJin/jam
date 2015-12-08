@@ -66,6 +66,9 @@ MyGame.prototype._lightControl = function () {
         this._printVec3("P", p) +
         "R(" + lgt.getNear().toPrecision(3) + "/" + lgt.getFar().toPrecision(3) + ") " +
         "I(" + lgt.getIntensity().toPrecision(3) + ")";
+
+        
+        
     return msg;
 };
 

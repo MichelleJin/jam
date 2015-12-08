@@ -5,7 +5,7 @@ function Astroid(spriteTexture, normalMap, atX, atY) {
 
     norm.getXform().setPosition(50, 35);
     norm.getXform().setSize(25, 25);
-    //norm.getXform().setZPos(10);
+    norm.getXform().setZPos(10);
     GameObject.call(this, norm);
 }
 gEngine.Core.inheritPrototype(Astroid, GameObject);

@@ -24,6 +24,8 @@ function ParticleGameObject(texture, atX, atY, cyclesToLive) {
 }
 gEngine.Core.inheritPrototype(ParticleGameObject, GameObject);
 
+
+
 ParticleGameObject.prototype.setFinalColor = function(f) {    
     vec4.sub(this.mDeltaColor, f, this.mRenderComponent.getColor());
     if (this.mCyclesToLive !== 0) {

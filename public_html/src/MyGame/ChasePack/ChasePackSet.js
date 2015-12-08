@@ -14,7 +14,7 @@ function ChasePackSet(sprite) {
     this.kSpriteSheet = sprite;
     var i, x, y, c;
     for(i=0; i<30; i++){
-        x = 100 + 50*i*Math.random();
+        x = 100 + 900*Math.random();
         y = 70 * Math.random();
         c = new ChasePack(this.kSpriteSheet, x, y);
         

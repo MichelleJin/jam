@@ -20,8 +20,8 @@ ChasePack.eChasePackState = Object.freeze({
 });
 
 function ChasePack(spriteTexture, x, y) {
-    this.kRefWidth = 2;
-    this.kRefHeight = 3.25;
+    this.kRefWidth = 10;
+    this.kRefHeight = 10;
     this.kReferenceSpeed = 50 / (5 * 60);
             // cover 100 units in 5 seconds
             
@@ -32,16 +32,14 @@ function ChasePack(spriteTexture, x, y) {
     this.mChasePack.setColor([1, 1, 1, 0.1]);
     this.mChasePack.getXform().setPosition(x, y);
     this.mChasePack.getXform().setZPos(10);
-    this.mChasePack.getXform().setSize(this.kRefWidth*2, this.kRefHeight*2);
-    this.mChasePack.setElementPixelPositions(510, 595, 23, 153);
+    this.mChasePack.getXform().setSize(this.kRefWidth, this.kRefHeight);
+    this.mChasePack.setElementPixelPositions(0, 128, 0, 128);
     GameObject.call(this, this.mChasePack);
     
     
     this.setSpeed(0.3);
-    //this.getXform().incRotationByRad(Math.PI/2);
-    this.mChasePack.getXform().incRotationByRad(Math.PI/2);
+    // set front to left side
     var dir = vec2.fromValues(-1, 0);
-    
     this.setCurrentFrontDir(dir);
     
     // to support the chasing states

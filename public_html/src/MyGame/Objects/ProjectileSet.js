@@ -9,7 +9,8 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ProjectileSet() {
+function ProjectileSet(lightsource) {
+    this.mLight = lightsource;
     GameObjectSet.call(this);
 }
 gEngine.Core.inheritPrototype(ProjectileSet, GameObjectSet);
@@ -20,8 +21,10 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
     var numHit = 0;
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        if (obj.hasExpired())
+        if (obj.hasExpired()){
             this.removeFromSet(obj);
+            this.mLight.setLightTo(false);
+        }
     }
     
     // update all objects
@@ -37,6 +40,7 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
 };
 
 ProjectileSet.prototype.newAt = function(pos) {
-    var p = new Projectile(pos[0], pos[1]);
+    var p = new Projectile(pos[0], pos[1], this.mLight);
+    
     this.addToSet(p);
 };

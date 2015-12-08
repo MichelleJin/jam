@@ -13,7 +13,7 @@ Projectile.kSpeed = 100 / (0.8 * 60);
         // across the entire screen in 0.5 seconds
 Projectile.kTexture = null;
 
-function Projectile(x, y) {
+function Projectile(x, y, light) {
     var textInfo = gEngine.Textures.getTextureInfo(Projectile.kTexture);
     this.kRefHeight = 6;
     this.kRefWidth = this.kRefHeight / textInfo.mHeight * textInfo.mWidth;
@@ -32,6 +32,19 @@ function Projectile(x, y) {
     
     // Expired to remove
     this.mExpired = false;
+    this.mLight = light;
+    this.mLight.setXPos(x);
+    this.mLight.setYPos(y);
+    this.mLight.setLightTo(true);
+    
+//    this.mTheLight = new Light();
+//    this.mTheLight.setRadius(8);
+//    this.mTheLight.setZPos(2);
+//    this.mTheLight.setXPos(x);
+//    this.mTheLight.setYPos(y);  // Position above LMinion
+//    this.mTheLight.setColor([0.9, 0.9, 0.2, 1]);
+    //this.mTheLight.
+    
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
@@ -43,12 +56,13 @@ Projectile.prototype.hasExpired = function() {
 };
 
 
-Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera) {
+Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCamera) {
     GameObject.prototype.update.call(this);
+    this.mLight.setXPos(this.getXform().getXPos());
+    this.mLight.setYPos(this.getXform().getYPos());
     var hit = false;
     
-    if (aCamera.collideWCBound(this.getXform(), 1.1) !== 
-            BoundingBox.eboundCollideStatus.eInside)
+    if (aCamera.collideWCBound(this.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside)
             this.setExpired();
     
 //    obj.rotateObjPointTo(p, 0.8);
@@ -80,15 +94,19 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCame
         }
     }
     
+    var q;
+    for(q=0;q<6;q++){
+        var dyes3 = dyes3Set[q];
     var o;
     for (o=0; o<dyes3.size(); o++) {
         obj = dyes3.getObjectAt(o);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
-            //particle.addEmitterAt(p, 200, func);
+            particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
         }
+    }
     }
     
     return hit;
