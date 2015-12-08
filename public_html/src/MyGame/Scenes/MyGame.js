@@ -164,7 +164,7 @@ MyGame.prototype.initialize = function () {
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
 
-    this.mChasePackSet = new ChasePackSet(this.kMinionSprite);
+    this.mChasePackSet = new ChasePackSet(this.kChaseTexture);
     
     var i;
     for(i=0; i<10; i++){
