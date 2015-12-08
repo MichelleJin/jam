@@ -23,7 +23,9 @@ function StartScene() {
 
     this.kStarsBG = "assets/bg_blend.jpg";
     this.kStatus = "Status: ";
-    this.kLogo = "assets/spaceshooterlogo.png";
+    this.kSpaceShooter2015Logo = "assets/SpaceShooter2015Logo.png";
+    this.kPressSpaceToBeginLogo= "assets/PressSpaceToBegin.png";
+
 
     // The camera to view the scene
     this.mCamera = null;
@@ -39,12 +41,15 @@ gEngine.Core.inheritPrototype(StartScene, Scene);
 
 StartScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kStarsBG);
-    gEngine.Textures.loadTexture(this.kLogo);
+    gEngine.Textures.loadTexture(this.kSpaceShooter2015Logo);
+    gEngine.Textures.loadTexture(this.kPressSpaceToBeginLogo);
+
 };
 
 StartScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kStarsBG);
-    gEngine.Textures.unloadTexture(this.kLogo);
+    gEngine.Textures.unloadTexture(this.kSpaceShooter2015Logo);
+    gEngine.Textures.unloadTexture(this.kPressSpaceToBeginLogo);
 
     switch (this.mNextScene) {
         case GAME_SCENE:
@@ -77,8 +82,15 @@ StartScene.prototype.initialize = function () {
     // Initialize the background.
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
-    this.mLogoRend = new TextureRenderable(this.kLogo);
-    this.mLogo = new GameObject(this.mLogoRend);
+    this.mSpaceShooter2015LogoRend = new TextureRenderable(this.kSpaceShooter2015Logo);
+    this.mSpaceShooter2015Logo = new GameObject(this.mSpaceShooter2015LogoRend);
+    this.mSpaceShooter2015Logo.getXform().setSize(45,45);
+
+
+    this.mPressSpaceToBeginLogoRend = new TextureRenderable(this.kPressSpaceToBeginLogo);
+    this.mPressSpaceToBeginLogo = new GameObject(this.mPressSpaceToBeginLogoRend);
+    this.mPressSpaceToBeginLogo.getXform().setSize(80,20);
+    this.mPressSpaceToBeginLogo.visibilityCount = 0;
 
 };
 
@@ -87,7 +99,20 @@ StartScene.prototype.update = function () {
 
     // Updates background.
     this.mBackground.update(this.mCamera);
-    this.mLogo.update(this.mCamera);
+    this.mSpaceShooter2015Logo.update(this.mCamera);
+    this.mSpaceShooter2015Logo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+5);
+
+    this.mPressSpaceToBeginLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]-20);
+    this.mPressSpaceToBeginLogo.visibilityCount = (this.mPressSpaceToBeginLogo.visibilityCount + 1)%100;
+
+    if(this.mPressSpaceToBeginLogo.visibilityCount < 80)
+    {
+        this.mPressSpaceToBeginLogo.setVisibility(true);
+    }
+    else
+    {
+        this.mPressSpaceToBeginLogo.setVisibility(false);
+    }
 
     // Updates cameras.
     this.mCamera.update();  // to ensure proper interpolated movement effects
@@ -117,6 +142,7 @@ StartScene.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
 
     this.mBackground.draw(camera);
-    this.mMsg.draw(camera);
-    this.mLogo.draw(camera);
+   // this.mMsg.draw(camera);
+    this.mSpaceShooter2015Logo.draw(camera);
+    this.mPressSpaceToBeginLogo.draw(camera);
 };

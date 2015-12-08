@@ -16,7 +16,7 @@ var START_SCENE = 2;
 var GAME_SCENE = 3;
 
 function MyGame() {
-    this.mDebugModeOn = true;
+    this.mDebugModeOn = false;
 
     var canvas = document.getElementById('GLCanvas');
     this.kCanvasWidth = canvas.width;
@@ -26,7 +26,8 @@ function MyGame() {
     this.kHeroSprite = "assets/Greenship.png"; //currently wrong size need sprite sheet
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kProjectileTexture = "assets/Bullet.png";
-
+    this.kAstroidTexture = "assets/Astroid.png";
+    this.kAstroidNormalMap = "assets/NormalMap.png";
     this.kGhostTexture = "assets/Ghost.png";
     this.kGhostDeadTexture = "assets/Scared.png";
 
@@ -36,9 +37,10 @@ function MyGame() {
 
     this.kStarsBG = "assets/bg_blend.jpg";
 
-    this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
-    this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
+    //this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
+    //this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
     this.kGrenade = "assets/YellowCircle2.png";
+    this.kParticleTexture = "assets/particle.png";
 
     this.kStatus = "Status: ";
     // The camera to view the scene
@@ -52,14 +54,22 @@ function MyGame() {
 
     this.mGhostSet = null;
     this.mChasePackSet = null;
-    this.mSpaceInvader = null;
+    this.mAllParticles = new ParticleGameObjectSet();
 
+    // ambient lighting tick
+    this.mAmbientTick = 0;
+    this.mRed = true;
+
+    this.mAstroid = null;
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+    gEngine.Textures.loadTexture(this.kAstroidTexture);
+    gEngine.Textures.loadTexture(this.kAstroidNormalMap);
+
     gEngine.Textures.loadTexture(this.kMinionSprite);
     gEngine.Textures.loadTexture(this.kHeroSprite);
 
@@ -69,13 +79,15 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kProjectileTexture);
     gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kStarsBG);
-   // gEngine.Textures.loadTexture(this.kSpaceInvaderSprite);
-    gEngine.Textures.loadTexture(this.kSpaceInvader0);
     gEngine.Textures.loadTexture(this.kGoalStar);
     gEngine.Textures.loadTexture(this.kGrenade);
+    gEngine.Textures.loadTexture(this.kParticleTexture);
 };
 
 MyGame.prototype.unloadScene = function () {
+    gEngine.Textures.unloadTexture(this.kAstroidTexture);
+    gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
+
     gEngine.Textures.unloadTexture(this.kMinionSprite);
     gEngine.Textures.unloadTexture(this.kHeroSprite);
 
@@ -85,10 +97,9 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
     gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kStarsBG);
-    //gEngine.Textures.unloadTexture(this.kSpaceInvaderSprite);
-    gEngine.Textures.unloadTexture(this.kSpaceInvader0);
     gEngine.Textures.unloadTexture(this.kGoalStar);
     gEngine.Textures.unloadTexture(this.kGrenade);
+    gEngine.Textures.unloadTexture(this.kParticleTexture);
     
     switch (this.mNextScene) {
         case LOSE_SCENE:
@@ -105,6 +116,7 @@ MyGame.prototype.unloadScene = function () {
 };
 
 MyGame.prototype.initialize = function () {
+    this._initializeLights();   // defined in MyGame_Lights.js
     // Step A: set up the cameras
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
@@ -113,8 +125,8 @@ MyGame.prototype.initialize = function () {
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
-    this.mCamera.setSpeed(0.1);
-    
+    //this.mCamera.setSpeed(0.1);
+    this.mCamera.setSpeed(0);
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
@@ -132,7 +144,7 @@ MyGame.prototype.initialize = function () {
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
-    Star.getXform().setPosition(200, 35);
+    Star.getXform().setPosition(180, 35);
     Star.getXform().setSize(10, 10);
     Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
@@ -148,15 +160,16 @@ MyGame.prototype.initialize = function () {
     this.mGrenadeSet = new GrenadeSet(this.kGrenade);
     // herosprite, healthbar, texture, x, y
     this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35);
-    //this.mHeroGroup = new HeroGroup(this.kMinionSprite, this.kHealthBarTexture, 10, 10);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
-    //this.mSpaceInvader = new SpaceInvader(this.kSpaceInvaderSprite, 100, 35);
-    this.mSpaceInvader = new SpaceInvader(this.kSpaceInvader0, 100, 35);
-
-
+    this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
+    var i;
+    for (i = 0; i < 4; i++) {
+        this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+        this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+    }
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -173,12 +186,15 @@ MyGame.prototype.draw = function () {
         this.mBackground.draw(this.mCamera);
     }
 
-    // mainmap
+    // main map
     this.mGhostSet.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
     this.mGrenadeSet.draw(this.mCamera);
+    this.mAstroid.draw(this.mCamera);
+    this.mAllParticles.draw(this.mCamera);
+
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -192,15 +208,15 @@ MyGame.prototype.draw = function () {
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
+    this.mAstroid.update(this.mCamera);
     this.mBackground.update(this.mCamera);
-    this.mSpaceInvader.update(this.mCamera);
-
+    this.mAllParticles.update();
     // maybe have a class to update these
     this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     // should pass this an array of enemy
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mCamera);
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera);
 
     this.mMsg.setText("Camera CenterXPos:" + this.mCamera.getWCCenter()[0].toPrecision(4));
     var c = this.mCamera.getWCCenter();
@@ -224,7 +240,11 @@ MyGame.prototype.update = function () {
     }
     
     if (this.mHeroGroup.getHealthRatio() === 0) {
+<<<<<<< HEAD:public_html/src/MyGame/MyGame.js
         this.mNextScene = LOSE_SCENE;
+=======
+        this.mNextScene = 0;
+>>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b:public_html/src/MyGame/Scenes/MyGame.js
         gEngine.GameLoop.stop();
     }
 
@@ -233,4 +253,61 @@ MyGame.prototype.update = function () {
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }
+    
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) {
+        if (this.mCamera.isMouseInViewport()) {
+            var p = this.createParticle(this.mCamera.mouseWCX(), this.mCamera.mouseWCY());
+            this.mAllParticles.addToSet(p);
+        }
+    }
+
+    // ambient lighting  <-- move into MyGame_Lights_Update?
+    var deltaColor = 0.05;
+    var GlobalAmbientColor = gEngine.DefaultResources.getGlobalAmbientColor();
+    if (this.mHeroGroup.getHealth() <= 2) {
+        if (this.mRed) {
+            this.mAmbientTick++;
+            GlobalAmbientColor[0] += deltaColor;
+            if(this.mAmbientTick > 60) {
+                this.mRed = false;
+                this.mAmbientTick = 0;
+            }
+        } else {
+            this.mAmbientTick++;
+            GlobalAmbientColor[0] -= deltaColor;
+            if (this.mAmbientTick > 60) {
+                this.mRed = true;
+                this.mAmbientTick = 0;
+            }
+        }
+    }
+};
+
+
+MyGame.prototype.createParticle = function(atX, atY) {
+    var life = 30 + Math.random() * 50;
+    var p = new ParticleGameObject("assets/particle.png", atX, atY, life);
+    p.getRenderable().setColor([1, 0, 0, 1]);
+    
+    // size of the particle
+    var r = 3.5 + Math.random() * 2.5;
+    p.getXform().setSize(r, r);
+    
+    // final color
+    var fr = 3.5 + Math.random();
+    var fg = 0.4 + 0.1 * Math.random();
+    var fb = 0.3 + 0.1 * Math.random();
+    p.setFinalColor([fr, fg, fb, 0.6]);
+    
+    // velocity on the particle
+    //var fx = 10 * Math.random()- 20 * Math.random();
+    var fy = 5 + 10 * Math.random() ;
+    var fx = - 30 - 10 * Math.random();
+    //var fy = 0;
+    p.getPhysicsComponent().setVelocity([fx, fy]);
+    
+    // size delta
+    p.setSizeDelta(0.95);
+    
+    return p;
 };

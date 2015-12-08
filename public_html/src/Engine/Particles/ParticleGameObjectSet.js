@@ -32,7 +32,7 @@ ParticleGameObjectSet.prototype.update = function () {
     
     // Cleanup Particles
     var i, e, obj;
-    for (i=0; i<this.size(); i++) {
+    for (i = 0; i < this.size(); i++) {
         obj = this.getObjectAt(i);
         if (obj.hasExpired()) {
             this.removeFromSet(obj);
@@ -40,7 +40,7 @@ ParticleGameObjectSet.prototype.update = function () {
     }
     
     // Emit new particles
-    for (i=0; i<this.mEmitterSet.length; i++) {
+    for (i = 0; i < this.mEmitterSet.length; i++) {
         e = this.mEmitterSet[i];
         e.emitParticles(this);
         if (e.expired()) {

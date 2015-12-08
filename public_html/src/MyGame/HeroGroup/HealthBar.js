@@ -23,6 +23,7 @@ function HealthBar(texture) {
 }
 gEngine.Core.inheritPrototype(HealthBar, GameObject);
 
+// follow hero with health bar
 HealthBar.prototype.update = function (hero) {
     var healthRatio = hero.getHealthRatio();
     if (healthRatio < 0) {

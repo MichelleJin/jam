@@ -8,16 +8,21 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+HeroGroup.eHeroGroupState = Object.freeze({
+    eNormal: 0,
+    eInvicible: 1
+});
+
 function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
     this.mShip = new TextureRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
-    this.mShip.getXform().setSize(20, 20);
+    this.mShip.getXform().setSize(18, 10);
     this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
 
     //Hero.call(this, heroTexture, atX, atY);
     this.kDelta = 0.6;
-    this.kStartHealth = 10;
+    this.kStartHealth = 5;
 
     this.mHealthBar = new HealthBar(healthBarTexture);
 
@@ -27,6 +32,9 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY) {
     // Projectiles that the hero can shoot
     this.mProjectiles = new ProjectileSet();
 
+    // state for behavior
+    this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
+    this.mCurrentTick = 0;
 
     this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
     this.setHealth(this.kStartHealth);
@@ -39,29 +47,22 @@ HeroGroup.prototype.draw = function(aCamera) {
     this.mHealthBar.draw(aCamera);
 };
 
-HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, aCamera) {
-    this._moveByKeys(); // for now
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.mProjectiles.newAt(this.getXform().getPosition());
+// hero hit once by enemy/projectile
+HeroGroup.prototype.hitOnce = function () {
+    if (this.mCurrentState != HeroGroup.eHeroGroupState.eInvicible) {
+        this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
+        this.setHealth(this.getHealth() - 1);
+        this.mCurrentTick = 0;
     }
-
-    // update Projectile
-    var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, aCamera);
-    this.mNumDestroy += num;
-
-    // update hero path
-    this.shiftX(aCamera.getSpeed());
-    this.mHealthBar.update(this);
-
-    this.mHeroGroupState.update();
-    this.getXform().setXPos(this.getX());
-    this.getXform().setYPos(this.getY());
 };
 
-HeroGroup.prototype.hitOnce = function() {
-    this.setHealth(this.getHealth() - 1);
-};
+//<<<<<<< HEAD
+//HeroGroup.prototype.hitOnce = function() {
+ //   this.setHealth(this.getHealth() - 1);
+//};
 
+//=======
+//>>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b
 HeroGroup.prototype.getStatus = function(){
     return  "Hero Hit: " + this.mHit +
         "  Num Destroy: " + this.mNumDestroy +
@@ -69,11 +70,15 @@ HeroGroup.prototype.getStatus = function(){
 };
 
 // returns percent of health left
-HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
-HeroGroup.prototype.getHealth = function () { return this.mHealth; };
+//
+//HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
+//HeroGroup.prototype.getHealth = function () { return this.mHealth; };
 
-HeroGroup.prototype.getHealthRatio = function () {
-    return this.getHealth()/this.kStartHealth; };
+//HeroGroup.prototype.getHealthRatio = function () {
+ //   return this.getHealth()/this.kStartHealth; };
+//=======
+HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };
+//>>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b
 
 HeroGroup.prototype.getX = function () { return this.mHeroGroupState.getX(); };
 HeroGroup.prototype.setX = function (xPos) { this.mHeroGroupState.setX(xPos); };
