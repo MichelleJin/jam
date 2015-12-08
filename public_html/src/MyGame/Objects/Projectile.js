@@ -95,7 +95,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
     }
     
     var q;
-    for(q=0;q<6;q++){
+    for(q=0;q<10;q++){
         var dyes3 = dyes3Set[q];
     var o;
     for (o=0; o<dyes3.size(); o++) {
