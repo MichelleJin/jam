@@ -16,23 +16,43 @@ function LoseScene() {
     this.kCanvasWidth = canvas.width;
     this.kCanvasHeight = canvas.height;
 
-    this.kYouLostLogo = "assets/gameoverlogo.png";
     this.kStarsBG = "assets/bg_blend.jpg";
 
+
+    this.kInsult0 = "assets/insult0.png";
+    this.kInsult1 = "assets/insult1.png";
+    this.kInsult2 = "assets/insult2.png";
+    this.mInsult = null;
+
+    this.kYouDied = "assets/youdied.png";
+
     this.mCamera = null;
-    this.mGameOverMsg = null;
+    this.mWaitTime = 500;
+    this.mWaitCount = 0;
 
 }
 gEngine.Core.inheritPrototype(LoseScene, Scene);
 
 LoseScene.prototype.loadScene = function () {
-    gEngine.Textures.loadTexture(this.kYouLostLogo);
     gEngine.Textures.loadTexture(this.kStarsBG);
+    gEngine.Textures.loadTexture(this.kYouDied);
+
+    gEngine.Textures.loadTexture(this.kInsult0);
+    gEngine.Textures.loadTexture(this.kInsult1);
+    gEngine.Textures.loadTexture(this.kInsult2);
+    // gEngine.Textures.loadTexture(this.kInsult3);
+    // gEngine.Textures.loadTexture(this.kInsult4);
+
 };
 
 LoseScene.prototype.unloadScene = function () {
-    gEngine.Textures.unloadTexture(this.kYouLostLogo);
+
     gEngine.Textures.unloadTexture(this.kStarsBG);
+    gEngine.Textures.unloadTexture(this.kYouDied);
+
+    gEngine.Textures.unloadTexture(this.kInsult0);
+    gEngine.Textures.unloadTexture(this.kInsult1);
+    gEngine.Textures.unloadTexture(this.kInsult2);
 
 
     switch (this.mNextScene) {
@@ -66,22 +86,18 @@ LoseScene.prototype.initialize = function () {
 
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
-    this.kGameOverMsg = "You died!";
-    this.mGameOverMsg = new FontRenderable(this.kGameOverMsg);
-    this.mGameOverMsg.setColor([1, 1, 1, 1]);
-    this.mGameOverMsg.getXform().setPosition(0, 70);
-    this.mGameOverMsg.setTextHeight(12);
+    this.mYouDiedRender = new TextureRenderable(this.kYouDied);
+    this.mYouDied = new GameObject(this.mYouDiedRender);
+    this.mYouDied.getXform().setSize(50,20);
+    this.mYouDied.getXform().setPosition(20,80);
 
-    this.mTimerCountMsg = new FontRenderable("20");
-    this.mTimerCountMsg.setColor([1, 1, 1, 1]);
-    this.mTimerCountMsg.getXform().setPosition(20, 60);
-    this.mTimerCountMsg.setTextHeight(10);
-    this.mTimerCountMsg.frameSkip = 0;
-    this.mTimerCountMsg.countdownTimeLeft = 20;
+    this.selectRandomInsult();
+    this.mInsultRender = new TextureRenderable(this.kInsult);
+    this.mInsult = new GameObject(this.mInsultRender);
+    this.mInsult.getXform().setSize(85,30);
+    this.mInsult.getXform().setPosition(20, 53);
 
-    this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
-    this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
-    this.mYouLostLogo.getXform().setSize(50,20);
+
 };
 
 
@@ -98,34 +114,59 @@ LoseScene.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
 
     this.mBackground.draw(camera);
-    this.mGameOverMsg.draw(camera);
-    this.mTimerCountMsg.draw(camera);
-    this.mYouLostLogo.draw(camera);
+    this.mYouDied.draw(camera);
+    this.mInsult.draw(camera);
 };
 
 LoseScene.prototype.update = function () {
 
+
     this.mBackground.update(this.mCamera);
 
-    if(this.mTimerCountMsg.frameSkip > 40)
-    {
-        this.mTimerCountMsg.frameSkip = 0;
-        this.mTimerCountMsg.countdownTimeLeft--;
-        this.mTimerCountMsg.mText = this.mTimerCountMsg.countdownTimeLeft.toString();
 
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
+        this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
     }
-    this.mTimerCountMsg.frameSkip++;
 
-    // If countdown is 0, player gives up. Start the Start Scene.
-    if (this.mTimerCountMsg.countdownTimeLeft == 0) {
+
+
+    if (this.mWaitCount > this.mWaitTime)
+    {
         this.mNextScene = GAMEOVER_SCENE;
         gEngine.GameLoop.stop();
     }
+    this.mWaitCount++;
 
-    // Press space to stop timer from running out.
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        this.mNextScene = GAME_SCENE;
-        gEngine.GameLoop.stop();
-    }
+
 
 };
+
+LoseScene.prototype.selectRandomInsult = function () {
+    var random = getRandomIntInclusive(0,2);
+    switch(random) {
+        case 0:
+            this.kInsult = this.kInsult0;
+            break;
+        case 1:
+            this.kInsult = this.kInsult1;
+            break;
+        case 2:
+            this.kInsult = this.kInsult2;
+            break;
+        /*
+         case 3:
+         this.kInsult = this.kInsult3;
+         case 4:
+         this.kInsult = this.kInsult4;
+         case 5:
+         this.kInsult = this.kInsult5;
+         */
+    }
+}
+
+// Returns a random integer between min (included) and max (included)
+// Using Math.round() will give you a non-uniform distribution!
+function getRandomIntInclusive(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
