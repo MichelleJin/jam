@@ -67,6 +67,7 @@ StartScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break;
     }
     gEngine.Core.startScene(nextLevel);
 };
