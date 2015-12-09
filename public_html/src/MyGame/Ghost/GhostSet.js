@@ -21,11 +21,7 @@ function GhostSet(liveSprite, deadSprite) {
     this.kDeadSprite = deadSprite;  // Use sprite sheet later
 
     this.mWaitQueue = [];
-    var i;
-    for (i = 0; i < 5; i++) {
-        var ghost = new Ghost(liveSprite, deadSprite, i * 100, 35);
-        this.addToSet(ghost);
-    }
+    this.mCurrentTick = 0;
 }
 gEngine.Core.inheritPrototype(GhostSet, GameObjectSet);
 
@@ -65,6 +61,57 @@ GhostSet.prototype.update = function(hero, aCamera) {
         obj.update(hero, aCamera);
     }
     this.updateWait(aCamera);
+    this.mCurrentTick++;
+    if (this.mCurrentTick === 420) {
+        //alert("inside if");
+        this.mCurrentTick = 0;
+        var c = aCamera.getWCCenter();
+        var h = aCamera.getWCHeight();
+        var y = c[1];
+        var rand = Math.random();
+        if (Math.random() > 0.5) {
+            y += h/2 * Math.random();
+        } else {
+            y -= h/2 * Math.random();
+        }
+        this.spawnGhosts(5, 0, y); // x is currently unused
+        //if (rand < 0.05) {
+        //    var y = c[1];
+        //    if (Math.random() > 0.5) {
+        //        y += h/2 * Math.random();
+        //    } else {
+        //        y -= h/2 * Math.random();
+        //    }
+        //    this.spawnGhosts(5, 0, y); // x is currently unused
+        //}
+        //if (rand < 0.2) {
+        //    var y = c[1];
+        //    if (Math.random() > 0.5) {
+        //        y += h/2 * Math.random();
+        //    } else {
+        //        y -= h/2 * Math.random();
+        //    }
+        //    this.spawnGhosts(5, 0, y); // x is currently unused
+        //}
+        //if (rand < 0.9) {
+        //    var y = c[1];
+        //    if (Math.random() > 0.5) {
+        //        y += h/2 * Math.random();
+        //    } else {
+        //        y -= h/2 * Math.random();
+        //    }
+        //    this.spawnGhosts(5, 0, y); // x is currently unused
+        //}
+        //if (rand < 1) {
+        //    var y = c[1];
+        //    if (Math.random() > 0.5) {
+        //        y += h/2 * Math.random();
+        //    } else {
+        //        y -= h/2 * Math.random();
+        //    }
+        //    this.spawnGhosts(5, 0, y); // x is currently unused
+        //}
+    }
 };
 
 GhostSet.prototype.spawnGhosts = function (numGhosts, atX, atY) {
