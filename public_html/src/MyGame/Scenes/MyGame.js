@@ -13,6 +13,8 @@
 
 
 function MyGame() {
+    this.kBgClip = "assets/sounds/bgMusic.mp3";
+    this.kCue = "assets/sounds/laser.wav";
     this.mDebugModeOn = false;
 
     var canvas = document.getElementById('GLCanvas');
@@ -65,6 +67,9 @@ function MyGame() {
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+    gEngine.AudioClips.loadAudio(this.kBgClip);
+    gEngine.AudioClips.loadAudio(this.kCue);
+    
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
 
@@ -84,6 +89,10 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.unloadScene = function () {
+    gEngine.AudioClips.stopBackgroundAudio();
+
+    gEngine.AudioClips.unloadAudio(this.kBgClip);
+    gEngine.AudioClips.unloadAudio(this.kCue);
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
 
@@ -193,6 +202,7 @@ MyGame.prototype.initialize = function () {
         this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
         this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
     }
+    gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -253,7 +263,7 @@ MyGame.prototype.update = function () {
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     // should pass this an array of enemy
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera);
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue);
 
     this.mMsg.setText("Camera CenterXPos:" + this.mCamera.getWCCenter()[0].toPrecision(4));
     var c = this.mCamera.getWCCenter();
@@ -287,12 +297,12 @@ MyGame.prototype.update = function () {
         gEngine.GameLoop.stop();
     }
     
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) {
-        if (this.mCamera.isMouseInViewport()) {
-            var p = this.createParticle(this.mCamera.mouseWCX(), this.mCamera.mouseWCY());
-            this.mAllParticles.addToSet(p);
-        }
-    }
+//    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) {
+//        if (this.mCamera.isMouseInViewport()) {
+//            var p = this.createParticle(this.mCamera.mouseWCX(), this.mCamera.mouseWCY());
+//            this.mAllParticles.addToSet(p);
+//        }
+//    }
 
     // ambient lighting  <-- move into MyGame_Lights_Update?
     var deltaColor = 0.05;

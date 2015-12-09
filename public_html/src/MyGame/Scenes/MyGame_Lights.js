@@ -61,7 +61,7 @@ MyGame.prototype._initializeLights = function () {
             2,                     // intensity
             1.0                    // drop off
             );
-    //l.setLightTo(false);
+    l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
     l = this._createALight(Light.eLightType.eSpotLight,
