@@ -22,37 +22,6 @@
             <file>file:/C:/Users/ksung/Dropbox/2.Classes/490-GameEngine/Source/TopicsRelatedToBuildingSimpleGames/8.Projectiles/public_html/src/Engine/Renderables/TextureRenderable_PixelCollision.js</file>
         </group>
         <group name="MPSubmission_In_ToDelete_zzCodeBackup"/>
-        <group>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Scene.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Ghost/Ghost.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/GrenadeSet.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/HeroGroup/HeroGroup.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/GameObjects/GameObject.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/MiniMap.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Background/Background.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePack.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/assets/GoalStar.png</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/LoseScene.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/WinScene.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Shaders/SimpleShader.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/Grenade.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePack_update.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/Projectile.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/Hero.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePackSet.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/index.html</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/ProjectileSet.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/assets/Greenship.png</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/MyGame.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Ghost/GhostSet.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Cameras/Camera.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/assets/minion_sprite.png</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Utils/Transform.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/Grenade_update.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Renderables/Renderable.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/HealthBar.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/GameObjects/GameObject_PixelCollision.js</file>
-            <file>file:/Users/Michelle/Documents/jam/public_html/assets/space_invader_sprite_sheet.png</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
