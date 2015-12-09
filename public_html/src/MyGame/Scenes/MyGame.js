@@ -175,7 +175,7 @@ MyGame.prototype.initialize = function () {
     
     var i;
     for(i=0; i<10; i++){
-        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(), 50 * Math.random());
+        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(),20 + 40 * Math.random());
     }
 
     // herosprite, healthbar, texture, x, y

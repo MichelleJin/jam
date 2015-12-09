@@ -55,7 +55,7 @@ MyGame.prototype._initializeLights = function () {
     l = this._createALight(Light.eLightType.eDirectionalLight,
             [15, 50, 4],           // position (not used by directional)
             [-0.2, -0.2, -1],      // Pointing direction upwards
-            [0.0, 0.0, 0.0, 1],    // color
+            [0.3, 0.8, 0.1, 1],    // color
             500, 500,              // near anf far distances: essentially switch this off
             0.1, 0.2,              // inner and outer cones
             2,                     // intensity
