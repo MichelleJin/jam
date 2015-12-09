@@ -36,7 +36,7 @@ function MyGame() {
 
     //this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
     //this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
-    this.kGrenade = "assets/YellowCircle2.png";
+    this.kGrenade = "assets/Granade.png";
     this.kParticleTexture = "assets/particle.png";
 
     this.kStatus = "Status: ";
