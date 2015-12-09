@@ -62,6 +62,7 @@ GameOverScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break
     }
 
     gEngine.Core.startScene(nextLevel);
@@ -90,7 +91,7 @@ GameOverScene.prototype.initialize = function () {
     this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
     this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
     this.mYouLostLogo.getXform().setSize(70,30);
-    this.mYouLostLogo.getXform().setPosition(20,80);
+    this.mYouLostLogo.getXform().setPosition(20,63);
     this.mYouLostLogo.setVisibility(false);
 
     this.mContinueRender = new TextureRenderable(this.kContinue);
@@ -158,7 +159,6 @@ GameOverScene.prototype.update = function () {
         this.mPressSpaceToContinue.setVisibility(false);
      //   this.mTimerCountMsg.setVisibility(false);
         this.mYouLostLogo.setVisibility(true);
-        gEngine.GameLoop.stop();
     }
 
     if(this.mTimerCountMsg.countdownTimeLeft > 0) {
@@ -166,7 +166,8 @@ GameOverScene.prototype.update = function () {
         if (this.mPressSpaceToContinue.visibilityCount < 80) {
             this.mPressSpaceToContinue.setVisibility(true);
         }
-        else {
+        else
+        {
             this.mPressSpaceToContinue.setVisibility(false);
         }
     }
@@ -176,10 +177,6 @@ GameOverScene.prototype.update = function () {
         gEngine.GameLoop.stop();
     }
 
-    /*
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.O)) {
-        this.mNextScene = GAMEOVER_SCENE;
-        gEngine.GameLoop.stop();
-    }
-    */
+
+
 };

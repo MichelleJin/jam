@@ -70,6 +70,7 @@ LoseScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break
     }
 
     gEngine.Core.startScene(nextLevel);
@@ -126,6 +127,10 @@ LoseScene.prototype.update = function () {
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
         this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+        this.mNextScene = GAMEOVER_SCENE;
         gEngine.GameLoop.stop();
     }
 
