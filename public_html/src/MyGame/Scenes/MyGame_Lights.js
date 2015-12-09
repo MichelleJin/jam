@@ -52,13 +52,13 @@ MyGame.prototype._initializeLights = function () {
     l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
 
-    l = this._createALight(Light.eLightType.eDirectionalLight,
-            [15, 50, 4],           // position (not used by directional)
-            [-0.2, -0.2, -1],      // Pointing direction upwards
-            [0.0, 0.0, 0.0, 1],    // color
-            500, 500,              // near anf far distances: essentially switch this off
+    l = this._createALight(Light.eLightType.ePointLight,
+            [50, 85, 8],           // position (not used by directional)
+            [0, -50, -1],      // Pointing direction upwards
+            [1.0, 1.0, 1.0, 1],    // color
+            25, 50,              // near anf far distances: essentially switch this off
             0.1, 0.2,              // inner and outer cones
-            2,                     // intensity
+            5,                     // intensity
             1.0                    // drop off
             );
     //l.setLightTo(false);

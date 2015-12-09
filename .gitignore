@@ -9,3 +9,5 @@ public_html/assets/Thumbs.db
 .idea/workspace.xml
 
 *.psd
+
+.idea/misc.xml

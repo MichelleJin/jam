@@ -135,7 +135,7 @@ MyGame.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
 
-    //this.mCamera.setSpeed(0.1);
+    //this.mCamera.setSpeed(0);
     this.mCamera.setSpeed(0.1);
 
     this.mMiniCamera = new Camera(
@@ -190,9 +190,9 @@ MyGame.prototype.initialize = function () {
     this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
     var i;
     for (i = 0; i < 4; i++) {
-        this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-        this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+        if (i != 2) this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
     }
+    this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -240,11 +240,12 @@ MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mAllParticles.update();
     // maybe have a class to update these
-    for(var i=0; i<10; i++){
+    var i;
+    for(i = 0; i < 10; i++){
         this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
     }
-    var x = this.mHeroGroup.mHeroGroupState.getX();
-    var y = this.mHeroGroup.mHeroGroupState.getY();
+    var x = this.mHeroGroup.getX();
+    var y = this.mHeroGroup.getY();
     var lightThree = this.mGlobalLightSet.getLightAt(3);
     lightThree.setXPos(x+8);
     lightThree.setYPos(y);
@@ -254,6 +255,7 @@ MyGame.prototype.update = function () {
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
     // should pass this an array of enemy
     this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera);
+    this._updateLight(); // after hero to maintain light state
 
     this.mMsg.setText("Camera CenterXPos:" + this.mCamera.getWCCenter()[0].toPrecision(4));
     var c = this.mCamera.getWCCenter();
@@ -263,14 +265,6 @@ MyGame.prototype.update = function () {
     this.mCamera.clampHeroAtBoundary(this.mHeroGroup, 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
     this.mMiniCamera.update();
-
-     //Second message being used to debug background alternation
-    //this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
-    //    + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
-    //    + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
-    //    + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
-    //    + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
-    //this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
@@ -291,27 +285,6 @@ MyGame.prototype.update = function () {
         if (this.mCamera.isMouseInViewport()) {
             var p = this.createParticle(this.mCamera.mouseWCX(), this.mCamera.mouseWCY());
             this.mAllParticles.addToSet(p);
-        }
-    }
-
-    // ambient lighting  <-- move into MyGame_Lights_Update?
-    var deltaColor = 0.05;
-    var GlobalAmbientColor = gEngine.DefaultResources.getGlobalAmbientColor();
-    if (this.mHeroGroup.getHealth() <= 2) {
-        if (this.mRed) {
-            this.mAmbientTick++;
-            GlobalAmbientColor[0] += deltaColor;
-            if(this.mAmbientTick > 60) {
-                this.mRed = false;
-                this.mAmbientTick = 0;
-            }
-        } else {
-            this.mAmbientTick++;
-            GlobalAmbientColor[0] -= deltaColor;
-            if (this.mAmbientTick > 60) {
-                this.mRed = true;
-                this.mAmbientTick = 0;
-            }
         }
     }
 };
