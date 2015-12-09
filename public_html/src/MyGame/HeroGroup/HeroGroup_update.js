@@ -1,9 +1,9 @@
-HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera) {
+HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, music) {
     this._updatePosition(aCamera);
     this._updateProjectile(enemySet, enemySet2, enemySet3, particleSet, func, aCamera);
     switch (this.mCurrentState) {
         case HeroGroup.eHeroGroupState.eNormal:
-            this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera);
+            this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera, music);
             break;
         case HeroGroup.eHeroGroupState.eInvicible:
             //turn light on
@@ -14,11 +14,12 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
 };
 
 // allows hero to fire projectiles
-HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera) {
+HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera, music) {
     // one projectile at a time
     //turn light off
     this.mBarrier.setLightTo(false);
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+        gEngine.AudioClips.playACue(music);
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
 };
@@ -34,6 +35,7 @@ HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3
 HeroGroup.prototype._serviceInvulnerable = function () {
     this.mCurrentTick++;
     //turn light on
+    //gEngine.AudioClips.playACue(music);
     this.mBarrier.setLightTo(true);
     var c = this.getColor();
     if (this.mCurrentTick < 15) c[3] += 0.1;
