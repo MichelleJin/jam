@@ -15,7 +15,7 @@ function ChasePackSet(sprite) {
     var i, x, y, c;
     for(i=0; i<30; i++){
         x = 100 + 900*Math.random();
-        y = 60 * Math.random();
+        y = 10 + 60 * Math.random();
         c = new ChasePack(this.kSpriteSheet, x, y);
         
         this.addToSet(c);
@@ -33,16 +33,7 @@ ChasePackSet.prototype.update = function(hero, aCamera) {
         this.addToSet(d);
     }
     
-    var index, size;
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Z)) {
-        size = this.size();
-        if (size >= 1) {
-            index = Math.floor(Math.random() * size);
-            if (index >= size)
-                index = size - 1;
-            this.removeFromSet(this.getObjectAt(index));
-        }
-    }
+    
     
     // remove the expired ones
     var i, obj;

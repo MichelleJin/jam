@@ -13,8 +13,8 @@
 
 
 function Grenade(texture, x, y) {
-    this.kRefWidth = 5;
-    this.kRefHeight = 5;
+    this.kRefWidth = 8;
+    this.kRefHeight = 8;
     this.kReferenceSpeed = 50 / (5 * 60);
             // cover 100 units in 5 seconds
             
@@ -26,7 +26,7 @@ function Grenade(texture, x, y) {
     this.mChipOne.setColor([1, 1, 1, 0]);
     this.mChipOne.getXform().setPosition(x, y);
     this.mChipOne.getXform().setZPos(10);
-    this.mChipOne.getXform().setSize(4, 4);
+    this.mChipOne.getXform().setSize(this.kRefWidth, this.kRefHeight);
     GameObject.call(this, this.mChipOne);
     
     this.setSpeed(0.3);
