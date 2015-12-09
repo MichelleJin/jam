@@ -16,49 +16,15 @@ function GameOverScene() {
     this.kCanvasWidth = canvas.width;
     this.kCanvasHeight = canvas.height;
 
-    this.kYouLostLogo = "assets/gameoverlogo.png";
     this.kStarsBG = "assets/bg_blend.jpg";
 
-    this.kInsult0 = "assets/insult0.png";
-    this.kInsult1 = "assets/insult1.png";
-    this.kInsult2 = "assets/insult2.png";
-
     this.mCamera = null;
-    this.mGameOverMsg = null;
-    this.mInsult = null;
 
+    this.kPressSpaceToContinue = "assets/PressSpaceToContinue.png";
+    this.kYouLostLogo = "assets/gameoverlogo.png";
+    this.kContinue = "assets/continue.png";
 }
 gEngine.Core.inheritPrototype(GameOverScene, Scene);
-
-GameOverScene.prototype.selectRandomInsult = function () {
-    var random = getRandomIntInclusive(0,2);
-    switch(random) {
-        case 0:
-            this.kInsult = this.kInsult0;
-            break;
-        case 1:
-            this.kInsult = this.kInsult1;
-            break;
-        case 2:
-            this.kInsult = this.kInsult2;
-            break;
-        /*
-        case 3:
-            this.kInsult = this.kInsult3;
-        case 4:
-            this.kInsult = this.kInsult4;
-        case 5:
-            this.kInsult = this.kInsult5;
-            */
-    }
-}
-
-// Returns a random integer between min (included) and max (included)
-// Using Math.round() will give you a non-uniform distribution!
-function getRandomIntInclusive(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -70,27 +36,16 @@ function getRandomArbitrary(min, max) {
 GameOverScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kYouLostLogo);
     gEngine.Textures.loadTexture(this.kStarsBG);
-
-    gEngine.Textures.loadTexture(this.kInsult0);
-    gEngine.Textures.loadTexture(this.kInsult1);
-    gEngine.Textures.loadTexture(this.kInsult2);
-   // gEngine.Textures.loadTexture(this.kInsult3);
-   // gEngine.Textures.loadTexture(this.kInsult4);
-
+    gEngine.Textures.loadTexture(this.kPressSpaceToContinue);
+    gEngine.Textures.loadTexture(this.kContinue);
 
 };
 
 GameOverScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kYouLostLogo);
     gEngine.Textures.unloadTexture(this.kStarsBG);
-
-    gEngine.Textures.unloadTexture(this.kInsult0);
-    gEngine.Textures.unloadTexture(this.kInsult1);
-    gEngine.Textures.unloadTexture(this.kInsult2);
-    //gEngine.Textures.unloadTexture(this.kInsult3);
-    //gEngine.Textures.unloadTexture(this.kInsult4);
-
-
+    gEngine.Textures.unloadTexture(this.kPressSpaceToContinue);
+    gEngine.Textures.unloadTexture(this.kContinue);
 
     switch (this.mNextScene) {
         case GAME_SCENE:
@@ -105,6 +60,9 @@ GameOverScene.prototype.unloadScene = function () {
         case START_SCENE:
             var nextLevel = new StartScene();
             break;
+        case GAMEOVER_SCENE:
+            var nextLevel = new GameOverScene();
+            break
     }
 
     gEngine.Core.startScene(nextLevel);
@@ -121,11 +79,26 @@ GameOverScene.prototype.initialize = function () {
 
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
+    /*
     this.kGameOverMsg = "Game over!";
     this.mGameOverMsg = new FontRenderable(this.kGameOverMsg);
     this.mGameOverMsg.setColor([1, 1, 1, 1]);
     this.mGameOverMsg.getXform().setPosition(-5, 40);
     this.mGameOverMsg.setTextHeight(10);
+*/
+
+
+    this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
+    this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
+    this.mYouLostLogo.getXform().setSize(70,30);
+    this.mYouLostLogo.getXform().setPosition(20,63);
+    this.mYouLostLogo.setVisibility(false);
+
+    this.mContinueRender = new TextureRenderable(this.kContinue);
+    this.mContinue = new GameObject(this.mContinueRender);
+    this.mContinue.getXform().setSize(70,30);
+    this.mContinue.getXform().setPosition(20,80);
+
 
     this.mTimerCountMsg = new FontRenderable("20");
     this.mTimerCountMsg.setColor([1, 1, 1, 1]);
@@ -134,15 +107,11 @@ GameOverScene.prototype.initialize = function () {
     this.mTimerCountMsg.frameSkip = 0;
     this.mTimerCountMsg.countdownTimeLeft = 20;
 
-    this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
-    this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
-    this.mYouLostLogo.getXform().setSize(80,30);
-
-    this.selectRandomInsult();
-    this.mInsultRender = new TextureRenderable(this.kInsult);
-    this.mInsult = new GameObject(this.mInsultRender);
-    this.mInsult.getXform().setSize(100,40);
-    this.mInsult.getXform().setPosition(20, 60);
+    this.mPressSpaceToContinueRender = new TextureRenderable(this.kPressSpaceToContinue);
+    this.mPressSpaceToContinue = new GameObject(this.mPressSpaceToContinueRender);
+    this.mPressSpaceToContinue.getXform().setSize(60,10);
+    this.mPressSpaceToContinue.getXform().setPosition(20,40);
+    this.mPressSpaceToContinue.visibilityCount = 0;
 
 };
 
@@ -160,18 +129,20 @@ GameOverScene.prototype.drawCamera = function (camera) {
     camera.setupViewProjection();
 
     this.mBackground.draw(camera);
-    this.mGameOverMsg.draw(camera);
-
-    this.mInsult.draw(camera);
-
-    this.mTimerCountMsg.draw(camera);
     this.mYouLostLogo.draw(camera);
+
+    if (this.mTimerCountMsg.countdownTimeLeft > 0) {
+        this.mTimerCountMsg.draw(camera);
+    }
+
+
+    this.mPressSpaceToContinue.draw(camera);
+    this.mContinue.draw(camera);
 };
 
 GameOverScene.prototype.update = function () {
 
     this.mBackground.update(this.mCamera);
-    this.mYouLostLogo.getXform().setPosition(this.mCamera.getWCCenter()[0],this.mCamera.getWCCenter()[1]+25);
 
     if(this.mTimerCountMsg.frameSkip > 40)
     {
@@ -183,13 +154,29 @@ GameOverScene.prototype.update = function () {
     this.mTimerCountMsg.frameSkip++;
 
     // If countdown is 0, player gives up. Start the Start Scene.
-    if (this.mTimerCountMsg.countdownTimeLeft == 0) {
-        this.mNextScene = START_SCENE;
-        gEngine.GameLoop.stop();
+    if (this.mTimerCountMsg.countdownTimeLeft <= 0) {
+        this.mContinue.setVisibility(false);
+        this.mPressSpaceToContinue.setVisibility(false);
+     //   this.mTimerCountMsg.setVisibility(false);
+        this.mYouLostLogo.setVisibility(true);
     }
+
+    if(this.mTimerCountMsg.countdownTimeLeft > 0) {
+        this.mPressSpaceToContinue.visibilityCount = (this.mPressSpaceToContinue.visibilityCount + 1) % 100;
+        if (this.mPressSpaceToContinue.visibilityCount < 80) {
+            this.mPressSpaceToContinue.setVisibility(true);
+        }
+        else
+        {
+            this.mPressSpaceToContinue.setVisibility(false);
+        }
+    }
+
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
     }
+
+
 
 };
