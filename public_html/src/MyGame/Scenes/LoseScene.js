@@ -22,6 +22,9 @@ function LoseScene() {
     this.kInsult0 = "assets/insult0.png";
     this.kInsult1 = "assets/insult1.png";
     this.kInsult2 = "assets/insult2.png";
+    this.kInsult3 = "assets/insult3.png";
+    this.kInsult4 = "assets/insult4.png";
+    this.kInsult5 = "assets/insult5.png";
     this.mInsult = null;
 
     this.kYouDied = "assets/youdied.png";
@@ -40,8 +43,9 @@ LoseScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kInsult0);
     gEngine.Textures.loadTexture(this.kInsult1);
     gEngine.Textures.loadTexture(this.kInsult2);
-    // gEngine.Textures.loadTexture(this.kInsult3);
-    // gEngine.Textures.loadTexture(this.kInsult4);
+    gEngine.Textures.loadTexture(this.kInsult3);
+    gEngine.Textures.loadTexture(this.kInsult4);
+    gEngine.Textures.loadTexture(this.kInsult5);
 
 };
 
@@ -53,6 +57,9 @@ LoseScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kInsult0);
     gEngine.Textures.unloadTexture(this.kInsult1);
     gEngine.Textures.unloadTexture(this.kInsult2);
+    gEngine.Textures.unloadTexture(this.kInsult3);
+    gEngine.Textures.unloadTexture(this.kInsult4);
+    gEngine.Textures.unloadTexture(this.kInsult5);
 
 
     switch (this.mNextScene) {
@@ -148,7 +155,7 @@ LoseScene.prototype.update = function () {
 };
 
 LoseScene.prototype.selectRandomInsult = function () {
-    var random = getRandomIntInclusive(0,2);
+    var random = getRandomIntInclusive(0,5);
     switch(random) {
         case 0:
             this.kInsult = this.kInsult0;
@@ -159,14 +166,15 @@ LoseScene.prototype.selectRandomInsult = function () {
         case 2:
             this.kInsult = this.kInsult2;
             break;
-        /*
-         case 3:
-         this.kInsult = this.kInsult3;
-         case 4:
-         this.kInsult = this.kInsult4;
-         case 5:
-         this.kInsult = this.kInsult5;
-         */
+        case 3:
+            this.kInsult = this.kInsult3;
+            break;
+        case 4:
+            this.kInsult = this.kInsult4;
+            break;
+        case 5:
+            this.kInsult = this.kInsult5;
+            break;
     }
 }
 

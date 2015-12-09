@@ -171,7 +171,6 @@ GameOverScene.prototype.update = function () {
             this.mPressSpaceToContinue.setVisibility(false);
         }
     }
-
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
