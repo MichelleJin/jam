@@ -79,10 +79,10 @@ MyGame.prototype._initializeLights = function () {
      l = this._createALight(Light.eLightType.eDirectionalLight,
             [64, 43, 10],            // Center of camera 
             [0.0, 0.03, -1],
-            [0, 1, 0, 1],      //  color
+            [0.3, 0.3, 0.3, 1],      //  color
             1000, 1000,                   // near and far distances
             1.9, 2.0,                // inner and outer cones
-            0.1,                       // intensity
+            0.6,                       // intensity
             1                      // drop off
             );
     l.setLightTo(true);
