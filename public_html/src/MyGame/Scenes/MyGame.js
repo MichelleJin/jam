@@ -40,6 +40,7 @@ function MyGame() {
     //this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
     this.kGrenade = "assets/Granade.png";
     this.kParticleTexture = "assets/particle.png";
+    this.kBarrierBubble = "assets/PowerUpBarrier.png"
 
     this.kStatus = "Status: ";
     // The camera to view the scene
@@ -85,6 +86,7 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kGoalStar);
     gEngine.Textures.loadTexture(this.kGrenade);
     gEngine.Textures.loadTexture(this.kParticleTexture);
+    gEngine.Textures.loadTexture(this.kBarrierBubble);
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -109,6 +111,7 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kGoalStar);
     gEngine.Textures.unloadTexture(this.kGrenade);
     gEngine.Textures.unloadTexture(this.kParticleTexture);
+    gEngine.Textures.unloadTexture(this.kBarrierBubble);
     
     switch (this.mNextScene) {
         case GAME_SCENE:
@@ -154,7 +157,7 @@ MyGame.prototype.initialize = function () {
     );
     this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
 
-    gEngine.DefaultResources.setGlobalAmbientIntensity(1.6);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(2.6);
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
@@ -165,6 +168,14 @@ MyGame.prototype.initialize = function () {
     var lightZero = this.mGlobalLightSet.getLightAt(0);
     lightZero.setXPos(this.mStar.getXform().getXPos());
     lightZero.setYPos(this.mStar.getXform().getYPos());
+    
+    var bubble = new LightRenderable(this.kBarrierBubble);
+    bubble.setColor([1, 1, 1, 0]);
+    bubble.getXform().setPosition(100, 35);
+    bubble.getXform().setSize(5, 5);
+    bubble.addLight(this.mGlobalLightSet.getLightAt(3));
+    this.mBubble = new GameObject(bubble);
+    
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
 
@@ -221,6 +232,7 @@ MyGame.prototype.draw = function () {
     }
     this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
+    this.mBubble.draw(this.mCamera);
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -250,6 +262,12 @@ MyGame.prototype.update = function () {
     var lightThree = this.mGlobalLightSet.getLightAt(3);
     lightThree.setXPos(x+8);
     lightThree.setYPos(y);
+    
+    var b = [];
+    if (this.mBubble.pixelTouches(this.mHeroGroup, b)) {
+        this.mHeroGroup.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
+        this.mBubble.setVisibility(false);
+    }
     
     //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);

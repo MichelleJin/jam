@@ -10,6 +10,9 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
             this._serviceInvulnerable();
             //turn light off
             break;
+        case HeroGroup.eHeroGroupState.eBarrier:            
+            this._serviceWithBarrier(music);
+            break;
     }
 };
 
@@ -52,6 +55,33 @@ HeroGroup.prototype._serviceInvulnerable = function () {
         this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
         this.getColor()[3] = 0;
     }
+};
+
+HeroGroup.prototype._serviceWithBarrier = function (music) {
+    this.mBarrierTick++;
+    //window.alert("Get");
+    //turn light on
+    //gEngine.AudioClips.playACue(music);
+    this.mBarrier.setLightTo(true);
+    this.mBarrier.setColor([0.1, 0.8, 0.1, 1]);
+    
+    if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+        gEngine.AudioClips.playACue(music);
+        if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
+            this.mProjectiles.newAt(this.getXform().getPosition());
+        else if (this.mShotType === HeroGroup.eHeroShotType.eShotGun) {
+            this.mProjectiles.newShootGunAt(this.getXform().getPosition());
+        }
+        else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
+
+        }
+    }
+    
+    if (this.mBarrierTick > 600) {
+            this.mBarrierTick = 0;
+            this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
+            this.mBarrier.setColor([0.5, 0.5, 0.5, 1]);
+        }
 };
 
 // update hero path

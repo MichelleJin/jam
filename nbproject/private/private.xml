@@ -23,7 +23,63 @@
         </group>
         <group name="MPSubmission_In_ToDelete_zzCodeBackup"/>
         <group>
-            <file>file:/Users/MetaBlue/Desktop/jam/public_html/index.html</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Scene.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/GrenadeSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/GameObjects/GameObjectSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/HeroGroup/HeroGroup.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/assets/GoalStar.png</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Resources/Engine_DefaultResources.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/StartScene.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/assets/HealthBar.png</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/Grenade.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Physics/RigidRectangle.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Physics/RigidCircle_Collision.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Resources/Engine_ResourceMap.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/MyGame_LightControl.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Particles/ParticleGameObjectSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Particles/ParticleEmitter.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Ghost/Ghost_update.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/HeroGroup/HeroGroup_update.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/ProjectileSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Physics/RigidCircle.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Utils/BoundingBox.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Ghost/GhostSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Renderables/TextureRenderable.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Grenade/Grenade_update.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/GameObjects/GameObject_PixelCollision.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/lib/gl-matrix.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Renderables/SpriteRenderable.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/ParticleObject.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Renderables/ParticleRenderable.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/MyGame_Lights.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Particles/Particle.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Ghost/Ghost.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Astroid/Astroid.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/GameObjects/GameObject.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Shaders/LightShader.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Background/Background.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Lights/LightSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePack.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Engine_GameLoop.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Shaders/SimpleShader.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePack_update.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Objects/Projectile.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Lights/Light.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/ChasePack/ChasePackSet.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Engine_Particle.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/index.html</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Resources/Engine_Textures.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Cameras/Camera.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Utils/Transform.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/GLSLShaders/LightFS.glsl</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/HeroGroup/HeroGroupState.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Renderables/Renderable.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/GLSLShaders/IllumFS.glsl</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Core/Engine_Physics.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/LoseScene.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/Engine/Particles/ParticleGameObject.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/WinScene.js</file>
+            <file>file:/Users/Michelle/Documents/jam/public_html/src/MyGame/Scenes/MyGame.js</file>
         </group>
     </open-files>
 </project-private>
