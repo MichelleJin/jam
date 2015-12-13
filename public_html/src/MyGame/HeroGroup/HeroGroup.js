@@ -13,6 +13,11 @@ HeroGroup.eHeroGroupState = Object.freeze({
     eInvicible: 1
 });
 
+HeroGroup.eHeroShotType = Object.freeze({
+    eNormal: 0,
+    eShotGun: 1,
+    eBigShot: 2
+});
 function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree) {
     this.mShip = new TextureRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
@@ -29,6 +34,7 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
     this.mHit = 0;
     this.mNumDestroy = 0;
 
+    this.mShotType = HeroGroup.eHeroShotType.eNormal;
     // Projectiles that the hero can shoot
     this.mProjectiles = new ProjectileSet(lightOne);
     this.mBarrier = lightThree;

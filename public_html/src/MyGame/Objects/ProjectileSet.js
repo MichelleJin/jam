@@ -41,6 +41,10 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
 
 ProjectileSet.prototype.newAt = function(pos) {
     var p = new Projectile(pos[0], pos[1], this.mLight);
-    
     this.addToSet(p);
 };
+
+ProjectileSet.prototype.newBigShotAt = function(pos) {
+    var p = new Projectile(pos[0], pos[1], this.mLight);
+    p.getXform().setSize()
+    this.addToSet(p);}

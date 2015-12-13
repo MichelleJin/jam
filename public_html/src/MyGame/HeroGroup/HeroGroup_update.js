@@ -20,7 +20,14 @@ HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, a
     this.mBarrier.setLightTo(false);
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         gEngine.AudioClips.playACue(music);
-        this.mProjectiles.newAt(this.getXform().getPosition());
+        if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
+            this.mProjectiles.newAt(this.getXform().getPosition());
+        else if (this.mShotType === HeroGroup.eHeroShotType.eShotGun) {
+
+        }
+        else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
+
+        }
     }
 };
 
