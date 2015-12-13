@@ -10,18 +10,24 @@
 // ambient lighting control
 MyGame.prototype._updateLight = function () {
     var deltaColor = 0.05;
+    var lightFour = this.mGlobalLightSet.getLightAt(4);
+    var color = lightFour.getColor();
     var GlobalAmbientColor = gEngine.DefaultResources.getGlobalAmbientColor();
     if (this.mHeroGroup.getHealth() <= 2) {
         if (this.mRed) {
             this.mAmbientTick++;
-            GlobalAmbientColor[0] += deltaColor;
+            color[0] += deltaColor;
+            
+            //GlobalAmbientColor[0] += deltaColor;
             if(this.mAmbientTick > 60) {
                 this.mRed = false;
                 this.mAmbientTick = 0;
             }
         } else {
             this.mAmbientTick++;
-            GlobalAmbientColor[0] -= deltaColor;
+            color[0] -= deltaColor;
+           
+            //GlobalAmbientColor[0] -= deltaColor;
             if (this.mAmbientTick > 60) {
                 this.mRed = true;
                 this.mAmbientTick = 0;
