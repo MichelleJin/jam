@@ -243,15 +243,11 @@ MyGame.prototype.draw = function () {
         this.mGrenadeSet[i].draw(this.mCamera);
     }
     this.mAllParticles.draw(this.mCamera);
-<<<<<<< HEAD
     this.mBubble.draw(this.mCamera);
-=======
     this.mHeroGroup.draw(this.mCamera);
     this.mAstroid.draw(this.mCamera);
 
     this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER
-
->>>>>>> origin/master
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -262,7 +258,6 @@ MyGame.prototype.draw = function () {
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mMiniCamera);
     }
-    
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw

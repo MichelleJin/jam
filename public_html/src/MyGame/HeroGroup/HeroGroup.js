@@ -10,7 +10,7 @@
 
 HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
-    eBarrier: 2
+    eBarrier: 2,
     eInvincible: 1
 
 });

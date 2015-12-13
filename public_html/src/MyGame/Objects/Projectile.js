@@ -48,17 +48,6 @@ function Projectile(x, y, light, dir) {
     
     // Expired to remove
     this.mExpired = false;
-<<<<<<< HEAD
-
-    
-
-    
-=======
-    this.mLight = light;
-    this.mLight.setXPos(x);
-    this.mLight.setYPos(y);
-    this.mLight.setLightTo(true);
->>>>>>> origin/master
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
