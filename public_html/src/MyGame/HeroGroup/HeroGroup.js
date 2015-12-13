@@ -10,9 +10,9 @@
 
 HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
-    eBarrier: 2,
-    eInvincible: 1
-
+    eInvincible: 1,
+    eBarrier: 2
+    
 });
 
 HeroGroup.eHeroShotType = Object.freeze({
@@ -62,10 +62,9 @@ HeroGroup.prototype.draw = function(aCamera) {
 
 // hero hit once by enemy/projectile
 HeroGroup.prototype.hitOnce = function () {
-
     if(this.mCurrentState !== HeroGroup.eHeroGroupState.eBarrier){
-        if (this.mCurrentState !== HeroGroup.eHeroGroupState.eInvicible) {
-            this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
+        if (this.mCurrentState !== HeroGroup.eHeroGroupState.eInvincible) {
+            this.mCurrentState = HeroGroup.eHeroGroupState.eInvincible;
             this.setHealth(this.getHealth() - 1);
             this.mCurrentTick = 0;
         }
@@ -81,7 +80,7 @@ HeroGroup.prototype.getStatus = function(){
 };
 
 HeroGroup.prototype.setPowerUp = function(powerUp) {
-    alert(powerUp);
+    //alert(powerUp);
     this.mShotType = powerUp;
 };
 

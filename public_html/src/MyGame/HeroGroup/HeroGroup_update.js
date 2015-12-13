@@ -62,6 +62,7 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
     //window.alert("Get");
     //turn light on
     //gEngine.AudioClips.playACue(music);
+    this.getColor()[3] = 0;
     this.mBarrier.setLightTo(true);
     this.mBarrier.setColor([0.1, 0.8, 0.1, 1]);
     
