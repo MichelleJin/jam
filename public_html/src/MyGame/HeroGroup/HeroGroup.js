@@ -10,10 +10,9 @@
 
 HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
-    eInvicible: 1,
     eBarrier: 2
-    
-    
+    eInvincible: 1
+
 });
 
 HeroGroup.eHeroShotType = Object.freeze({
@@ -21,6 +20,7 @@ HeroGroup.eHeroShotType = Object.freeze({
     eShotGun: 1,
     eBigShot: 2
 });
+
 function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree) {
     this.mShip = new LightRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
@@ -32,18 +32,19 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
     //Hero.call(this, heroTexture, atX, atY);
     this.kDelta = 0.6;
     this.kStartHealth = 5;
-
     this.mHealthBar = new HealthBar(healthBarTexture);
 
     this.mHit = 0;
     this.mNumDestroy = 0;
 
-    this.mShotType = HeroGroup.eHeroShotType.eNormal;
     // Projectiles that the hero can shoot
     this.mProjectiles = new ProjectileSet(lightOne);
+    this.mShotType = HeroGroup.eHeroShotType.eNormal;
+
+    // toggle barrier effect
     this.mBarrier = lightThree;
 
-    // state for behavior
+    // interpolating hero movement
     this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
     this.mCurrentTick = 0;
     this.mBarrierTick = 0;
@@ -54,19 +55,21 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
 gEngine.Core.inheritPrototype(HeroGroup, GameObject);
 
 HeroGroup.prototype.draw = function(aCamera) {
-    GameObject.prototype.draw.call(this, aCamera);
     this.mProjectiles.draw(aCamera);
+    GameObject.prototype.draw.call(this, aCamera);
     this.mHealthBar.draw(aCamera);
 };
 
 // hero hit once by enemy/projectile
 HeroGroup.prototype.hitOnce = function () {
+
     if(this.mCurrentState !== HeroGroup.eHeroGroupState.eBarrier){
         if (this.mCurrentState !== HeroGroup.eHeroGroupState.eInvicible) {
             this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
             this.setHealth(this.getHealth() - 1);
             this.mCurrentTick = 0;
         }
+
     }
     
 };
@@ -75,6 +78,11 @@ HeroGroup.prototype.getStatus = function(){
     return  "Hero Hit: " + this.mHit +
         "  Num Destroy: " + this.mNumDestroy +
         "  Projectile: " + this.mProjectiles.size();
+};
+
+HeroGroup.prototype.setPowerUp = function(powerUp) {
+    alert(powerUp);
+    this.mShotType = powerUp;
 };
 
 HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };

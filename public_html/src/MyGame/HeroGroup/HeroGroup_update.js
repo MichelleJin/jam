@@ -5,7 +5,7 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
         case HeroGroup.eHeroGroupState.eNormal:
             this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera, music);
             break;
-        case HeroGroup.eHeroGroupState.eInvicible:
+        case HeroGroup.eHeroGroupState.eInvincible:
             //turn light on
             this._serviceInvulnerable();
             //turn light off
@@ -29,7 +29,7 @@ HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, a
             this.mProjectiles.newShootGunAt(this.getXform().getPosition());
         }
         else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
-
+            this.mProjectiles.newBigShotAt(this.getXform().getPosition());
         }
     }
 };

@@ -48,10 +48,17 @@ function Projectile(x, y, light, dir) {
     
     // Expired to remove
     this.mExpired = false;
+<<<<<<< HEAD
 
     
 
     
+=======
+    this.mLight = light;
+    this.mLight.setXPos(x);
+    this.mLight.setYPos(y);
+    this.mLight.setLightTo(true);
+>>>>>>> origin/master
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);
 
@@ -69,15 +76,9 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
     this.mLight.setYPos(this.getXform().getYPos());
     var hit = false;
     
-    if (aCamera.collideWCBound(this.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside)
+    if (aCamera.collideWCBound(this.getXform(), 1.1) === BoundingBox.eboundCollideStatus.eOutside)
             this.setExpired();
-    
-//    obj.rotateObjPointTo(p, 0.8);
-//        if (obj.pixelTouches(this, collisionPt)) {
-//            dyePacks.removeFromSet(obj);
-//            allParticles.addEmitterAt(collisionPt, 200, func);
-//        }
-    
+
     var i, obj;
     var p = vec2.fromValues(0, 0);
     for (i=0; i<dyes.size(); i++) {
@@ -104,17 +105,17 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
     var q;
     for(q=0;q<10;q++){
         var dyes3 = dyes3Set[q];
-    var o;
-    for (o=0; o<dyes3.size(); o++) {
-        obj = dyes3.getObjectAt(o);
-        if (this.pixelTouches(obj, p)) {
-            this.setExpired();
-            particle.addEmitterAt(p, 200, func);
-            obj.setExpired();
-            hit = true;
+        var o;
+        for (o=0; o<dyes3.size(); o++) {
+            obj = dyes3.getObjectAt(o);
+            if (this.pixelTouches(obj, p)) {
+                this.setExpired();
+                particle.addEmitterAt(p, 200, func);
+                obj.setExpired();
+                hit = true;
+            }
         }
     }
-    }
-    
     return hit;
 };
+

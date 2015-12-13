@@ -32,7 +32,7 @@ Ghost.prototype._serviceDied = function (hero) {
 
 Ghost.prototype._serviceFlee = function (hero, aCamera) {
     // remove projectile if exits the screen
-    if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside) {
+    if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) === BoundingBox.eboundCollideStatus.eOutside) {
         this.setExpired();
     }
     // hit hero on collision with ghost

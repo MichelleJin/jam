@@ -33,9 +33,6 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
         if (obj.update(dyes, dyes2, dyes3, particle, func, aCamera))
             numHit++;
     }
-    
-    
-    
     return numHit;
 };
 
@@ -45,6 +42,7 @@ ProjectileSet.prototype.newAt = function(pos) {
 };
 
 ProjectileSet.prototype.newBigShotAt = function(pos) {
+<<<<<<< HEAD
     var p = new Projectile(pos[0], pos[1], this.mLight);
     p.getXform().setSize();
     this.addToSet(p);
@@ -72,3 +70,8 @@ ProjectileSet.prototype.newShootGunAt = function(pos) {
     this.addToSet(p8);
     this.addToSet(p9);
 };
+=======
+    var p = new BigShot(pos[0], pos[1], this.mLight);
+    this.addToSet(p);
+};
+>>>>>>> origin/master
