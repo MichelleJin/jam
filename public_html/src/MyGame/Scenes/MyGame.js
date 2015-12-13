@@ -21,24 +21,26 @@ function MyGame() {
     this.kCanvasWidth = canvas.width;
     this.kCanvasHeight = canvas.height;
     this.kMiniMapHeight = 70;
-
+    // power_ups textures
+    this.kShotGunTexture = "assets/power_ups/ShotGun.png";
+    this.kBFGTexture = "assets/power_ups/ShotGun.png";
+    // hero textures
     this.kHeroSprite = "assets/Hero.png";
-    this.kChaseTexture = "assets/Chase.png";
+    this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
     this.kProjectileTexture = "assets/Projectile.png";
-    this.kAstroidTexture = "assets/Astroid.png";
-    this.kAstroidNormalMap = "assets/NormalMap.png";
+    // enemy textures
+    this.kChaseTexture = "assets/Chase.png";
     this.kGhostTexture = "assets/Ghost.png";
     this.kGhostDeadTexture = "assets/Ghost_Dead.png";
+    this.kGrenade = "assets/Granade.png";
+
+    this.kAstroidTexture = "assets/Astroid.png";
+    this.kAstroidNormalMap = "assets/NormalMap.png";
 
     this.kGoalStar = "assets/GoalStar.png";
 
-    this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
-
     this.kStarsBG = "assets/bg_blend.jpg";
 
-    //this.kSpaceInvaderSprite = "assets/space_invader_sprite_sheet.png";
-    //this.kSpaceInvader0 = "assets/space_invaders_sprite0fixed.png";
-    this.kGrenade = "assets/Granade.png";
     this.kParticleTexture = "assets/particle.png";
 
     this.kStatus = "Status: ";
@@ -53,6 +55,7 @@ function MyGame() {
     this.mGhostSet = null;
     this.mChasePackSet = null;
     this.mGrenadeSet = [];
+
     this.mAllParticles = new ParticleGameObjectSet();
 
     // ambient lighting tick
@@ -62,12 +65,15 @@ function MyGame() {
     this.mAstroid = null;
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
+    PowerUp.kShotGunTexture = this.kShotGunTexture;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
     gEngine.AudioClips.loadAudio(this.kBgClip);
     gEngine.AudioClips.loadAudio(this.kCue);
+
+    gEngine.Textures.loadTexture(this.kShotGunTexture);
     
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
@@ -92,6 +98,9 @@ MyGame.prototype.unloadScene = function () {
 
     gEngine.AudioClips.unloadAudio(this.kBgClip);
     gEngine.AudioClips.unloadAudio(this.kCue);
+
+    gEngine.Textures.unloadTexture(this.kShotGunTexture);
+
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
 
@@ -194,6 +203,10 @@ MyGame.prototype.initialize = function () {
     gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 
     this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
+    this.mPowerUpSet = new PowerUpSet();
+    PowerUpSet.kShotGunTexture = this.kShotGunTexture;
+    this.mShotGun = new ShotGun(this.kShotGunTexture, 25, 35);
+    this.mPowerUpSet.addToSet(this.mShotGun);
 
 };
 
@@ -218,6 +231,8 @@ MyGame.prototype.draw = function () {
     this.mAllParticles.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mAstroid.draw(this.mCamera);
+
+    this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER
 
 
     // minimap
@@ -255,6 +270,7 @@ MyGame.prototype.update = function () {
 
     this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue);
     this._updateLight(); // after hero to maintain light state
+    this.mPowerUpSet.update(this.mCamera, this.mHeroGroup);
 
     this.mCamera.clampHeroAtBoundary(this.mHeroGroup, 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects

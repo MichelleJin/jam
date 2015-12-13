@@ -70,6 +70,11 @@ HeroGroup.prototype.getStatus = function(){
         "  Projectile: " + this.mProjectiles.size();
 };
 
+HeroGroup.prototype.setPowerUp = function(powerUp) {
+    alert(powerUp);
+    this.mShotType = powerUp;
+};
+
 HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };
 
 HeroGroup.prototype.getX = function () { return this.mHeroGroupState.getX(); };
