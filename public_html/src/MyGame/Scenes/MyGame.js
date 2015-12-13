@@ -210,14 +210,15 @@ MyGame.prototype.draw = function () {
 
     // main map
     this.mGhostSet.draw(this.mCamera);
-    this.mHeroGroup.draw(this.mCamera);
     this.mChasePackSet.draw(this.mCamera);
     this.mStar.draw(this.mCamera);
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mCamera);
     }
-    this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
+    this.mHeroGroup.draw(this.mCamera);
+    this.mAstroid.draw(this.mCamera);
+
 
     // minimap
     this.mMiniCamera.setupViewProjection();
