@@ -30,7 +30,7 @@ function LoseScene() {
     this.kYouDied = "assets/youdied.png";
 
     this.mCamera = null;
-    this.mWaitTime = 500;
+    this.mWaitTime = 420;
     this.mWaitCount = 0;
 
 }

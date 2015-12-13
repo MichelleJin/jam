@@ -13,6 +13,8 @@
 
 
 function MyGame() {
+    this.kBgClip = "assets/sounds/bgMusic.mp3";
+    this.kCue = "assets/sounds/laser.wav";
     this.mDebugModeOn = false;
 
     var canvas = document.getElementById('GLCanvas');
@@ -43,7 +45,6 @@ function MyGame() {
     // The camera to view the scene
     this.mCamera = null;
     this.mMiniCamera = null;
-    this.mMsg = null;
     this.mNextScene = 0;
 
     // Alternating background images in a set
@@ -65,6 +66,9 @@ function MyGame() {
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+    gEngine.AudioClips.loadAudio(this.kBgClip);
+    gEngine.AudioClips.loadAudio(this.kCue);
+    
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
 
@@ -84,6 +88,10 @@ MyGame.prototype.loadScene = function () {
 };
 
 MyGame.prototype.unloadScene = function () {
+    gEngine.AudioClips.stopBackgroundAudio();
+
+    gEngine.AudioClips.unloadAudio(this.kBgClip);
+    gEngine.AudioClips.unloadAudio(this.kCue);
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
 
@@ -135,23 +143,17 @@ MyGame.prototype.initialize = function () {
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
     // sets the background to gray
 
-    //this.mCamera.setSpeed(0.1);
+    //this.mCamera.setSpeed(0);
     this.mCamera.setSpeed(0.1);
 
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
         [0, 0, this.kCanvasWidth, this.kMiniMapHeight]       // viewport (orgX, orgY, width, height)
-       
     );
     this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
 
     gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
-
-    this.mMsg = new FontRenderable(this.kStatus);
-    this.mMsg.setColor([1, 1, 1, 1]);
-    this.mMsg.getXform().setPosition(2, 10);
-    this.mMsg.setTextHeight(2);
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
@@ -163,19 +165,13 @@ MyGame.prototype.initialize = function () {
     lightZero.setXPos(this.mStar.getXform().getXPos());
     lightZero.setYPos(this.mStar.getXform().getYPos());
 
-    // Being used to debug background scrolling
-    this.mMsg2 = new FontRenderable(this.kStatus);
-    this.mMsg2.setColor([1, 1, 1, 1]);
-    this.mMsg2.getXform().setPosition(2, 4);
-    this.mMsg2.setTextHeight(2);
-
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
 
     this.mChasePackSet = new ChasePackSet(this.kChaseTexture);
     
     var i;
     for(i=0; i<10; i++){
-        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100+ 900*Math.random(),20 + 40 * Math.random());
+        this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100 + 900 * Math.random(), 20 + 40 * Math.random());
     }
 
     // herosprite, healthbar, texture, x, y
@@ -185,14 +181,20 @@ MyGame.prototype.initialize = function () {
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
-    
 
     this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
     var i;
-    for (i = 0; i < 4; i++) {
-        this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-        this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+    for (i = 0; i < 5; i++) {
+        if (i != 2) {
+            this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+        }
+
     }
+
+    gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
+
+    this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
+
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -202,10 +204,7 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     
     gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1]); // clear to light gray
-    if (this.mDebugModeOn) {
-        this.mMsg.draw(this.mCamera);
-        this.mMsg2.draw(this.mCamera);
-    } else {
+    if (!this.mDebugModeOn) {
         this.mBackground.draw(this.mCamera);
     }
 
@@ -219,7 +218,6 @@ MyGame.prototype.draw = function () {
     }
     this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
-
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -240,11 +238,12 @@ MyGame.prototype.update = function () {
     this.mBackground.update(this.mCamera);
     this.mAllParticles.update();
     // maybe have a class to update these
-    for(var i=0; i<10; i++){
+    var i;
+    for(i = 0; i < 10; i++){
         this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
     }
-    var x = this.mHeroGroup.mHeroGroupState.getX();
-    var y = this.mHeroGroup.mHeroGroupState.getY();
+    var x = this.mHeroGroup.getX();
+    var y = this.mHeroGroup.getY();
     var lightThree = this.mGlobalLightSet.getLightAt(3);
     lightThree.setXPos(x+8);
     lightThree.setYPos(y);
@@ -252,25 +251,13 @@ MyGame.prototype.update = function () {
     //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
-    // should pass this an array of enemy
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera);
 
-    this.mMsg.setText("Camera CenterXPos:" + this.mCamera.getWCCenter()[0].toPrecision(4));
-    var c = this.mCamera.getWCCenter();
-    var w = this.mCamera.getWCWidth();
-    this.mMsg.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos());
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue);
+    this._updateLight(); // after hero to maintain light state
 
     this.mCamera.clampHeroAtBoundary(this.mHeroGroup, 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
     this.mMiniCamera.update();
-
-     //Second message being used to debug background alternation
-    //this.mMsg2.setText("hero: " + this.mHeroGroup.getXform().getXPos().toPrecision(3)
-    //    + " bg[0] minX:" + this.mBackgroundSet.mSet[0].getBBox().minX()
-    //    + " maxX " + this.mBackgroundSet.mSet[0].getBBox().maxX()
-    //    + " bg[1] minX:" + this.mBackgroundSet.mSet[1].getBBox().minX()
-    //    + " maxX " + this.mBackgroundSet.mSet[1].getBBox().maxX());
-    //this.mMsg2.getXform().setPosition(c[0] - w/2 + 2, this.mMsg.getXform().getYPos() + 2);
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
@@ -285,34 +272,6 @@ MyGame.prototype.update = function () {
     if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
-    }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.One)) {
-        if (this.mCamera.isMouseInViewport()) {
-            var p = this.createParticle(this.mCamera.mouseWCX(), this.mCamera.mouseWCY());
-            this.mAllParticles.addToSet(p);
-        }
-    }
-
-    // ambient lighting  <-- move into MyGame_Lights_Update?
-    var deltaColor = 0.05;
-    var GlobalAmbientColor = gEngine.DefaultResources.getGlobalAmbientColor();
-    if (this.mHeroGroup.getHealth() <= 2) {
-        if (this.mRed) {
-            this.mAmbientTick++;
-            GlobalAmbientColor[0] += deltaColor;
-            if(this.mAmbientTick > 60) {
-                this.mRed = false;
-                this.mAmbientTick = 0;
-            }
-        } else {
-            this.mAmbientTick++;
-            GlobalAmbientColor[0] -= deltaColor;
-            if (this.mAmbientTick > 60) {
-                this.mRed = true;
-                this.mAmbientTick = 0;
-            }
-        }
     }
 };
 

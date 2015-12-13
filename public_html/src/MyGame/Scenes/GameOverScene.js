@@ -62,9 +62,8 @@ GameOverScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
-            break
+            break;
     }
-
     gEngine.Core.startScene(nextLevel);
 };
 
@@ -87,7 +86,6 @@ GameOverScene.prototype.initialize = function () {
     this.mGameOverMsg.setTextHeight(10);
 */
 
-
     this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
     this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
     this.mYouLostLogo.getXform().setSize(70,30);
@@ -98,7 +96,6 @@ GameOverScene.prototype.initialize = function () {
     this.mContinue = new GameObject(this.mContinueRender);
     this.mContinue.getXform().setSize(70,30);
     this.mContinue.getXform().setPosition(20,80);
-
 
     this.mTimerCountMsg = new FontRenderable("20");
     this.mTimerCountMsg.setColor([1, 1, 1, 1]);
@@ -112,7 +109,6 @@ GameOverScene.prototype.initialize = function () {
     this.mPressSpaceToContinue.getXform().setSize(60,10);
     this.mPressSpaceToContinue.getXform().setPosition(20,40);
     this.mPressSpaceToContinue.visibilityCount = 0;
-
 };
 
 
@@ -122,7 +118,6 @@ GameOverScene.prototype.draw = function () {
 
     // Draw on all camera.
     this.drawCamera(this.mCamera);
-
 };
 
 GameOverScene.prototype.drawCamera = function (camera) {
@@ -134,7 +129,6 @@ GameOverScene.prototype.drawCamera = function (camera) {
     if (this.mTimerCountMsg.countdownTimeLeft > 0) {
         this.mTimerCountMsg.draw(camera);
     }
-
 
     this.mPressSpaceToContinue.draw(camera);
     this.mContinue.draw(camera);
@@ -171,11 +165,11 @@ GameOverScene.prototype.update = function () {
             this.mPressSpaceToContinue.setVisibility(false);
         }
     }
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
+
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
     }
-
-
-
 };

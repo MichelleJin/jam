@@ -57,29 +57,13 @@ HeroGroup.prototype.hitOnce = function () {
     }
 };
 
-//<<<<<<< HEAD
-//HeroGroup.prototype.hitOnce = function() {
- //   this.setHealth(this.getHealth() - 1);
-//};
-
-//=======
-//>>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b
 HeroGroup.prototype.getStatus = function(){
     return  "Hero Hit: " + this.mHit +
         "  Num Destroy: " + this.mNumDestroy +
         "  Projectile: " + this.mProjectiles.size();
 };
 
-// returns percent of health left
-//
-//HeroGroup.prototype.setHealth = function (number) { this.mHealth = number; };
-//HeroGroup.prototype.getHealth = function () { return this.mHealth; };
-
-//HeroGroup.prototype.getHealthRatio = function () {
- //   return this.getHealth()/this.kStartHealth; };
-//=======
 HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };
-//>>>>>>> 48be6bc8b9a038d5defa79edf53ea7ec13c1f22b
 
 HeroGroup.prototype.getX = function () { return this.mHeroGroupState.getX(); };
 HeroGroup.prototype.setX = function (xPos) { this.mHeroGroupState.setX(xPos); };
