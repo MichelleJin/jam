@@ -13,37 +13,44 @@ Projectile.kSpeed = 100 / (0.8 * 60);
         // across the entire screen in 0.5 seconds
 Projectile.kTexture = null;
 
-function Projectile(x, y, light) {
+function Projectile(x, y, light, dir) {
     var textInfo = gEngine.Textures.getTextureInfo(Projectile.kTexture);
     this.kRefHeight = 6;
     this.kRefWidth = this.kRefHeight / textInfo.mHeight * textInfo.mWidth;
 
+    if(dir === null){
+        dir = 0;
+    }
     this.kDetectThreshold = 10;
     this.kChaseThreshold = 2 * this.kDetectThreshold;
     
-    var r = new TextureRenderable(Projectile.kTexture);
+    var r = new LightRenderable(Projectile.kTexture);
     r.setColor([0.8, 1, 0.8, 0.1]);
     r.getXform().setPosition(x, y);
     r.getXform().setSize(this.kRefWidth, this.kRefHeight);
     GameObject.call(this, r);
+    r.addLight(gLights.getLightAt(4)); 
+     
+    this.mLight = light;
+    this.mLight.setXPos(x);
+    this.mLight.setYPos(y);
     
-    this.setCurrentFrontDir([1, 0]);
+    this.mLight.setLightTo(true);
+    
+    if(dir === undefined){
+        this.setCurrentFrontDir([1, 0]);
+    }else{
+        this.setCurrentFrontDir(dir);
+        this.mLight.setLightTo(false);
+    }
+    
     this.setSpeed(Projectile.kSpeed);
     
     // Expired to remove
     this.mExpired = false;
-    this.mLight = light;
-    this.mLight.setXPos(x);
-    this.mLight.setYPos(y);
-    this.mLight.setLightTo(true);
+
     
-//    this.mTheLight = new Light();
-//    this.mTheLight.setRadius(8);
-//    this.mTheLight.setZPos(2);
-//    this.mTheLight.setXPos(x);
-//    this.mTheLight.setYPos(y);  // Position above LMinion
-//    this.mTheLight.setColor([0.9, 0.9, 0.2, 1]);
-    //this.mTheLight.
+
     
 }
 gEngine.Core.inheritPrototype(Projectile, GameObject);

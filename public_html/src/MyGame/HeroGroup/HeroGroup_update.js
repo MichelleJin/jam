@@ -23,7 +23,7 @@ HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, a
         if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
             this.mProjectiles.newAt(this.getXform().getPosition());
         else if (this.mShotType === HeroGroup.eHeroShotType.eShotGun) {
-
+            this.mProjectiles.newShootGunAt(this.getXform().getPosition());
         }
         else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
 

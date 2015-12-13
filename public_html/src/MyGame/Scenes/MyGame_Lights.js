@@ -82,7 +82,7 @@ MyGame.prototype._initializeLights = function () {
             [0.3, 0.3, 0.3, 1],      //  color
             1000, 1000,                   // near and far distances
             1.9, 2.0,                // inner and outer cones
-            0.6,                       // intensity
+            3,                       // intensity
             1                      // drop off
             );
     l.setLightTo(true);

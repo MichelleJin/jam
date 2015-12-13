@@ -46,5 +46,29 @@ ProjectileSet.prototype.newAt = function(pos) {
 
 ProjectileSet.prototype.newBigShotAt = function(pos) {
     var p = new Projectile(pos[0], pos[1], this.mLight);
-    p.getXform().setSize()
-    this.addToSet(p);}
+    p.getXform().setSize();
+    this.addToSet(p);
+};
+
+ProjectileSet.prototype.newShootGunAt = function(pos) {
+    
+    var p1 = new Projectile(pos[0], pos[1], this.mLight, [0.5, 1]);
+    var p2 = new Projectile(pos[0], pos[1], this.mLight, [1, 0.5]);
+    var p3 = new Projectile(pos[0], pos[1], this.mLight, [1, 0]);
+    var p4 = new Projectile(pos[0], pos[1], this.mLight, [1, -0.5]);
+    var p5 = new Projectile(pos[0], pos[1], this.mLight, [0.5, -1]);
+    var p6 = new Projectile(pos[0], pos[1], this.mLight, [1, 1]);
+    var p7 = new Projectile(pos[0], pos[1], this.mLight, [1, -1]);
+    var p8 = new Projectile(pos[0], pos[1], this.mLight, [1, 0.25]);
+    var p9 = new Projectile(pos[0], pos[1], this.mLight, [1, -0.25]);
+     
+    this.addToSet(p1);
+    this.addToSet(p2);
+    this.addToSet(p3);
+    this.addToSet(p4);
+    this.addToSet(p5);
+    this.addToSet(p6);
+    this.addToSet(p7);
+    this.addToSet(p8);
+    this.addToSet(p9);
+};

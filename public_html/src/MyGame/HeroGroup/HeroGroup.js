@@ -19,11 +19,12 @@ HeroGroup.eHeroShotType = Object.freeze({
     eBigShot: 2
 });
 function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree) {
-    this.mShip = new TextureRenderable(heroTexture);
+    this.mShip = new LightRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(15, 15);
     this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
+    this.mShip.addLight(gLights.getLightAt(4));
 
     //Hero.call(this, heroTexture, atX, atY);
     this.kDelta = 0.6;
@@ -56,7 +57,7 @@ HeroGroup.prototype.draw = function(aCamera) {
 
 // hero hit once by enemy/projectile
 HeroGroup.prototype.hitOnce = function () {
-    if (this.mCurrentState != HeroGroup.eHeroGroupState.eInvicible) {
+    if (this.mCurrentState !== HeroGroup.eHeroGroupState.eInvicible) {
         this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
         this.setHealth(this.getHealth() - 1);
         this.mCurrentTick = 0;

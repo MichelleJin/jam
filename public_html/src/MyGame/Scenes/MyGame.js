@@ -11,7 +11,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-
+ var gLights = null;
 function MyGame() {
     this.kBgClip = "assets/sounds/bgMusic.mp3";
     this.kCue = "assets/sounds/laser.wav";
@@ -135,6 +135,7 @@ MyGame.prototype.unloadScene = function () {
 MyGame.prototype.initialize = function () {
     this._initializeLights();   // defined in MyGame_Lights.js
     // Step A: set up the cameras
+    gLights = this.mGlobalLightSet;
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
@@ -153,7 +154,7 @@ MyGame.prototype.initialize = function () {
     );
     this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
 
-    gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+    gEngine.DefaultResources.setGlobalAmbientIntensity(1.6);
     
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
@@ -187,9 +188,11 @@ MyGame.prototype.initialize = function () {
     for (i = 0; i < 5; i++) {
         if (i != 2) {
             this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
+            
         }
 
     }
+    
 
     gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 
@@ -263,13 +266,19 @@ MyGame.prototype.update = function () {
         this.mDebugModeOn = !this.mDebugModeOn;
     }
     
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
+        this.mHeroGroup.mShotType = HeroGroup.eHeroShotType.eShotGun;
+    }
+    
     if (this.mHeroGroup.getHealthRatio() === 0) {
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
         this.mNextScene = LOSE_SCENE;
         gEngine.GameLoop.stop();
     }
 
     var h = [];
     if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }

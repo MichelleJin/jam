@@ -28,13 +28,14 @@ function ChasePack(spriteTexture, x, y) {
     this.kDetectThreshold = 20;
     this.kChaseThreshold = 2 * this.kDetectThreshold;
     
-    this.mChasePack = new SpriteRenderable(spriteTexture);
+    this.mChasePack = new LightRenderable(spriteTexture);
     this.mChasePack.setColor([1, 1, 1, 0.1]);
     this.mChasePack.getXform().setPosition(x, y);
     this.mChasePack.getXform().setZPos(10);
     this.mChasePack.getXform().setSize(this.kRefWidth, this.kRefHeight);
     this.mChasePack.setElementPixelPositions(0, 128, 0, 128);
     GameObject.call(this, this.mChasePack);
+    this.mChasePack.addLight(gLights.getLightAt(4));
     
     
     this.setSpeed(0.3);

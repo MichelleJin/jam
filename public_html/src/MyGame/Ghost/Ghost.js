@@ -35,11 +35,13 @@ function Ghost(spriteTexture, deadSprite, x, y) {
     // drawn when dead
     this.mDeadGhost = new LightRenderable(deadSprite);
     this.mDeadGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
+    this.mDeadGhost.addLight(gLights.getLightAt(4));
 
     this.mGhost = new LightRenderable(spriteTexture);
     this.mGhost.setColor([1, 1, 1, 0.1]);
     this.mGhost.getXform().setPosition(x, y);
     this.mGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
+    this.mGhost.addLight(gLights.getLightAt(4));
     // redo with sprites later
     //this.mGhost = new SpriteRenderable(spriteTexture);
     //this.mGhost.setColor([1, 1, 1, 0.1]);
