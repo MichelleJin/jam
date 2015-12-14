@@ -23,7 +23,7 @@ function MyGame() {
     this.kMiniMapHeight = 70;
     // power_ups textures
     this.kShotGunTexture = "assets/power_ups/ShotGun.png";
-    this.kBFGTexture = "assets/power_ups/ShotGun.png";
+    this.kBigShotTexture = "assets/power_ups/BFG.png";
     // hero textures
     this.kHeroSprite = "assets/Hero.png";
     this.kHealthBarTexture = "assets/HealthBar.png"; // need to make a sprite sheet
@@ -42,7 +42,7 @@ function MyGame() {
     this.kStarsBG = "assets/bg_blend.jpg";
 
     this.kParticleTexture = "assets/particle.png";
-    this.kBarrierBubble = "assets/PowerUpBarrier.png"
+    this.kBarrierBubble = "assets/PowerUpBarrier.png";
 
     this.kStatus = "Status: ";
     // The camera to view the scene
@@ -67,6 +67,7 @@ function MyGame() {
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
     PowerUp.kShotGunTexture = this.kShotGunTexture;
+    PowerUp.kBigShotTexture = this.kBigShotTexture;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -74,6 +75,7 @@ MyGame.prototype.loadScene = function () {
     gEngine.AudioClips.loadAudio(this.kBgClip);
     gEngine.AudioClips.loadAudio(this.kCue);
 
+    gEngine.Textures.loadTexture(this.kBigShotTexture);
     gEngine.Textures.loadTexture(this.kShotGunTexture);
     
     gEngine.Textures.loadTexture(this.kAstroidTexture);
@@ -101,6 +103,7 @@ MyGame.prototype.unloadScene = function () {
     gEngine.AudioClips.unloadAudio(this.kBgClip);
     gEngine.AudioClips.unloadAudio(this.kCue);
 
+    gEngine.Textures.unloadTexture(this.kBigShotTexture);
     gEngine.Textures.unloadTexture(this.kShotGunTexture);
 
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
@@ -218,8 +221,9 @@ MyGame.prototype.initialize = function () {
 
     this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
     this.mPowerUpSet = new PowerUpSet();
-    PowerUpSet.kShotGunTexture = this.kShotGunTexture;
-    this.mShotGun = new ShotGun(this.kShotGunTexture, 25, 35);
+    this.mShotGun = new ShotGunPowerUp(this.kShotGunTexture, 25, 35);
+    this.mBigShot = new BigShotPowerUp(this.kBigShotTexture, 75, 35);
+    this.mPowerUpSet.addToSet(this.mBigShot);
     this.mPowerUpSet.addToSet(this.mShotGun);
 
 };
@@ -242,9 +246,9 @@ MyGame.prototype.draw = function () {
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mCamera);
     }
-    this.mAllParticles.draw(this.mCamera);
     this.mBubble.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
+    this.mAllParticles.draw(this.mCamera);
     this.mAstroid.draw(this.mCamera);
 
     this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER

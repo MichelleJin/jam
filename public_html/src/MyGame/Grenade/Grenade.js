@@ -25,7 +25,7 @@ function Grenade(texture, x, y) {
     this.mChipOne = new LightRenderable(texture);
     this.mChipOne.setColor([1, 1, 1, 0]);
     this.mChipOne.getXform().setPosition(x, y);
-    this.mChipOne.getXform().setZPos(10);
+    this.mChipOne.getXform().setZPos(1);
     this.mChipOne.getXform().setSize(this.kRefWidth, this.kRefHeight);
     GameObject.call(this, this.mChipOne);
     this.mChipOne.addLight(gLights.getLightAt(4));

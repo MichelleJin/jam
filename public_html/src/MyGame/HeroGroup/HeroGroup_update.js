@@ -14,6 +14,22 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
             this._serviceWithBarrier(music);
             break;
     }
+    switch (this.mShotType) {
+        case HeroGroup.eHeroShotType.eNormal:
+            break;
+        case HeroGroup.eHeroShotType.eBigShot:
+        case HeroGroup.eHeroShotType.eShotGun:
+            this._serviceUpgrade();
+            break;
+    }
+};
+
+HeroGroup.prototype._serviceUpgrade = function () {
+    this.mWeaponTick++;
+    if (this.mWeaponTick === 300) {
+        this.mWeaponTick = 0;
+        this.mShotType = HeroGroup.eHeroShotType.eNormal;
+    }
 };
 
 // allows hero to fire projectiles
@@ -65,7 +81,7 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
     this.getColor()[3] = 0;
     this.mBarrier.setLightTo(true);
     this.mBarrier.setColor([0.1, 0.8, 0.1, 1]);
-    
+
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         gEngine.AudioClips.playACue(music);
         if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
@@ -74,15 +90,15 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
             this.mProjectiles.newShootGunAt(this.getXform().getPosition());
         }
         else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
-
+            this.mProjectiles.newBigShotAt(this.getXform().getPosition());
         }
     }
     
     if (this.mBarrierTick > 600) {
-            this.mBarrierTick = 0;
-            this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
-            this.mBarrier.setColor([0.5, 0.5, 0.5, 1]);
-        }
+        this.mBarrierTick = 0;
+        this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
+        this.mBarrier.setColor([0.5, 0.5, 0.5, 1]);
+    }
 };
 
 // update hero path

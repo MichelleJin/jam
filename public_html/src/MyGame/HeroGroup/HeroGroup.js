@@ -12,7 +12,6 @@ HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
     eInvincible: 1,
     eBarrier: 2
-    
 });
 
 HeroGroup.eHeroShotType = Object.freeze({
@@ -47,6 +46,7 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
     // interpolating hero movement
     this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
     this.mCurrentTick = 0;
+    this.mWeaponTick = 0;
     this.mBarrierTick = 0;
 
     this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
@@ -68,9 +68,7 @@ HeroGroup.prototype.hitOnce = function () {
             this.setHealth(this.getHealth() - 1);
             this.mCurrentTick = 0;
         }
-
     }
-    
 };
 
 HeroGroup.prototype.getStatus = function(){

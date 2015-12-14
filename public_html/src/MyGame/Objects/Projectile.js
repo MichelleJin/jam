@@ -58,7 +58,6 @@ Projectile.prototype.hasExpired = function() {
     return this.mExpired;
 };
 
-
 Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCamera) {
     GameObject.prototype.update.call(this);
     this.mLight.setXPos(this.getXform().getXPos());

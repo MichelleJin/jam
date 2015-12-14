@@ -68,7 +68,6 @@ Ghost.prototype._servicePatrolStates = function (hero) {
     // Continue patrolling!
     if (this.mCurrentState === Ghost.eGhostState.eRising) this._serviceRising();
     else this._serviceFalling();
-
 };
 
 Ghost.prototype._serviceRising = function () {

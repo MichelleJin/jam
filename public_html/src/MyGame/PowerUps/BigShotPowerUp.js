@@ -4,7 +4,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ShotGun(spriteTexture, atX, atY) {
+function BigShotPowerUp(spriteTexture, atX, atY) {
     var rend = new LightRenderable(spriteTexture);
     rend.getXform().setZPos(5);
     rend.setElementPixelPositions(0, 256, 0, 64);
@@ -12,15 +12,11 @@ function ShotGun(spriteTexture, atX, atY) {
     rend.getXform().setPosition(atX, atY);
     PowerUp.call(this);
     GameObject.call(this, rend);
-    this.setPowerUp(HeroGroup.eHeroShotType.eShotGun);
+    this.setPowerUp(HeroGroup.eHeroShotType.eBigShot);
 }
-gEngine.Core.inheritPrototype(ShotGun, PowerUp);
+gEngine.Core.inheritPrototype(BigShotPowerUp, PowerUp);
 
-//ShotGun.prototype._distToCam = function (aCamera) {
-//    return this.getXform().getXPos() - aCamera.getWCCenter()[0];
-//};
-
-ShotGun.prototype.update = function (aCamera, hero) {
+BigShotPowerUp.prototype.update = function (aCamera, hero) {
     var speed = 0;
     var pos = this.getXform().getPosition();
     this.getXform().setXPos(pos[0] + aCamera.getSpeed() + speed);
