@@ -32,16 +32,14 @@ PowerUpSet.prototype.update = function(aCamera, theHero) {
 };
 
 PowerUpSet.prototype.newAt = function(pos) {
+     //only create 20% of of the time
     var rand = Math.random();
-    if (rand < 0.33) {
-        var p = new ShotGunPowerUp(PowerUp.kShotGunTexture, pos[0], pos[1]);
-    } else if (0.33 <= rand <= 0.66) {
-        // power up 2
+    if (rand < 0.50) {
+        var p = new ShotGunPowerUp(PowerUpSet.kShotGunTexture, pos[0], pos[1]);
+        this.addToSet(p);
     } else {
-        // power up 3
+        var p = new BigShotPowerUp(PowerUpSet.kBigShotTexture, pos[0], pos[1]);
+        this.addToSet(p);
     }
-
-    var p = new ShotGunPowerUp(PowerUp.kShotGunTexture, pos[0], pos[1]);
-    this.addToSet(p);
 };
 

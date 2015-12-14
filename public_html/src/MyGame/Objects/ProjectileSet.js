@@ -15,7 +15,7 @@ function ProjectileSet(lightsource) {
 }
 gEngine.Core.inheritPrototype(ProjectileSet, GameObjectSet);
 
-ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera) {
+ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aCamera, powerUpSet) {
     // remove the expired ones
     var i, obj;
     var numHit = 0;
@@ -30,7 +30,7 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
     // update all objects
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
-        if (obj.update(dyes, dyes2, dyes3, particle, func, aCamera))
+        if (obj.update(dyes, dyes2, dyes3, particle, func, aCamera, powerUpSet))
             numHit++;
     }
     return numHit;

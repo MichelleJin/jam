@@ -66,8 +66,8 @@ function MyGame() {
     this.mAstroid = null;
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
-    PowerUp.kShotGunTexture = this.kShotGunTexture;
-    PowerUp.kBigShotTexture = this.kBigShotTexture;
+    PowerUpSet.kShotGunTexture = this.kShotGunTexture;
+    PowerUpSet.kBigShotTexture = this.kBigShotTexture;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -291,7 +291,7 @@ MyGame.prototype.update = function () {
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
 
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue);
+    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue, this.mPowerUpSet);
     this._updateLight(); // after hero to maintain light state
     this.mPowerUpSet.update(this.mCamera, this.mHeroGroup);
 

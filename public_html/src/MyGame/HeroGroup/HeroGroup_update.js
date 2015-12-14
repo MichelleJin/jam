@@ -1,6 +1,6 @@
-HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, music) {
+HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, music, upgradeSet) {
     this._updatePosition(aCamera);
-    this._updateProjectile(enemySet, enemySet2, enemySet3, particleSet, func, aCamera);
+    this._updateProjectile(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, upgradeSet);
     switch (this.mCurrentState) {
         case HeroGroup.eHeroGroupState.eNormal:
             this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera, music);
@@ -51,8 +51,8 @@ HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, a
 };
 
 // updates projectile with enemy
-HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3, particleSet, func, aCamera) {
-    var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, particleSet, func, aCamera);
+HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3, particleSet, func, aCamera, upgradeSet) {
+    var num = this.mProjectiles.update(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, upgradeSet);
     this.mNumDestroy += num;
 };
 

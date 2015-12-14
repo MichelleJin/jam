@@ -16,7 +16,7 @@ function BigShot(x, y, light) {
 }
 gEngine.Core.inheritPrototype(BigShot, Projectile);
 
-BigShot.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCamera) {
+BigShot.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCamera, powerUpSet) {
     GameObject.prototype.update.call(this);
     this.mLight.setXPos(this.getXform().getXPos());
     this.mLight.setYPos(this.getXform().getYPos());
@@ -43,6 +43,7 @@ BigShot.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aCame
             //particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
+            powerUpSet.newAt(p);
         }
     }
 
