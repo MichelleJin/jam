@@ -68,6 +68,7 @@ function MyGame() {
     Projectile.kTexture = this.kProjectileTexture;
     PowerUpSet.kShotGunTexture = this.kShotGunTexture;
     PowerUpSet.kBigShotTexture = this.kBigShotTexture;
+    PowerUpSet.kBubbleTexture = this.kBarrierBubble;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -181,12 +182,12 @@ MyGame.prototype.initialize = function () {
     lightZero.setXPos(this.mStar.getXform().getXPos());
     lightZero.setYPos(this.mStar.getXform().getYPos());
     
-    var bubble = new LightRenderable(this.kBarrierBubble);
-    bubble.setColor([1, 1, 1, 0]);
-    bubble.getXform().setPosition(100, 35);
-    bubble.getXform().setSize(5, 5);
-    bubble.addLight(this.mGlobalLightSet.getLightAt(3));
-    this.mBubble = new GameObject(bubble);
+//    var bubble = new LightRenderable(this.kBarrierBubble);
+//    bubble.setColor([1, 1, 1, 0]);
+//    bubble.getXform().setPosition(100, 35);
+//    bubble.getXform().setSize(5, 5);
+//    bubble.addLight(this.mGlobalLightSet.getLightAt(3));
+//    this.mBubble = new GameObject(bubble);
     
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
@@ -246,7 +247,7 @@ MyGame.prototype.draw = function () {
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mCamera);
     }
-    this.mBubble.draw(this.mCamera);
+    //this.mBubble.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
     this.mAstroid.draw(this.mCamera);
@@ -281,11 +282,11 @@ MyGame.prototype.update = function () {
     lightThree.setXPos(x+8);
     lightThree.setYPos(y);
     
-    var b = [];
-    if (this.mBubble.pixelTouches(this.mHeroGroup, b)) {
-        this.mHeroGroup.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
-        this.mBubble.setVisibility(false);
-    }
+//    var b = [];
+//    if (this.mBubble.pixelTouches(this.mHeroGroup, b)) {
+//        this.mHeroGroup.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
+//        this.mBubble.setVisibility(false);
+//    }
     
     //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
@@ -316,6 +317,7 @@ MyGame.prototype.update = function () {
     var h = [];
     if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
         gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }

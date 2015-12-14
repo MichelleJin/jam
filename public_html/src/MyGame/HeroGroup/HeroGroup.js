@@ -11,7 +11,7 @@
 HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
     eInvincible: 1,
-    eBarrier: 2
+    eBarrier: 5
 });
 
 HeroGroup.eHeroShotType = Object.freeze({
@@ -79,7 +79,11 @@ HeroGroup.prototype.getStatus = function(){
 
 HeroGroup.prototype.setPowerUp = function(powerUp) {
     //alert(powerUp);
-    this.mShotType = powerUp;
+    if(powerUp === HeroGroup.eHeroGroupState.eBarrier){
+        this.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
+    }else{
+        this.mShotType = powerUp;
+    }
 };
 
 HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };

@@ -93,6 +93,7 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
             this.mProjectiles.newBigShotAt(this.getXform().getPosition());
         }
     }
+
     
     if (this.mBarrierTick > 600) {
         this.mBarrierTick = 0;

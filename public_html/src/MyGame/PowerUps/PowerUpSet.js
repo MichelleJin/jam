@@ -11,6 +11,7 @@
 
 PowerUpSet.kShotGunTexture = null;
 PowerUpSet.kBigShotTexture = null;
+PowerUpSet.kBubbleTexture = null;
 
 function PowerUpSet() {
     GameObjectSet.call(this);
@@ -34,17 +35,18 @@ PowerUpSet.prototype.update = function(aCamera, theHero) {
 PowerUpSet.prototype.newAt = function(pos) {
      //only create 20% of of the time
     var rand = Math.random();
-    if (rand > 0.2)
+    if (rand > 0.5)
         return;
     rand = Math.random();
     if (rand < 0.33) {
         var p = new ShotGunPowerUp(PowerUpSet.kShotGunTexture, pos[0], pos[1]);
         this.addToSet(p);
-    } else if (0.33 <= rand <= 0.66) {
+    } else if (0.33 <= rand && rand <= 0.66) {
         var p = new BigShotPowerUp(PowerUpSet.kBigShotTexture, pos[0], pos[1]);
         this.addToSet(p);
     } else {
-        //add other powerup here
+        var p = new BubbleBarrierPowerUp(PowerUpSet.kBubbleTexture, pos[0], pos[1]);
+        this.addToSet(p);
     }
 };
 

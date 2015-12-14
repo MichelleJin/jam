@@ -62,7 +62,7 @@ GhostSet.prototype.update = function(hero, aCamera) {
     }
     this.updateWait(aCamera);
     this.mCurrentTick++;
-    if (this.mCurrentTick === 420) {
+    if (this.mCurrentTick === 1000) {
         //alert("inside if");
         this.mCurrentTick = 0;
         var c = aCamera.getWCCenter();
