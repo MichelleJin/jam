@@ -20,21 +20,31 @@ function PowerUpSet() {
 gEngine.Core.inheritPrototype(PowerUpSet, GameObjectSet);
 
 PowerUpSet.prototype.update = function(aCamera, theHero) {
+
     // remove the expired ones
     var i, obj;
     for (i = 0; i < this.size(); i++) {
         obj = this.getObjectAt(i);
         if (obj.hasExpired()){
             this.removeFromSet(obj);
-            theHero.setPowerUp(obj.getPowerUp());
         } else {
             obj.update(aCamera, theHero);
         }
     }
+    obj = null;
+    for (i = 0; i < this.size(); i++) {
+        obj = this.getObjectAt(i);
+        if (obj.pixelTouches(theHero, [0, 0])) {
+            this.removeFromSet(obj);
+            theHero.setPowerUp(obj.getPowerUp());
+        }
+    }
 };
 
-PowerUpSet.prototype.newAt = function(pos) {
-     //only create 30% of of the time
+
+// create a power up 50% of the time at location
+PowerUpSet.prototype.generateChanceAt = function(pos) {
+
     var rand = Math.random();
     if (rand > 0.33)
         return;

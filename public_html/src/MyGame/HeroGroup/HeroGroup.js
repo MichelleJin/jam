@@ -20,7 +20,7 @@ HeroGroup.eHeroShotType = Object.freeze({
     eBigShot: 2
 });
 
-function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree) {
+function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree, normalShotSound, shotgunSound, bigshotSound) {
     this.mShip = new LightRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(15, 15);
@@ -36,7 +36,7 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
     this.mNumDestroy = 0;
 
     // Projectiles that the hero can shoot
-    this.mProjectiles = new ProjectileSet(lightOne);
+    this.mProjectiles = new ProjectileSet(lightOne, normalShotSound, shotgunSound, bigshotSound);
     this.mShotType = HeroGroup.eHeroShotType.eNormal;
 
     // toggle barrier effect

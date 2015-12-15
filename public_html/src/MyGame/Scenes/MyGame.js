@@ -14,7 +14,9 @@
 var gLights = null;
 function MyGame() {
     this.kBgClip = "assets/sounds/bgMusic.mp3";
-    this.kCue = "assets/sounds/laser.wav";
+    this.kNormalShot = "assets/sounds/laser.wav";
+    this.kShotGun = "assets/sounds/shotgun.wav";
+    this.kBigShot = "assets/sounds/BigShot.wav";
     this.mDebugModeOn = false;
 
     var canvas = document.getElementById('GLCanvas');
@@ -75,7 +77,9 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 MyGame.prototype.loadScene = function () {
     // audio
     gEngine.AudioClips.loadAudio(this.kBgClip);
-    gEngine.AudioClips.loadAudio(this.kCue);
+    gEngine.AudioClips.loadAudio(this.kNormalShot);
+    gEngine.AudioClips.loadAudio(this.kShotGun);
+    gEngine.AudioClips.loadAudio(this.kBigShot);
     // objects
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
@@ -103,8 +107,9 @@ MyGame.prototype.unloadScene = function () {
     gEngine.AudioClips.stopBackgroundAudio();
     //audio
     gEngine.AudioClips.unloadAudio(this.kBgClip);
-    gEngine.AudioClips.unloadAudio(this.kCue);
-
+    gEngine.AudioClips.unloadAudio(this.kNormalShot);
+    gEngine.AudioClips.unloadAudio(this.kShotGun);
+    gEngine.AudioClips.unloadAudio(this.kBigShot);
     // objects
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
@@ -187,7 +192,7 @@ MyGame.prototype.initialize = function () {
     // set up hero
     var lightOne = this.mGlobalLightSet.getLightAt(1);      // these could be passed through particleSetUpdate
     var lightThree = this.mGlobalLightSet.getLightAt(3);
-    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne, lightThree);
+    this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne, lightThree, this.kNormalShot, this.kShotGun, this.kBigShot);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
@@ -255,11 +260,14 @@ MyGame.prototype.update = function () {
     for(i = 0; i < 10; i++){
         this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
     }
-    
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
 
-    this.mHeroGroup.update(this.mGhostSet, this.mChasePackSet, this.mGrenadeSet, this.mAllParticles, this.createParticle, this.mCamera, this.kCue, this.mPowerUpSet);
+    this.mHeroGroup.update(
+                this.mGhostSet, this.mChasePackSet, this.mGrenadeSet,   // enemy
+                this.mAllParticles, this.createParticle,                // particle
+                this.mCamera, this.kNormalShot, this.mPowerUpSet        // sound
+    );
     this._updateLight(); // after hero to maintain light state
     this.mPowerUpSet.update(this.mCamera, this.mHeroGroup);
 

@@ -9,7 +9,10 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function ProjectileSet(lightsource) {
+function ProjectileSet(lightsource, normalShot, shotgunShot, bigShot) {
+    this.ksNormalShot = normalShot;
+    this.ksShotgunShot = shotgunShot;
+    this.ksBigShot = bigShot;
     this.mLight = lightsource;
     GameObjectSet.call(this);
 }
@@ -36,18 +39,21 @@ ProjectileSet.prototype.update = function(dyes, dyes2, dyes3, particle, func, aC
     return numHit;
 };
 
-ProjectileSet.prototype.newAt = function(pos) {
+ProjectileSet.prototype.generateChanceAt = function(pos) {
+    gEngine.AudioClips.playACue(this.ksNormalShot);
     var p = new Projectile(pos[0], pos[1], this.mLight);
     this.addToSet(p);
 };
 
 ProjectileSet.prototype.newBigShotAt = function(pos) {
+    gEngine.AudioClips.playACue(this.ksBigShot);
     var p = new BigShot(pos[0], pos[1], this.mLight);
     this.addToSet(p);
 };
 
 ProjectileSet.prototype.newShootGunAt = function(pos) {
-    
+    gEngine.AudioClips.playACue(this.ksShotgunShot);
+
     var p1 = new Projectile(pos[0], pos[1], this.mLight, [0.5, 1]);
     var p2 = new Projectile(pos[0], pos[1], this.mLight, [1, 0.5]);
     var p3 = new Projectile(pos[0], pos[1], this.mLight, [1, 0]);

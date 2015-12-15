@@ -1,17 +1,18 @@
-HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, music, upgradeSet) {
+HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, normalShot, upgradeSet) {
     this._updatePosition(aCamera);
     this._updateProjectile(enemySet, enemySet2, enemySet3, particleSet, func, aCamera, upgradeSet);
     switch (this.mCurrentState) {
         case HeroGroup.eHeroGroupState.eNormal:
-            this._serviceNormal(enemySet, enemySet2, enemySet3, aCamera, music);
+            this._serviceNormal();
+            this._serviceShot();
             break;
         case HeroGroup.eHeroGroupState.eInvincible:
-            //turn light on
             this._serviceInvulnerable();
-            //turn light off
+            // cannot fire while hit
             break;
         case HeroGroup.eHeroGroupState.eBarrier:            
-            this._serviceWithBarrier(music);
+            this._serviceWithBarrier();
+            this._serviceShot();
             break;
     }
     switch (this.mShotType) {
@@ -33,13 +34,15 @@ HeroGroup.prototype._serviceUpgrade = function () {
 };
 
 // allows hero to fire projectiles
-HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera, music) {
+HeroGroup.prototype._serviceNormal = function () {
     // one projectile at a time
     this.mBarrier.setLightTo(false);
+};
+
+HeroGroup.prototype._serviceShot = function () {
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        gEngine.AudioClips.playACue(music);
         if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
-            this.mProjectiles.newAt(this.getXform().getPosition());
+            this.mProjectiles.generateChanceAt(this.getXform().getPosition());
         else if (this.mShotType === HeroGroup.eHeroShotType.eShotGun) {
             this.mProjectiles.newShootGunAt(this.getXform().getPosition());
         }
@@ -78,17 +81,6 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
     this.mBarrier.setLightTo(true);
     this.mBarrier.setColor([0.1, 0.8, 0.1, 1]);
 
-    if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
-        gEngine.AudioClips.playACue(music);
-        if (this.mShotType === HeroGroup.eHeroShotType.eNormal)
-            this.mProjectiles.newAt(this.getXform().getPosition());
-        else if (this.mShotType === HeroGroup.eHeroShotType.eShotGun) {
-            this.mProjectiles.newShootGunAt(this.getXform().getPosition());
-        }
-        else if (this.mShotType === HeroGroup.eHeroShotType.eBigShot) {
-            this.mProjectiles.newBigShotAt(this.getXform().getPosition());
-        }
-    }
     var i = this.mBarrier.getIntensity();
     
     if (this.mBarrierTick < 510 && this.mBarrierTick >= 480){

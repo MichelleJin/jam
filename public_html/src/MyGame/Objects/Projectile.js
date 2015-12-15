@@ -88,7 +88,7 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
             particle.addEmitterAt(p, 200, func);
             obj.setExpired();
             hit = true;
-            powerUpSet.newAt(p);
+            powerUpSet.generateChanceAt(p);
         }
     }
 
