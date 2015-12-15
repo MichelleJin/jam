@@ -15,6 +15,7 @@ PowerUpSet.kBubbleTexture = null;
 
 function PowerUpSet() {
     GameObjectSet.call(this);
+    this.mPowerUpLife = 0;
 }
 gEngine.Core.inheritPrototype(PowerUpSet, GameObjectSet);
 
@@ -33,9 +34,9 @@ PowerUpSet.prototype.update = function(aCamera, theHero) {
 };
 
 PowerUpSet.prototype.newAt = function(pos) {
-     //only create 20% of of the time
+     //only create 30% of of the time
     var rand = Math.random();
-    if (rand > 0.5)
+    if (rand > 0.33)
         return;
     rand = Math.random();
     // about the same chance for 3 power ups

@@ -35,7 +35,6 @@ HeroGroup.prototype._serviceUpgrade = function () {
 // allows hero to fire projectiles
 HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera, music) {
     // one projectile at a time
-    //turn light off
     this.mBarrier.setLightTo(false);
     if (this.mProjectiles.size() < 1 && gEngine.Input.isKeyClicked(gEngine.Input.keys.Space)) {
         gEngine.AudioClips.playACue(music);
