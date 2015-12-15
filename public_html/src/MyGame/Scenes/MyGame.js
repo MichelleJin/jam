@@ -266,6 +266,10 @@ MyGame.prototype.update = function () {
     this.mCamera.clampHeroAtBoundary(this.mHeroGroup, 1);
     this.mCamera.update();  // to ensure proper interpolated movement effects
     this.mMiniCamera.update();
+    
+    if(this.mCamera.getWCCenter()[0] >= 950){
+        this.mCamera.setSpeed(0);
+    }
 
     // DELETE on release
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {

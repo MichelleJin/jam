@@ -64,7 +64,8 @@ MyGame.prototype._initializeLights = function () {
             );
     //l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
-
+    
+    // use for the barrier
     l = this._createALight(Light.eLightType.eSpotLight,
             [10, 10, 10],            // Right minion position
             [-0.07,  0, -1],     // direction

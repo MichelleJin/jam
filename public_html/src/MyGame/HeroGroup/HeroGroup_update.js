@@ -75,9 +75,6 @@ HeroGroup.prototype._serviceInvulnerable = function () {
 
 HeroGroup.prototype._serviceWithBarrier = function (music) {
     this.mBarrierTick++;
-    //window.alert("Get");
-    //turn light on
-    //gEngine.AudioClips.playACue(music);
     this.getColor()[3] = 0;
     this.mBarrier.setLightTo(true);
     this.mBarrier.setColor([0.1, 0.8, 0.1, 1]);
@@ -93,9 +90,26 @@ HeroGroup.prototype._serviceWithBarrier = function (music) {
             this.mProjectiles.newBigShotAt(this.getXform().getPosition());
         }
     }
-
+    var i = this.mBarrier.getIntensity();
     
-    if (this.mBarrierTick > 600) {
+    if (this.mBarrierTick < 510 && this.mBarrierTick >= 480){
+        i -= 0.16;
+        this.mBarrier.setIntensity(i);
+    }
+    if (this.mBarrierTick < 540 && this.mBarrierTick >= 510){
+        i += 0.16;
+        this.mBarrier.setIntensity(i);
+    }
+    if (this.mBarrierTick < 570 && this.mBarrierTick >= 540){
+        i -= 0.16;
+        this.mBarrier.setIntensity(i);
+    }
+    if (this.mBarrierTick < 600 && this.mBarrierTick >= 570){
+        i += 0.16;
+        this.mBarrier.setIntensity(i);
+    }
+    
+    if (this.mBarrierTick >= 600) {
         this.mBarrierTick = 0;
         this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
         this.mBarrier.setColor([0.5, 0.5, 0.5, 1]);
