@@ -8,6 +8,9 @@
 function PowerUp() {
     this.mExpired = false;
     this.mPowerUp = null;
+    this.mCurrentLife = 180;
+    this.mDeltaX = 0.1;
+    this.mDeltaY = 0;
 }
 gEngine.Core.inheritPrototype(PowerUp, GameObject);
 
@@ -24,4 +27,16 @@ PowerUp.prototype.getPowerUp = function() {
 
 PowerUp.prototype.setPowerUp = function(powerUp) {
     this.mPowerUp = powerUp;
+};
+
+PowerUp.prototype.update = function (aCamera) {
+    //alert(this.mCurrentLife);
+    this.mCurrentLife--;
+    if (this.mCurrentLife === 0)
+        this.setExpired();
+
+    var pos = this.getXform().getPosition();
+    //aCamera.intersectsBound()
+    this.getXform().setXPos(pos[0] + aCamera.getSpeed() + this.mDeltaX);
+    this.getXform().setYPos(pos[1]);
 };

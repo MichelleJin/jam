@@ -15,12 +15,3 @@ function BigShotPowerUp(spriteTexture, atX, atY) {
 }
 gEngine.Core.inheritPrototype(BigShotPowerUp, PowerUp);
 
-BigShotPowerUp.prototype.update = function (aCamera, hero) {
-    var speed = 0;
-    var pos = this.getXform().getPosition();
-    this.getXform().setXPos(pos[0] + aCamera.getSpeed() + speed);
-    this.getXform().setYPos(pos[1]);
-    if (this.pixelTouches(hero, [0, 0])) {
-        this.setExpired();
-    }
-};
