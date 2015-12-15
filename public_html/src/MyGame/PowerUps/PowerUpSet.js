@@ -38,6 +38,7 @@ PowerUpSet.prototype.newAt = function(pos) {
     if (rand > 0.5)
         return;
     rand = Math.random();
+    // about the same chance for 3 power ups
     if (rand < 0.33) {
         var p = new ShotGunPowerUp(PowerUpSet.kShotGunTexture, pos[0], pos[1]);
         this.addToSet(p);
