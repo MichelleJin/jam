@@ -24,7 +24,6 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
     this.mShip = new LightRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(15, 15);
-    this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
     this.mShip.addLight(gLights.getLightAt(4));
 

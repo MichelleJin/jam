@@ -6,7 +6,6 @@
 
 function BigShotPowerUp(spriteTexture, atX, atY) {
     var rend = new LightRenderable(spriteTexture);
-    rend.getXform().setZPos(5);
     rend.setElementPixelPositions(0, 256, 0, 64);
     rend.getXform().setSize(12, 3);
     rend.getXform().setPosition(atX, atY);

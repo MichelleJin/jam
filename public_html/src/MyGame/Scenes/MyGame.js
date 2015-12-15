@@ -142,10 +142,7 @@ MyGame.prototype.unloadScene = function () {
         case GAMEOVER_SCENE:
                 var nextLevel = new GameOverScene();
     }
-    
     gEngine.Core.startScene(nextLevel);
-    
-    
 };
 
 MyGame.prototype.initialize = function () {
@@ -176,19 +173,10 @@ MyGame.prototype.initialize = function () {
     Star.setColor([1, 1, 1, 0]);
     Star.getXform().setPosition(950, 35);
     Star.getXform().setSize(10, 10);
-    Star.getXform().setZPos(10);    
     this.mStar = new GameObject(Star);
     var lightZero = this.mGlobalLightSet.getLightAt(0);
     lightZero.setXPos(this.mStar.getXform().getXPos());
     lightZero.setYPos(this.mStar.getXform().getYPos());
-    
-//    var bubble = new LightRenderable(this.kBarrierBubble);
-//    bubble.setColor([1, 1, 1, 0]);
-//    bubble.getXform().setPosition(100, 35);
-//    bubble.getXform().setSize(5, 5);
-//    bubble.addLight(this.mGlobalLightSet.getLightAt(3));
-//    this.mBubble = new GameObject(bubble);
-    
 
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
 
@@ -212,21 +200,13 @@ MyGame.prototype.initialize = function () {
     for (i = 0; i < 5; i++) {
         if (i != 2) {
             this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
-            
         }
-
     }
-    
-
     gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 
     this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
+    // tracks all powerups to be added
     this.mPowerUpSet = new PowerUpSet();
-    this.mShotGun = new ShotGunPowerUp(this.kShotGunTexture, 25, 35);
-    this.mBigShot = new BigShotPowerUp(this.kBigShotTexture, 75, 35);
-    this.mPowerUpSet.addToSet(this.mBigShot);
-    this.mPowerUpSet.addToSet(this.mShotGun);
-
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -250,9 +230,9 @@ MyGame.prototype.draw = function () {
     //this.mBubble.draw(this.mCamera);
     this.mHeroGroup.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
+    this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER
     this.mAstroid.draw(this.mCamera);
 
-    this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -282,13 +262,6 @@ MyGame.prototype.update = function () {
     lightThree.setXPos(x+8);
     lightThree.setYPos(y);
     
-//    var b = [];
-//    if (this.mBubble.pixelTouches(this.mHeroGroup, b)) {
-//        this.mHeroGroup.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
-//        this.mBubble.setVisibility(false);
-//    }
-    
-    //this.mGrenadeSet.update(this.mHeroGroup, this.mCamera);
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
 
@@ -300,6 +273,7 @@ MyGame.prototype.update = function () {
     this.mCamera.update();  // to ensure proper interpolated movement effects
     this.mMiniCamera.update();
 
+    // DELETE on release
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
     }
@@ -307,29 +281,15 @@ MyGame.prototype.update = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
         this.mHeroGroup.mShotType = HeroGroup.eHeroShotType.eShotGun;
     }
-    
-    if (this.mHeroGroup.getHealthRatio() === 0) {
-        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
-        this.mNextScene = LOSE_SCENE;
-        gEngine.GameLoop.stop();
-    }
-
-    var h = [];
-    if (this.mStar.pixelTouches(this.mHeroGroup, h)) {
-        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
-        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
-        this.mNextScene = WIN_SCENE;
-        gEngine.GameLoop.stop();
-    }
 };
 
 
 MyGame.prototype.createParticle = function(atX, atY) {
+    gEngine.Particle.setSystemtAcceleration([0, 0]);
     var life = 30 + Math.random() * 50;
     var p = new ParticleGameObject("assets/particle.png", atX, atY, life);
     p.getRenderable().setColor([1, 0, 0, 1]);
-    //p.getRenderable().getXform().setZPos(20);
-    
+
     // size of the particle
     var r = 3.5 + Math.random() * 2.5;
     p.getXform().setSize(r, r);
@@ -342,9 +302,9 @@ MyGame.prototype.createParticle = function(atX, atY) {
     
     // velocity on the particle
     //var fx = 10 * Math.random()- 20 * Math.random();
-    var fy = 5 + 10 * Math.random() ;
-    var fx = - 30 - 10 * Math.random();
-    //var fy = 0;
+    var vy = 60;
+    var fy =  vy * (0.5 - Math.random());
+    var fx =  -vy/2 * Math.random();
     p.getPhysicsComponent().setVelocity([fx, fy]);
     
     // size delta

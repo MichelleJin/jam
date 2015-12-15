@@ -63,13 +63,13 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
     this.mLight.setXPos(this.getXform().getXPos());
     this.mLight.setYPos(this.getXform().getYPos());
     var hit = false;
-    
-    if (aCamera.collideWCBound(this.getXform(), 1.1) === BoundingBox.eboundCollideStatus.eOutside)
-            this.setExpired();
+    // remove projectile if outside
+    if (aCamera.collideWCBound(this.getXform(), 0.9) === BoundingBox.eboundCollideStatus.eOutside)
+        this.setExpired();
 
     var i, obj;
     var p = vec2.fromValues(0, 0);
-    for (i=0; i<dyes.size(); i++) {
+    for (i = 0; i < dyes.size(); i++) {
         obj = dyes.getObjectAt(i);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
@@ -78,9 +78,9 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
             hit = true;
         }
     }
-    
+
     var j;
-    for (j=0; j<dyes2.size(); j++) {
+    for (j = 0; j < dyes2.size(); j++) {
         obj = dyes2.getObjectAt(j);
         if (this.pixelTouches(obj, p)) {
             this.setExpired();
@@ -90,12 +90,12 @@ Projectile.prototype.update = function(dyes, dyes2, dyes3Set, particle, func, aC
             powerUpSet.newAt(p);
         }
     }
-    
+
     var q;
-    for(q=0;q<10;q++){
+    for (q = 0; q < 10; q++) {
         var dyes3 = dyes3Set[q];
         var o;
-        for (o=0; o<dyes3.size(); o++) {
+        for (o = 0; o < dyes3.size(); o++) {
             obj = dyes3.getObjectAt(o);
             if (this.pixelTouches(obj, p)) {
                 this.setExpired();

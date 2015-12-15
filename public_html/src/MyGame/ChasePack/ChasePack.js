@@ -31,7 +31,6 @@ function ChasePack(spriteTexture, x, y) {
     this.mChasePack = new LightRenderable(spriteTexture);
     this.mChasePack.setColor([1, 1, 1, 0.1]);
     this.mChasePack.getXform().setPosition(x, y);
-    this.mChasePack.getXform().setZPos(10);
     this.mChasePack.getXform().setSize(this.kRefWidth, this.kRefHeight);
     this.mChasePack.setElementPixelPositions(0, 128, 0, 128);
     GameObject.call(this, this.mChasePack);

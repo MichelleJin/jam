@@ -9,7 +9,6 @@
 
 function BubbleBarrierPowerUp(spriteTexture, atX, atY) {
     var rend = new LightRenderable(spriteTexture);
-    rend.getXform().setZPos(5);
     rend.getXform().setSize(5, 5);
     rend.getXform().setPosition(atX, atY);
     PowerUp.call(this);

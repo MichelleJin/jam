@@ -9,21 +9,20 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 // ambient lighting control
 MyGame.prototype._updateLight = function () {
+    // danger light flashes red when low health
     var deltaColor = 0.05;
-    var lightFour = this.mGlobalLightSet.getLightAt(4);
-    var color = lightFour.getColor();
-    var i = lightFour.getIntensity();
+    var deltaAmbient = 0.01
+    var directLight = this.mGlobalLightSet.getLightAt(4);
+    var color = directLight.getColor();
+    var i = directLight.getIntensity();
     var GlobalAmbientColor = gEngine.DefaultResources.getGlobalAmbientColor();
     if (this.mHeroGroup.getHealth() <= 2) {
-        
         if (this.mRed) {
             this.mAmbientTick++;
             color[0] += deltaColor;
-            i += deltaColor;
-            //lightFour.setIntensity(i);
-            
-            
-            GlobalAmbientColor[0] += deltaColor;
+            i -= deltaColor;
+            directLight.setIntensity(i);
+            GlobalAmbientColor[0] += deltaAmbient;
             if(this.mAmbientTick > 60) {
                 this.mRed = false;
                 this.mAmbientTick = 0;
@@ -31,19 +30,32 @@ MyGame.prototype._updateLight = function () {
         } else {
             this.mAmbientTick++;
             color[0] -= deltaColor;
-            i -= deltaColor;
-            //lightFour.setIntensity(i);
+            i += deltaColor;
+            directLight.setIntensity(i);
            
-            GlobalAmbientColor[0] -= deltaColor;
+            GlobalAmbientColor[0] -= deltaAmbient;
             if (this.mAmbientTick > 60) {
                 this.mRed = true;
                 this.mAmbientTick = 0;
             }
         }
     }
-    // return color to normal upon death
     if (this.mHeroGroup.getHealth() <= 0) {
-        GlobalAmbientColor[0] = 0.3;
+        directLight.setIntensity(5);
+        directLight.setColor([0.5, 0.5, 0.5, 1]);
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
+        this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
+    }
+    // return color to normal upon death
+    if (this.mStar.pixelTouches(this.mHeroGroup, [0, 0])) {
+        directLight.setIntensity(5);
+        directLight.setColor([0.5, 0.5, 0.5, 1]);
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
+        this.mNextScene = WIN_SCENE;
+        gEngine.GameLoop.stop();
     }
 
     var lgt = this.mGlobalLightSet.getLightAt(2);

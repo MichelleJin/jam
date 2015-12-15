@@ -13,11 +13,11 @@ function ParticleGameObject(texture, atX, atY, cyclesToLive) {
     var renderableObj = new ParticleRenderable(texture);
     var xf = renderableObj.getXform();
     xf.setPosition(atX, atY);
+    this.mTransform = xf;
     GameObject.call(this, renderableObj);
     
     var p = new Particle(xf.getPosition());
     this.setPhysicsComponent(p);
-    
     this.mDeltaColor = [0, 0, 0, 0];
     this.mSizeDelta = 0;
     this.mCyclesToLive = cyclesToLive;
@@ -42,9 +42,10 @@ ParticleGameObject.prototype.hasExpired = function() {
 
 ParticleGameObject.prototype.update = function () {
     GameObject.prototype.update.call(this);
-    
     this.mCyclesToLive--;
     var c = this.mRenderComponent.getColor();
+    var xf = this.mRenderComponent.getXform();
+    xf.setXPos(xf.getXPos() + 0.1);
     vec4.add(c, c, this.mDeltaColor);
     
     var xf = this.getXform();
