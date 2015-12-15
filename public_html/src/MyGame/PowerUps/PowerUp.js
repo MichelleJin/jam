@@ -8,9 +8,13 @@
 function PowerUp() {
     this.mExpired = false;
     this.mPowerUp = null;
-    this.mCurrentLife = 180;
-    this.mDeltaX = 0.1;
-    this.mDeltaY = 0;
+    this.mCurrentLife = 240;
+    this.mDeltaX = 0.1 + 0.3 * Math.random();
+    this.mDeltaY = 0.1 + 0.3 * Math.random();
+    if (Math.random() > 0.5)
+        this.mDeltaX = -this.mDeltaX;
+    if (Math.random() > 0.5)
+        this.mDeltaY = -this.mDeltaY;
 }
 gEngine.Core.inheritPrototype(PowerUp, GameObject);
 
@@ -36,7 +40,12 @@ PowerUp.prototype.update = function (aCamera) {
         this.setExpired();
 
     var pos = this.getXform().getPosition();
-    //aCamera.intersectsBound()
-    this.getXform().setXPos(pos[0] + aCamera.getSpeed() + this.mDeltaX);
-    this.getXform().setYPos(pos[1]);
+    if ((aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideTop)
+            || (aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideBottom))
+        this.mDeltaY = -this.mDeltaY;
+    if ((aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideLeft)
+            || (aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideRight))
+        this.mDeltaX = -this.mDeltaX;
+        this.getXform().setXPos(pos[0] + aCamera.getSpeed() + this.mDeltaX);
+    this.getXform().setYPos(pos[1] + this.mDeltaY);
 };
