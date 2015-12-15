@@ -7,6 +7,12 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+// Light1: Star
+// light2: projectile
+// light3: Astroid normalmap
+// light4: barrier
+// Light5: direction
+
 MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, outer, intensity, dropOff) {
     var light = new Light();
     light.setLightType(type);

@@ -29,7 +29,6 @@ function WinScene() {
 
     this.mCamera = null;
     this.mGameOverMsg = null;
-
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
 
@@ -47,7 +46,6 @@ WinScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kStarsCelebrate);
     gEngine.Textures.unloadTexture(this.kPressQ);
     gEngine.Textures.unloadTexture(this.kChampionLogo);
-
 
     switch (this.mNextScene) {
         case GAME_SCENE:
@@ -99,14 +97,12 @@ WinScene.prototype.initialize = function () {
     this.mYayStar.getXform().setPosition(20,45);
 };
 
-
 WinScene.prototype.draw = function () {
     // Clear the entire canvas to light gray.
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
     // Draw on all camera.
     this.drawCamera(this.mCamera);
-
 };
 
 WinScene.prototype.drawCamera = function (camera) {
@@ -127,6 +123,4 @@ WinScene.prototype.update = function () {
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
     }
-
-
 };
