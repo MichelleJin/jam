@@ -9,9 +9,10 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 // ambient lighting control
 MyGame.prototype._updateLight = function () {
+
     // danger light flashes red when low health
     var deltaColor = 0.05;
-    var deltaAmbient = 0.01
+    var deltaAmbient = 0.01;
     var directLight = this.mGlobalLightSet.getLightAt(4);
     var color = directLight.getColor();
     var i = directLight.getIntensity();
@@ -40,6 +41,15 @@ MyGame.prototype._updateLight = function () {
             }
         }
     }
+
+    // update shield position
+    var x = this.mHeroGroup.getX();
+    var y = this.mHeroGroup.getY();
+    var lightThree = this.mGlobalLightSet.getLightAt(3);
+    lightThree.setXPos(x+8);
+    lightThree.setYPos(y);
+
+    // correct lighting on death
     if (this.mHeroGroup.getHealth() <= 0) {
         directLight.setIntensity(5);
         directLight.setColor([0.5, 0.5, 0.5, 1]);

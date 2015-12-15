@@ -11,7 +11,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
- var gLights = null;
+var gLights = null;
 function MyGame() {
     this.kBgClip = "assets/sounds/bgMusic.mp3";
     this.kCue = "assets/sounds/laser.wav";
@@ -73,93 +73,92 @@ function MyGame() {
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () {
+    // audio
     gEngine.AudioClips.loadAudio(this.kBgClip);
     gEngine.AudioClips.loadAudio(this.kCue);
-
-    gEngine.Textures.loadTexture(this.kBigShotTexture);
-    gEngine.Textures.loadTexture(this.kShotGunTexture);
-    
+    // objects
     gEngine.Textures.loadTexture(this.kAstroidTexture);
     gEngine.Textures.loadTexture(this.kAstroidNormalMap);
-
+    gEngine.Textures.loadTexture(this.kGoalStar);
+    gEngine.Textures.loadTexture(this.kStarsBG);
+    // power up
+    gEngine.Textures.loadTexture(this.kBigShotTexture);
+    gEngine.Textures.loadTexture(this.kShotGunTexture);
+    gEngine.Textures.loadTexture(this.kBarrierBubble);
+    // enemy
     gEngine.Textures.loadTexture(this.kChaseTexture);
-
-    gEngine.Textures.loadTexture(this.kHeroSprite);
-    gEngine.Textures.loadTexture(this.kHealthBarTexture);
-
+    gEngine.Textures.loadTexture(this.kGrenade);
     gEngine.Textures.loadTexture(this.kGhostTexture);
     gEngine.Textures.loadTexture(this.kGhostDeadTexture);
-
+    // hero
+    gEngine.Textures.loadTexture(this.kHeroSprite);
+    gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
-    gEngine.Textures.loadTexture(this.kStarsBG);
-    gEngine.Textures.loadTexture(this.kGoalStar);
-    gEngine.Textures.loadTexture(this.kGrenade);
     gEngine.Textures.loadTexture(this.kParticleTexture);
-    gEngine.Textures.loadTexture(this.kBarrierBubble);
+
+
 };
 
 MyGame.prototype.unloadScene = function () {
     gEngine.AudioClips.stopBackgroundAudio();
-
+    //audio
     gEngine.AudioClips.unloadAudio(this.kBgClip);
     gEngine.AudioClips.unloadAudio(this.kCue);
 
-    gEngine.Textures.unloadTexture(this.kBigShotTexture);
-    gEngine.Textures.unloadTexture(this.kShotGunTexture);
-
+    // objects
     gEngine.Textures.unloadTexture(this.kAstroidTexture);
     gEngine.Textures.unloadTexture(this.kAstroidNormalMap);
-
+    gEngine.Textures.unloadTexture(this.kGoalStar);
+    gEngine.Textures.unloadTexture(this.kStarsBG);
+    gEngine.Textures.unloadTexture(this.kParticleTexture);
+    // power up
+    gEngine.Textures.unloadTexture(this.kBigShotTexture);
+    gEngine.Textures.unloadTexture(this.kShotGunTexture);
+    gEngine.Textures.unloadTexture(this.kBarrierBubble);
+    // enemy
     gEngine.Textures.unloadTexture(this.kChaseTexture);
-
-
-    gEngine.Textures.unloadTexture(this.kHeroSprite);
-
     gEngine.Textures.unloadTexture(this.kGhostTexture);
     gEngine.Textures.unloadTexture(this.kGhostDeadTexture);
-
-    gEngine.Textures.unloadTexture(this.kProjectileTexture);
-    gEngine.Textures.unloadTexture(this.kHealthBarTexture);
-    gEngine.Textures.unloadTexture(this.kStarsBG);
-    gEngine.Textures.unloadTexture(this.kGoalStar);
     gEngine.Textures.unloadTexture(this.kGrenade);
-    gEngine.Textures.unloadTexture(this.kParticleTexture);
-    gEngine.Textures.unloadTexture(this.kBarrierBubble);
-    
+    // pirate hero
+    gEngine.Textures.unloadTexture(this.kHeroSprite);
+    gEngine.Textures.unloadTexture(this.kHealthBarTexture);
+    gEngine.Textures.unloadTexture(this.kProjectileTexture);
+    // load next scene
     switch (this.mNextScene) {
         case GAME_SCENE:
-                var nextLevel = new MyGame();
+            var nextLevel = new MyGame();
             break;
         case LOSE_SCENE:
-                var nextLevel = new LoseScene();
+            var nextLevel = new LoseScene();
             break;
         case WIN_SCENE:
-                var nextLevel = new WinScene();
+            var nextLevel = new WinScene();
             break;
         case START_SCENE:
-                var nextLevel = new StartScene();
+            var nextLevel = new StartScene();
             break;
         case GAMEOVER_SCENE:
-                var nextLevel = new GameOverScene();
+            var nextLevel = new GameOverScene();
     }
     gEngine.Core.startScene(nextLevel);
 };
 
 MyGame.prototype.initialize = function () {
+    // set up lighting
     this._initializeLights();   // defined in MyGame_Lights.js
-    // Step A: set up the cameras
     gLights = this.mGlobalLightSet;
+
+    // set up camera
     this.mCamera = new Camera(
         vec2.fromValues(50, 35),  // position of the camera
         100,                      // width of camera
         [0, this.kMiniMapHeight, this.kCanvasWidth, this.kCanvasHeight - this.kMiniMapHeight]        // viewport (orgX, orgY, width, height)
     );
-    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
-    // sets the background to gray
+    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);    // sets the background to gray
+    this.mCamera.setSpeed(0.1);                             // move camera to right steadily
 
-    //this.mCamera.setSpeed(0);
-    this.mCamera.setSpeed(0.1);
-
+    // create minimap
     this.mMiniCamera = new Camera(
         vec2.fromValues(500, 35),  // position of the camera
         1000,                      // width of camera
@@ -167,8 +166,7 @@ MyGame.prototype.initialize = function () {
     );
     this.mMiniCamera.setBackgroundColor([0.0, 0.0, 0.0, 1]);
 
-    gEngine.DefaultResources.setGlobalAmbientIntensity(2.6);
-    
+    // this needs an object
     var Star = new TextureRenderable(this.kGoalStar);
     Star.setColor([1, 1, 1, 0]);
     Star.getXform().setPosition(950, 35);
@@ -178,44 +176,46 @@ MyGame.prototype.initialize = function () {
     lightZero.setXPos(this.mStar.getXform().getXPos());
     lightZero.setYPos(this.mStar.getXform().getYPos());
 
+    // create enemy sets
     this.mGhostSet = new GhostSet(this.kGhostTexture, this.kGhostDeadTexture);
-
     this.mChasePackSet = new ChasePackSet(this.kChaseTexture);
-    
     var i;
     for(i=0; i<10; i++){
         this.mGrenadeSet[i] = new GrenadeSet(this.kGrenade, 100 + 900 * Math.random(), 20 + 40 * Math.random());
     }
 
-    // herosprite, healthbar, texture, x, y
-    var lightOne = this.mGlobalLightSet.getLightAt(1);
+    // set up hero
+    var lightOne = this.mGlobalLightSet.getLightAt(1);      // these could be passed through particleSetUpdate
     var lightThree = this.mGlobalLightSet.getLightAt(3);
     this.mHeroGroup = new HeroGroup(this.kHeroSprite, this.kHealthBarTexture, 50, 35, lightOne, lightThree);
 
     // Create background set
     this.mBackground = new Background(this.kStarsBG, this.mCamera);
 
+    // create asteroid
     this.mAstroid = new Astroid(this.kAstroidTexture, this.kAstroidNormalMap, 50, 35);
+    this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));    // add spot light to asteroid
+
+    // add all light source to background
     var i;
     for (i = 0; i < 5; i++) {
         if (i != 2) {
             this.mBackground.getRenderable().addLight(this.mGlobalLightSet.getLightAt(i));
         }
     }
-    gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 
-    this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
-    // tracks all powerups to be added
-    this.mPowerUpSet = new PowerUpSet();
+    // create power ups
+    this.mPowerUpSet = new PowerUpSet();        // could update this before the enemy set, pass enemySet internally
+    // start audio
+    gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 
-// This is the draw function, make sure to setup proper drawing environment, and more
-// importantly, make sure to _NOT_ change any state.
+// draw objects
 MyGame.prototype.draw = function () {
-    // Step A: clear the canvas
+    // set up main camera
     this.mCamera.setupViewProjection();
-    
     gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1]); // clear to light gray
+
     if (!this.mDebugModeOn) {
         this.mBackground.draw(this.mCamera);
     }
@@ -232,7 +232,6 @@ MyGame.prototype.draw = function () {
     this.mAllParticles.draw(this.mCamera);
     this.mPowerUpSet.draw(this.mCamera);   // MOVE SOMEWHERE ELSE LATER
     this.mAstroid.draw(this.mCamera);
-
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -256,11 +255,6 @@ MyGame.prototype.update = function () {
     for(i = 0; i < 10; i++){
         this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
     }
-    var x = this.mHeroGroup.getX();
-    var y = this.mHeroGroup.getY();
-    var lightThree = this.mGlobalLightSet.getLightAt(3);
-    lightThree.setXPos(x+8);
-    lightThree.setYPos(y);
     
     this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
@@ -277,9 +271,9 @@ MyGame.prototype.update = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
         this.mDebugModeOn = !this.mDebugModeOn;
     }
-    
+    // DELETE on release
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
-        this.mHeroGroup.mShotType = HeroGroup.eHeroShotType.eShotGun;
+        this.mHeroGroup.mShotType = HeroGroup.eHeroShotType.eBigShot;
     }
 };
 

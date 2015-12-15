@@ -34,7 +34,8 @@ function Projectile(x, y, light, dir) {
     this.mLight = light;
     this.mLight.setXPos(x);
     this.mLight.setYPos(y);
-    
+    this.mLight.setNear(3);
+    this.mLight.setFar(7);
     this.mLight.setLightTo(true);
     
     if(dir === undefined){

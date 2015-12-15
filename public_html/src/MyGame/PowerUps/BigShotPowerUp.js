@@ -20,8 +20,7 @@ BigShotPowerUp.prototype.update = function (aCamera, hero) {
     var pos = this.getXform().getPosition();
     this.getXform().setXPos(pos[0] + aCamera.getSpeed() + speed);
     this.getXform().setYPos(pos[1]);
-    var temppos = [0, 0];
-    if (this.pixelTouches(hero, temppos)) {
+    if (this.pixelTouches(hero, [0, 0])) {
         this.setExpired();
     }
 };

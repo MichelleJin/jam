@@ -27,7 +27,8 @@ MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, o
 
 MyGame.prototype._initializeLights = function () {
     this.mGlobalLightSet = new LightSet();
-    
+    gEngine.DefaultResources.setGlobalAmbientIntensity(2.6);
+
     var l = this._createALight(Light.eLightType.ePointLight,
             [10, 10, 5],         // position
             [0, 0, -1],          // Direction

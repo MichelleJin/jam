@@ -10,9 +10,11 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 // across the entire screen in 0.5 seconds
 function BigShot(x, y, light) {
-    Projectile.call(this, x, y, light);
+    Projectile.call(this, x + 20, y, light);
     this.getXform().setSize(40, 40);
     this.setSpeed(0.7);
+    light.setFar(25);
+    light.setNear(15);
 }
 gEngine.Core.inheritPrototype(BigShot, Projectile);
 
