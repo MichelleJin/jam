@@ -34,11 +34,18 @@ PowerUp.prototype.setPowerUp = function(powerUp) {
 };
 
 PowerUp.prototype.update = function (aCamera) {
-    //alert(this.mCurrentLife);
+    // time limit for life
     this.mCurrentLife--;
     if (this.mCurrentLife === 0)
         this.setExpired();
 
+    // fade out
+    var color = this.getColor();
+    if (this.mCurrentLife < 75) {
+        color[3] = color[3] + 0.01;
+    }
+
+    // bounce around
     var pos = this.getXform().getPosition();
     if ((aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideTop)
             || (aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideBottom))
