@@ -13,6 +13,7 @@ HeroGroup.prototype.update = function(enemySet, enemySet2, enemySet3, particleSe
     }
 };
 
+
 // allows hero to fire projectiles
 HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, aCamera, music) {
     // one projectile at a time
@@ -23,6 +24,7 @@ HeroGroup.prototype._serviceNormal = function (enemySet, enemySet2, enemySet3, a
         this.mProjectiles.newAt(this.getXform().getPosition());
     }
 };
+
 
 // updates projectile with enemy
 HeroGroup.prototype._updateProjectile = function (enemySet, enemySet2, enemySet3, particleSet, func, aCamera) {

@@ -59,6 +59,9 @@ function MyGame() {
     this.mAmbientTick = 0;
     this.mRed = true;
 
+    // Score
+    this.mScore = null;
+
     this.mAstroid = null;
     // Projectile.js has already been read in ...
     Projectile.kTexture = this.kProjectileTexture;
@@ -195,6 +198,11 @@ MyGame.prototype.initialize = function () {
 
     this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
 
+    // Score System
+    this.mScoreMsg = new FontRenderable("0");
+    this.mScoreMsg.setColor([1, 1, 1, 1]);
+    this.mScoreMsg.getXform().setPosition(20, 60);
+    this.mScoreMsg.setTextHeight(20);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -218,6 +226,7 @@ MyGame.prototype.draw = function () {
     }
     this.mAstroid.draw(this.mCamera);
     this.mAllParticles.draw(this.mCamera);
+    this.mScoreMsg.draw(this.mCamera);
 
     // minimap
     this.mMiniCamera.setupViewProjection();
@@ -228,6 +237,9 @@ MyGame.prototype.draw = function () {
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mMiniCamera);
     }
+
+
+
     
 };
 
@@ -273,6 +285,13 @@ MyGame.prototype.update = function () {
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }
+
+    var WCWidth = this.mCamera.getWCWidth();
+    var fontXPos = this.mCamera.getWCCenter()[0] - this.mCamera.getWCWidth()/2 + 3;
+    var fontYPos = this.mCamera.getWCCenter()[1] + this.mCamera.getWCHeight()/2 - 3;
+    this.mScoreMsg.setTextHeight(WCWidth*0.020);
+    this.mScoreMsg.getXform().setPosition(fontXPos,fontYPos);
+    this.mScoreMsg.mText = "Score: " + (this.mHeroGroup.mNumDestroy*10).toString();
 };
 
 
