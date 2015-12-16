@@ -284,8 +284,17 @@ MyGame.prototype.update = function () {
     }
 
     // DELETE on release
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.B)) {
-        this.mDebugModeOn = !this.mDebugModeOn;
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.L)) {
+        this.mNextScene = LOSE_SCENE;
+        gEngine.GameLoop.stop();
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
+        this.mNextScene = GAMEOVER_SCENE;
+        gEngine.GameLoop.stop();
+    }
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) {
+        this.mNextScene = WIN_SCENE;
+        gEngine.GameLoop.stop();
     }
     // DELETE on release
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
