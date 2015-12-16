@@ -61,8 +61,11 @@ Ghost.prototype.draw = function (aCamera) {
 };
 
 Ghost.prototype.hitOnce = function () {
-    if (this.mHealth > 0) {
-        this.mHealth--;
+    this.mHealth--;
+    if (this.mHealth <= 0 && this.mCurrentState !== Ghost.eGhostState.eDied) {
         this.mCurrentState = Ghost.eGhostState.eDied;
+        this.mHealth = 4;
+    } else if (this.mHealth <= 0 && this.mCurrentState === Ghost.eGhostState.eDied) {
+        this.setExpired()
     }
 };
