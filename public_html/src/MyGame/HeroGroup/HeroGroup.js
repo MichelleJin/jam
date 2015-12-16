@@ -70,17 +70,17 @@ HeroGroup.prototype.hitOnce = function () {
     }
 };
 
-HeroGroup.prototype.getStatus = function(){
-    return  "Hero Hit: " + this.mHit +
-        "  Num Destroy: " + this.mNumDestroy +
-        "  Projectile: " + this.mProjectiles.size();
+HeroGroup.prototype.getShotType = function(){
+    return this.mShotType;
 };
 
 HeroGroup.prototype.setPowerUp = function(powerUp) {
     //alert(powerUp);
     if(powerUp === HeroGroup.eHeroGroupState.eBarrier){
+        this.mBarrierTick = 0;
         this.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
     }else{
+        this.mWeaponTick = 0;
         this.mShotType = powerUp;
     }
 };

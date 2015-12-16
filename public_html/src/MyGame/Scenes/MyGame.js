@@ -74,6 +74,8 @@ function MyGame() {
     PowerUpSet.kShotGunTexture = this.kShotGunTexture;
     PowerUpSet.kBigShotTexture = this.kBigShotTexture;
     PowerUpSet.kBubbleTexture = this.kBarrierBubble;
+
+    this.mWeaponUI = null;
 }
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
@@ -102,8 +104,6 @@ MyGame.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kHealthBarTexture);
     gEngine.Textures.loadTexture(this.kProjectileTexture);
     gEngine.Textures.loadTexture(this.kParticleTexture);
-
-
 };
 
 MyGame.prototype.unloadScene = function () {
@@ -229,6 +229,7 @@ MyGame.prototype.initialize = function () {
     this.mScoreMsg.getXform().setPosition(20, 60);
     this.mScoreMsg.setTextHeight(20);
 
+    this.mWeaponUI = new WeaponUI(this.kProjectileTexture, this.kShotGunTexture, this.kBigShotTexture);
 };
 
 // draw objects
@@ -237,9 +238,12 @@ MyGame.prototype.draw = function () {
     this.mCamera.setupViewProjection();
     gEngine.Core.clearCanvas([0.8, 0.8, 0.8, 1]); // clear to light gray
 
+
     if (!this.mDebugModeOn) {
         this.mBackground.draw(this.mCamera);
     }
+    this.mWeaponUI.draw(this.mCamera);
+
 
     // main map
     this.mGhostSet.draw(this.mCamera);
@@ -264,12 +268,12 @@ MyGame.prototype.draw = function () {
     for(var i=0; i<10; i++){
         this.mGrenadeSet[i].draw(this.mMiniCamera);
     }
-
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
 MyGame.prototype.update = function () {
+    this.mWeaponUI.update(this.mCamera, this.mHeroGroup);
     this.mAstroid.update(this.mCamera);
     this.mBackground.update(this.mCamera);
     this.mAllParticles.update();
