@@ -29,11 +29,7 @@ function WinScene() {
 
     this.mCamera = null;
     this.mGameOverMsg = null;
-<<<<<<< HEAD
     this.mNextSceneCounter = 300;
-
-=======
->>>>>>> origin/master
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
 

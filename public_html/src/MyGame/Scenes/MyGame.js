@@ -216,6 +216,8 @@ MyGame.prototype.initialize = function () {
     // create power ups
     this.mPowerUpSet = new PowerUpSet();        // could update this before the enemy set, pass enemySet internally
     // start audio
+    var p = new BigShotPowerUp(this.kBigShotTexture, 100, 35);
+    this.mPowerUpSet.addToSet(p);
     gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 };
 

@@ -44,15 +44,18 @@ PowerUp.prototype.update = function (aCamera) {
     if (this.mCurrentLife < 75) {
         color[3] = color[3] + 0.01;
     }
-
+    
     // bounce around
     var pos = this.getXform().getPosition();
-    if ((aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideTop)
-            || (aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideBottom))
+    if (this.mDeltaY > 0 && aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideTop)
         this.mDeltaY = -this.mDeltaY;
-    if ((aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideLeft)
-            || (aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideRight))
+    if (this.mDeltaY < 0 && aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideBottom)
+        this.mDeltaY = -this.mDeltaY;
+    if (this.mDeltaX < 0 && aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideLeft)
         this.mDeltaX = -this.mDeltaX;
-        this.getXform().setXPos(pos[0] + aCamera.getSpeed() + this.mDeltaX);
+    if (this.mDeltaX > 0 && aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideRight)
+        this.mDeltaX = -this.mDeltaX;
+
+    this.getXform().setXPos(pos[0] + aCamera.getSpeed() + this.mDeltaX);
     this.getXform().setYPos(pos[1] + this.mDeltaY);
 };
