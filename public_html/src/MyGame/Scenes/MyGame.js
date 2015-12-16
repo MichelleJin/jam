@@ -219,8 +219,6 @@ MyGame.prototype.initialize = function () {
     // create power ups
     this.mPowerUpSet = new PowerUpSet();        // could update this before the enemy set, pass enemySet internally
     // start audio
-    var p = new BigShotPowerUp(this.kBigShotTexture, 100, 35);
-    this.mPowerUpSet.addToSet(p);
     gEngine.AudioClips.playBackgroundAudio(this.kBgClip);
 
     this.mAstroid.getRenderable().addLight(this.mGlobalLightSet.getLightAt(2));
@@ -280,7 +278,7 @@ MyGame.prototype.update = function () {
     for(i = 0; i < 10; i++){
         this.mGrenadeSet[i].update(this.mHeroGroup, this.mCamera);
     }
-    this.mChasePackSet.update(this.mHeroGroup, this.mCamera);
+    this.mChasePackSet.update(this.mHeroGroup, this.mCamera, this.mAllParticles);
     this.mGhostSet.update(this.mHeroGroup, this.mCamera);
 
     this.mHeroGroup.update(
