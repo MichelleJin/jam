@@ -62,7 +62,7 @@ GhostSet.prototype.update = function(hero, aCamera) {
     }
     this.updateWait(aCamera);
     this.mCurrentTick++;
-    if (this.mCurrentTick === 420) {
+    if (this.mCurrentTick === 1000) {
         //alert("inside if");
         this.mCurrentTick = 0;
         var c = aCamera.getWCCenter();
@@ -75,42 +75,6 @@ GhostSet.prototype.update = function(hero, aCamera) {
             y -= h/2 * Math.random();
         }
         this.spawnGhosts(5, 0, y); // x is currently unused
-        //if (rand < 0.05) {
-        //    var y = c[1];
-        //    if (Math.random() > 0.5) {
-        //        y += h/2 * Math.random();
-        //    } else {
-        //        y -= h/2 * Math.random();
-        //    }
-        //    this.spawnGhosts(5, 0, y); // x is currently unused
-        //}
-        //if (rand < 0.2) {
-        //    var y = c[1];
-        //    if (Math.random() > 0.5) {
-        //        y += h/2 * Math.random();
-        //    } else {
-        //        y -= h/2 * Math.random();
-        //    }
-        //    this.spawnGhosts(5, 0, y); // x is currently unused
-        //}
-        //if (rand < 0.9) {
-        //    var y = c[1];
-        //    if (Math.random() > 0.5) {
-        //        y += h/2 * Math.random();
-        //    } else {
-        //        y -= h/2 * Math.random();
-        //    }
-        //    this.spawnGhosts(5, 0, y); // x is currently unused
-        //}
-        //if (rand < 1) {
-        //    var y = c[1];
-        //    if (Math.random() > 0.5) {
-        //        y += h/2 * Math.random();
-        //    } else {
-        //        y -= h/2 * Math.random();
-        //    }
-        //    this.spawnGhosts(5, 0, y); // x is currently unused
-        //}
     }
 };
 
@@ -118,7 +82,6 @@ GhostSet.prototype.spawnGhosts = function (numGhosts, atX, atY) {
     /* spawn numGhosts width + padding apart,
       at position x y
        */
-    //alert("inside spawn ghosts");
     var i;
     for (i = 0; i < numGhosts; i++) {
         var ghost = new Ghost(this.kSpriteSheet, this.kDeadSprite, atX, atY);

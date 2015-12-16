@@ -38,7 +38,6 @@ GameOverScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kStarsBG);
     gEngine.Textures.loadTexture(this.kPressSpaceToContinue);
     gEngine.Textures.loadTexture(this.kContinue);
-
 };
 
 GameOverScene.prototype.unloadScene = function () {
@@ -88,14 +87,14 @@ GameOverScene.prototype.initialize = function () {
 
     this.mYouLostLogoRender = new TextureRenderable(this.kYouLostLogo);
     this.mYouLostLogo = new GameObject(this.mYouLostLogoRender);
-    this.mYouLostLogo.getXform().setSize(70,30);
-    this.mYouLostLogo.getXform().setPosition(20,63);
+    this.mYouLostLogo.getXform().setSize(70, 30);
+    this.mYouLostLogo.getXform().setPosition(20, 63);
     this.mYouLostLogo.setVisibility(false);
 
     this.mContinueRender = new TextureRenderable(this.kContinue);
     this.mContinue = new GameObject(this.mContinueRender);
-    this.mContinue.getXform().setSize(70,30);
-    this.mContinue.getXform().setPosition(20,80);
+    this.mContinue.getXform().setSize(70, 30);
+    this.mContinue.getXform().setPosition(20, 80);
 
     this.mTimerCountMsg = new FontRenderable("20");
     this.mTimerCountMsg.setColor([1, 1, 1, 1]);
@@ -106,8 +105,8 @@ GameOverScene.prototype.initialize = function () {
 
     this.mPressSpaceToContinueRender = new TextureRenderable(this.kPressSpaceToContinue);
     this.mPressSpaceToContinue = new GameObject(this.mPressSpaceToContinueRender);
-    this.mPressSpaceToContinue.getXform().setSize(60,10);
-    this.mPressSpaceToContinue.getXform().setPosition(20,40);
+    this.mPressSpaceToContinue.getXform().setSize(60, 10);
+    this.mPressSpaceToContinue.getXform().setPosition(20, 40);
     this.mPressSpaceToContinue.visibilityCount = 0;
 };
 
@@ -138,12 +137,11 @@ GameOverScene.prototype.update = function () {
 
     this.mBackground.update(this.mCamera);
 
-    if(this.mTimerCountMsg.frameSkip > 40)
+    if(this.mTimerCountMsg.frameSkip > 60)
     {
         this.mTimerCountMsg.frameSkip = 0;
         this.mTimerCountMsg.countdownTimeLeft--;
         this.mTimerCountMsg.mText = this.mTimerCountMsg.countdownTimeLeft.toString();
-
     }
     this.mTimerCountMsg.frameSkip++;
 

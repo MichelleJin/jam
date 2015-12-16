@@ -29,7 +29,7 @@ function WinScene() {
 
     this.mCamera = null;
     this.mGameOverMsg = null;
-
+    this.mNextSceneCounter = 300;
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
 
@@ -48,7 +48,6 @@ WinScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kPressQ);
     gEngine.Textures.unloadTexture(this.kChampionLogo);
 
-
     switch (this.mNextScene) {
         case GAME_SCENE:
             var nextLevel = new MyGame();
@@ -64,6 +63,10 @@ WinScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break;
+        case COPYRIGHT_SCENE:
+            var nextLevel = new Copyright();
+            break;
     }
     gEngine.Core.startScene(nextLevel);
 };
@@ -99,14 +102,12 @@ WinScene.prototype.initialize = function () {
     this.mYayStar.getXform().setPosition(20,45);
 };
 
-
 WinScene.prototype.draw = function () {
     // Clear the entire canvas to light gray.
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]);
 
     // Draw on all camera.
     this.drawCamera(this.mCamera);
-
 };
 
 WinScene.prototype.drawCamera = function (camera) {
@@ -122,9 +123,16 @@ WinScene.prototype.update = function () {
     this.mPressQLogo.update(this.mCamera);
     this.mBackground.update(this.mCamera);
     this.mYayStar.mRenderComponent.updateAnimation();
+    this.mNextSceneCounter --;
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
         this.mNextScene = START_SCENE;
+        gEngine.GameLoop.stop();
+    }
+
+    
+    if(this.mNextSceneCounter === 0){
+        this.mNextScene = COPYRIGHT_SCENE;
         gEngine.GameLoop.stop();
     }
 

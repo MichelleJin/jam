@@ -14,7 +14,6 @@
 function LightRenderable(myTexture) {
     SpriteAnimateRenderable.call(this, myTexture);
     Renderable.prototype._setShader.call(this, gEngine.DefaultResources.getLightShader());
-
     // here is the light source
     this.mLights = [];
 }

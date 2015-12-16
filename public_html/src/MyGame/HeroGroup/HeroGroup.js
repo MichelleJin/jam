@@ -10,32 +10,43 @@
 
 HeroGroup.eHeroGroupState = Object.freeze({
     eNormal: 0,
-    eInvicible: 1
+    eInvincible: 1,
+    eBarrier: 5
 });
 
-function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree) {
-    this.mShip = new TextureRenderable(heroTexture);
+HeroGroup.eHeroShotType = Object.freeze({
+    eNormal: 0,
+    eShotGun: 1,
+    eBigShot: 2
+});
+
+function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree, normalShotSound, shotgunSound, bigshotSound) {
+    this.mShip = new LightRenderable(heroTexture);
     this.mShip.getXform().setPosition(atX, atY);
     this.mShip.getXform().setSize(15, 15);
-    this.mShip.getXform().setZPos(5);
     GameObject.call(this, this.mShip);
+    this.mShip.addLight(gLights.getLightAt(4));
 
     //Hero.call(this, heroTexture, atX, atY);
     this.kDelta = 0.6;
     this.kStartHealth = 5;
-
     this.mHealthBar = new HealthBar(healthBarTexture);
 
     this.mHit = 0;
     this.mNumDestroy = 0;
 
     // Projectiles that the hero can shoot
-    this.mProjectiles = new ProjectileSet(lightOne);
+    this.mProjectiles = new ProjectileSet(lightOne, normalShotSound, shotgunSound, bigshotSound);
+    this.mShotType = HeroGroup.eHeroShotType.eNormal;
+
+    // toggle barrier effect
     this.mBarrier = lightThree;
 
-    // state for behavior
+    // interpolating hero movement
     this.mCurrentState = HeroGroup.eHeroGroupState.eNormal;
     this.mCurrentTick = 0;
+    this.mWeaponTick = 0;
+    this.mBarrierTick = 0;
 
     this.mHeroGroupState = new HeroGroupState(this.getXform().getXPos(), this.getXform().getYPos());
     this.setHealth(this.kStartHealth);
@@ -43,17 +54,19 @@ function HeroGroup(heroTexture, healthBarTexture, atX, atY, lightOne, lightThree
 gEngine.Core.inheritPrototype(HeroGroup, GameObject);
 
 HeroGroup.prototype.draw = function(aCamera) {
-    GameObject.prototype.draw.call(this, aCamera);
     this.mProjectiles.draw(aCamera);
+    GameObject.prototype.draw.call(this, aCamera);
     this.mHealthBar.draw(aCamera);
 };
 
 // hero hit once by enemy/projectile
 HeroGroup.prototype.hitOnce = function () {
-    if (this.mCurrentState != HeroGroup.eHeroGroupState.eInvicible) {
-        this.mCurrentState = HeroGroup.eHeroGroupState.eInvicible;
-        this.setHealth(this.getHealth() - 1);
-        this.mCurrentTick = 0;
+    if(this.mCurrentState !== HeroGroup.eHeroGroupState.eBarrier){
+        if (this.mCurrentState !== HeroGroup.eHeroGroupState.eInvincible) {
+            this.mCurrentState = HeroGroup.eHeroGroupState.eInvincible;
+            this.setHealth(this.getHealth() - 1);
+            this.mCurrentTick = 0;
+        }
     }
 };
 
@@ -61,6 +74,15 @@ HeroGroup.prototype.getStatus = function(){
     return  "Hero Hit: " + this.mHit +
         "  Num Destroy: " + this.mNumDestroy +
         "  Projectile: " + this.mProjectiles.size();
+};
+
+HeroGroup.prototype.setPowerUp = function(powerUp) {
+    //alert(powerUp);
+    if(powerUp === HeroGroup.eHeroGroupState.eBarrier){
+        this.mCurrentState = HeroGroup.eHeroGroupState.eBarrier;
+    }else{
+        this.mShotType = powerUp;
+    }
 };
 
 HeroGroup.prototype.getHealthRatio = function () { return this.getHealth()/this.kStartHealth; };

@@ -11,15 +11,6 @@
 
 
 Ghost.eGhostState = Object.freeze({
-    //eTopLeftRegion: 0,
-    //eTopRightRegion: 1,
-    //eBottomLeftRegion: 2,
-    //eBottomRightRegion: 3,
-    //eExcitedCWRotate: 10,
-    //eExcitedCCWRotate: 11,
-    //eChaseState: 12,
-    //eCoolDownEnlarge: 13,
-    //eCoolDownShrink: 14,
     eWaveMovement: 15,
     eRising: 16,
     eFalling: 17,
@@ -35,17 +26,13 @@ function Ghost(spriteTexture, deadSprite, x, y) {
     // drawn when dead
     this.mDeadGhost = new LightRenderable(deadSprite);
     this.mDeadGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
+    this.mDeadGhost.addLight(gLights.getLightAt(4));
 
     this.mGhost = new LightRenderable(spriteTexture);
     this.mGhost.setColor([1, 1, 1, 0.1]);
     this.mGhost.getXform().setPosition(x, y);
     this.mGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
-    // redo with sprites later
-    //this.mGhost = new SpriteRenderable(spriteTexture);
-    //this.mGhost.setColor([1, 1, 1, 0.1]);
-    //this.mGhost.getXform().setPosition(x, y);
-    //this.mGhost.getXform().setSize(this.kRefWidth, this.kRefHeight);
-    //this.mGhost.setElementPixelPositions(510, 595, 23, 153);
+    this.mGhost.addLight(gLights.getLightAt(4));
     GameObject.call(this, this.mGhost);
     this.mHealth = 1;
     this.mCurrentState = Ghost.eGhostState.eWait;
@@ -56,14 +43,14 @@ function Ghost(spriteTexture, deadSprite, x, y) {
     this.mExpired = false;
 }
 gEngine.Core.inheritPrototype(Ghost, GameObject);
-
+// remove from set
 Ghost.prototype.setExpired = function() {
     this.mExpired = true;
 };
 Ghost.prototype.hasExpired = function() {
     return this.mExpired;
 };
-
+// check which renderable to use
 Ghost.prototype.isAlive = function() { return this.mAlive };
 
 Ghost.prototype.draw = function (aCamera) {

@@ -18,7 +18,6 @@ function LoseScene() {
 
     this.kStarsBG = "assets/bg_blend.jpg";
 
-
     this.kInsult0 = "assets/insult0.png";
     this.kInsult1 = "assets/insult1.png";
     this.kInsult2 = "assets/insult2.png";
@@ -61,7 +60,6 @@ LoseScene.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kInsult4);
     gEngine.Textures.unloadTexture(this.kInsult5);
 
-
     switch (this.mNextScene) {
         case GAME_SCENE:
             var nextLevel = new MyGame();
@@ -79,7 +77,6 @@ LoseScene.prototype.unloadScene = function () {
             var nextLevel = new GameOverScene();
             break
     }
-
     gEngine.Core.startScene(nextLevel);
 };
 
@@ -140,8 +137,6 @@ LoseScene.prototype.update = function () {
         this.mNextScene = GAMEOVER_SCENE;
         gEngine.GameLoop.stop();
     }
-
-
 
     if (this.mWaitCount > this.mWaitTime)
     {

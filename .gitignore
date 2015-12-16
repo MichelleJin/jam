@@ -11,3 +11,5 @@ public_html/assets/Thumbs.db
 *.psd
 
 .idea/misc.xml
+
+nbproject/private/private.xml

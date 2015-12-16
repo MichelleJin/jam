@@ -7,6 +7,12 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
+// Light1: Star
+// light2: projectile
+// light3: Astroid normalmap
+// light4: barrier
+// Light5: direction
+
 MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, outer, intensity, dropOff) {
     var light = new Light();
     light.setLightType(type);
@@ -27,7 +33,8 @@ MyGame.prototype._createALight = function (type, pos, dir, color, n, f, inner, o
 
 MyGame.prototype._initializeLights = function () {
     this.mGlobalLightSet = new LightSet();
-    
+    gEngine.DefaultResources.setGlobalAmbientIntensity(2.6);
+
     var l = this._createALight(Light.eLightType.ePointLight,
             [10, 10, 5],         // position
             [0, 0, -1],          // Direction
@@ -63,7 +70,8 @@ MyGame.prototype._initializeLights = function () {
             );
     //l.setLightTo(false);
     this.mGlobalLightSet.addToSet(l);
-
+    
+    // use for the barrier
     l = this._createALight(Light.eLightType.eSpotLight,
             [10, 10, 10],            // Right minion position
             [-0.07,  0, -1],     // direction
@@ -79,10 +87,10 @@ MyGame.prototype._initializeLights = function () {
      l = this._createALight(Light.eLightType.eDirectionalLight,
             [64, 43, 10],            // Center of camera 
             [0.0, 0.03, -1],
-            [0, 1, 0, 1],      //  color
+            [0.3, 0.3, 0.3, 1],      //  color
             1000, 1000,                   // near and far distances
             1.9, 2.0,                // inner and outer cones
-            0.1,                       // intensity
+            3,                       // intensity
             1                      // drop off
             );
     l.setLightTo(true);

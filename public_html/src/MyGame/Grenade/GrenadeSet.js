@@ -1,6 +1,6 @@
-/* File: DyePack.js 
+/* File: GranadeSet.js
  *
- * Creates and initializes a simple DyePack
+ * Creates a pack of granades which can be launched
  */
 
 /*jslint node: true, vars: true */
@@ -22,9 +22,6 @@ gEngine.Core.inheritPrototype(GrenadeSet, GameObjectSet);
 
 
 GrenadeSet.prototype.update = function(hero, aCamera) {
-    
-
-    
     // remove the expired ones
     var i, obj;
     for (i=0; i<this.size(); i++) {
@@ -38,7 +35,7 @@ GrenadeSet.prototype.update = function(hero, aCamera) {
     for (i=0; i<this.size(); i++) {
         obj = this.getObjectAt(i);
             if(obj.hasExpired()){
-            obj.update(hero, aCamera, i);
+                obj.update(hero, aCamera, i);
         }
     }
 };

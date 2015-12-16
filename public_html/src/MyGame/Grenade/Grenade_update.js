@@ -36,20 +36,13 @@ Grenade.prototype.update = function(hero, aCamera, num) {
             var dir = vec2.fromValues(-1, 1);
             break;
     }
-    
-    
-    //var dir = vec2.fromValues(-1, 0);
     this.setCurrentFrontDir(dir);
     GameObject.prototype.update.call(this);
     
-    
-    
     var p = vec2.fromValues(0, 0);
     if (this.pixelTouches(hero, p)) {
-           hero.hitOnce();
-           this.setHit();
-        }
-    
-    
+       hero.hitOnce();
+       this.setHit();
+    }
 };
 

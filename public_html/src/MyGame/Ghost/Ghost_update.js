@@ -8,16 +8,19 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-
+// update states
 Ghost.prototype.update = function(hero, aCamera) {
     switch (this.mCurrentState) {
+        // wait before screen entry
         case Ghost.eGhostState.eWait:
             this._serviceWait(aCamera);
             break;
+        // up or down
         case Ghost.eGhostState.eRising:
         case Ghost.eGhostState.eFalling:
             this._servicePatrolStates(hero);
             break;
+        // dead flee
         case Ghost.eGhostState.eDied:
             this._serviceDied(hero);
             this._serviceFlee(hero, aCamera);
@@ -25,14 +28,16 @@ Ghost.prototype.update = function(hero, aCamera) {
     }
 };
 
+// place dead texture at spot of live object
 Ghost.prototype._serviceDied = function (hero) {
     var pos = this.getXform().getPosition();
     this.mDeadGhost.getXform().setPosition(pos[0], pos[1]);
 };
 
+// run across the screen to the right
 Ghost.prototype._serviceFlee = function (hero, aCamera) {
     // remove projectile if exits the screen
-    if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) !== BoundingBox.eboundCollideStatus.eInside) {
+    if (aCamera.collideWCBound(this.mDeadGhost.getXform(), 1.1) === BoundingBox.eboundCollideStatus.eOutside) {
         this.setExpired();
     }
     // hit hero on collision with ghost
@@ -68,9 +73,9 @@ Ghost.prototype._servicePatrolStates = function (hero) {
     // Continue patrolling!
     if (this.mCurrentState === Ghost.eGhostState.eRising) this._serviceRising();
     else this._serviceFalling();
-
 };
 
+// go up
 Ghost.prototype._serviceRising = function () {
     // Continue patrolling!
     var deltaY = 0.1;
@@ -85,6 +90,7 @@ Ghost.prototype._serviceRising = function () {
     }
 };
 
+// come down
 Ghost.prototype._serviceFalling = function () {
     // Continue patrolling!
     var deltaY = -0.1;
@@ -98,64 +104,3 @@ Ghost.prototype._serviceFalling = function () {
         this.mCurrentState = Ghost.eGhostState.eRising;
     }
 };
-
-//Ghost.prototype._serviceEnlarge = function() {
-//    // 1. check for state transition
-//    if (this.mStateTimeTick > this.kScaleTime) {
-//        // done with current state, transition to next
-//        // make sure state variables are properly initialized
-//        this.mStateTimeTick = 0;
-//        this.mCurrentState = DyePack.eDyePackState.eCoolDownShrink;
-//    } else {
-//        // continue ...
-//        this.mStateTimeTick++;
-//        var xf = this.getXform();
-//        xf.incSizeBy(this.kScaleRate);
-//    }
-//};
-//
-//Ghost.prototype._serviceShrink = function() {
-//    // 1. check for state transition
-//    if (this.mStateTimeTick > this.kScaleTime) {
-//        // done with current state, transition to next
-//        // make sure state variables are properly initialized
-//        this.mStateTimeTick = 0;
-//        this._computeNextState();  // transition back into patrol
-//    } else {
-//        // continue ...
-//        this.mStateTimeTick++;
-//        var xf = this.getXform();
-//        xf.incSizeBy(-this.kScaleRate);
-//    }
-//};
-//
-//Ghost.prototype._serviceCWRotate = function() {
-//    // 1. check for state transition
-//    if (this.mStateTimeTick > this.kRotateTime) {
-//        // done with current state, transition to next
-//        // make sure state variables are properly initialized
-//        this.mStateTimeTick = 0;
-//        this.mCurrentState = DyePack.eDyePackState.eExcitedCCWRotate;
-//    } else {
-//        // continue ...
-//        this.mStateTimeTick++;
-//        var xf = this.getXform();
-//        xf.incRotationByRad(this.kRotateRate);
-//    }
-//};
-//
-//Ghost.prototype._serviceCCWRotate = function() {
-//    // 1. check for state transition
-//    if (this.mStateTimeTick > this.kRotateTime) {
-//        // done with current state, transition to next
-//        // make sure state variables are properly initialized
-//        this.mStateTimeTick = 0;
-//        this.mGhostPack.setColor(this.mChaseColor);
-//        this.mCurrentState = DyePack.eDyePackState.eChaseState;
-//    } else {
-//        // continue ...
-//        this.mStateTimeTick++;
-//        var xf = this.getXform();
-//        xf.incRotationByRad(-this.kRotateRate);
-//    }
-//};
