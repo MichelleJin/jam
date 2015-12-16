@@ -18,6 +18,7 @@ function PowerUp() {
 }
 gEngine.Core.inheritPrototype(PowerUp, GameObject);
 
+// remove from game
 PowerUp.prototype.setExpired = function() {
     this.mExpired = true;
 };
@@ -25,14 +26,16 @@ PowerUp.prototype.hasExpired = function() {
     return this.mExpired;
 };
 
+// get type of power up
 PowerUp.prototype.getPowerUp = function() {
     return this.mPowerUp;
 };
-
+// set type of power up
 PowerUp.prototype.setPowerUp = function(powerUp) {
     this.mPowerUp = powerUp;
 };
 
+// movement for powerup
 PowerUp.prototype.update = function (aCamera) {
     // time limit for life
     this.mCurrentLife--;
@@ -44,7 +47,7 @@ PowerUp.prototype.update = function (aCamera) {
     if (this.mCurrentLife < 75) {
         color[3] = color[3] + 0.01;
     }
-    
+
     // bounce around
     var pos = this.getXform().getPosition();
     if (this.mDeltaY > 0 && aCamera.collideWCBound(this.getXform(), 1) === BoundingBox.eboundCollideStatus.eCollideTop)

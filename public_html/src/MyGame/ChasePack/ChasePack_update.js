@@ -10,7 +10,6 @@
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
 ChasePack.prototype.update = function(hero, aCamera) {
-    //this.hero = hero;
     switch (this.mCurrentState) {
         case ChasePack.eChasePackState.eNormalRegion:        
             this._serviceNormalMove(hero, aCamera);

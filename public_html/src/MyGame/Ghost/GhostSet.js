@@ -62,18 +62,13 @@ GhostSet.prototype.update = function(hero, aCamera) {
     }
     this.updateWait(aCamera);
     this.mCurrentTick++;
-    if (this.mCurrentTick === 1000) {
+    if (this.mCurrentTick > 720) {
         //alert("inside if");
         this.mCurrentTick = 0;
         var c = aCamera.getWCCenter();
         var h = aCamera.getWCHeight();
-        var y = c[1];
         var rand = Math.random();
-        if (Math.random() > 0.5) {
-            y += h/2 * Math.random();
-        } else {
-            y -= h/2 * Math.random();
-        }
+        var y = c[1] + (h - 7*2) * (0.5 - rand);
         this.spawnGhosts(5, 0, y); // x is currently unused
     }
 };
