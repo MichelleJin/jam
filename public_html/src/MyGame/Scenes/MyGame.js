@@ -145,6 +145,10 @@ MyGame.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break;
+        case COPYRIGHT_SCENE:
+            var nextLevel = new Copyright();
+            break;
     }
     gEngine.Core.startScene(nextLevel);
 };
@@ -287,6 +291,8 @@ MyGame.prototype.update = function () {
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.G)) {
         this.mHeroGroup.mShotType = HeroGroup.eHeroShotType.eBigShot;
     }
+    
+    
 };
 
 

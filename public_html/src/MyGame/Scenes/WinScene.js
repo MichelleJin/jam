@@ -29,6 +29,7 @@ function WinScene() {
 
     this.mCamera = null;
     this.mGameOverMsg = null;
+    this.mNextSceneCounter = 300;
 
 }
 gEngine.Core.inheritPrototype(WinScene, Scene);
@@ -64,6 +65,10 @@ WinScene.prototype.unloadScene = function () {
             break;
         case GAMEOVER_SCENE:
             var nextLevel = new GameOverScene();
+            break;
+        case COPYRIGHT_SCENE:
+            var nextLevel = new Copyright();
+            break;
     }
     gEngine.Core.startScene(nextLevel);
 };
@@ -122,11 +127,16 @@ WinScene.prototype.update = function () {
     this.mPressQLogo.update(this.mCamera);
     this.mBackground.update(this.mCamera);
     this.mYayStar.mRenderComponent.updateAnimation();
+    this.mNextSceneCounter --;
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) {
         this.mNextScene = START_SCENE;
         gEngine.GameLoop.stop();
     }
-
+    
+    if(this.mNextSceneCounter === 0){
+        this.mNextScene = COPYRIGHT_SCENE;
+        gEngine.GameLoop.stop();
+    }
 
 };

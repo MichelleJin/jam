@@ -67,6 +67,25 @@ MyGame.prototype._updateLight = function () {
         this.mNextScene = WIN_SCENE;
         gEngine.GameLoop.stop();
     }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.N)) {
+        directLight.setIntensity(5);
+        directLight.setColor([0.5, 0.5, 0.5, 1]);
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
+        this.mNextScene = WIN_SCENE;
+        gEngine.GameLoop.stop();
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.C)) {
+        directLight.setIntensity(5);
+        directLight.setColor([0.5, 0.5, 0.5, 1]);
+        gEngine.DefaultResources.setGlobalAmbientIntensity(3.6);
+        gEngine.DefaultResources.setGlobalAmbientColor([0.3, 0.3, 0.3, 1]);
+        
+        this.mNextScene = COPYRIGHT_SCENE;
+        gEngine.GameLoop.stop();
+    }
 
     var lgt = this.mGlobalLightSet.getLightAt(2);
     var p = lgt.getPosition();
