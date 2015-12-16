@@ -10,7 +10,7 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
-
+var gGameScore = "gGameFinalScore";
 var gLights = null;
 function MyGame() {
     this.kBgClip = "assets/sounds/bgMusic.mp3";
@@ -132,6 +132,8 @@ MyGame.prototype.unloadScene = function () {
     gEngine.Textures.unloadTexture(this.kHeroSprite);
     gEngine.Textures.unloadTexture(this.kHealthBarTexture);
     gEngine.Textures.unloadTexture(this.kProjectileTexture);
+    
+    gEngine.ResourceMap.storeAsset(gGameScore, this.mHeroGroup.mNumDestroy);
     // load next scene
     switch (this.mNextScene) {
         case GAME_SCENE:

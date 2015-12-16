@@ -45,6 +45,7 @@ LoseScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kInsult3);
     gEngine.Textures.loadTexture(this.kInsult4);
     gEngine.Textures.loadTexture(this.kInsult5);
+    this.mFinalScore = gEngine.ResourceMap.retrieveAsset(gGameScore);
 
 };
 
@@ -101,6 +102,11 @@ LoseScene.prototype.initialize = function () {
     this.mInsult = new GameObject(this.mInsultRender);
     this.mInsult.getXform().setSize(85,30);
     this.mInsult.getXform().setPosition(20, 53);
+    
+    this.mScoreMsg = new FontRenderable("Score: " + (this.mFinalScore*10).toString());
+    this.mScoreMsg.setColor([1, 1, 1, 1]);
+    this.mScoreMsg.getXform().setPosition(-20, 35);
+    this.mScoreMsg.setTextHeight(5);
 
 
 };
@@ -121,6 +127,7 @@ LoseScene.prototype.drawCamera = function (camera) {
     this.mBackground.draw(camera);
     this.mYouDied.draw(camera);
     this.mInsult.draw(camera);
+    this.mScoreMsg.draw(camera);
 };
 
 LoseScene.prototype.update = function () {

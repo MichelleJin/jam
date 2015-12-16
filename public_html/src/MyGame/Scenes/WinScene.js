@@ -39,6 +39,7 @@ WinScene.prototype.loadScene = function () {
     gEngine.Textures.loadTexture(this.kStarsCelebrate);
     gEngine.Textures.loadTexture(this.kPressQ);
     gEngine.Textures.loadTexture(this.kChampionLogo);
+    this.mFinalScore = gEngine.ResourceMap.retrieveAsset(gGameScore);
 };
 
 WinScene.prototype.unloadScene = function () {
@@ -100,6 +101,11 @@ WinScene.prototype.initialize = function () {
     this.mYayStar = new GameObject(this.mYayStarRender);
     this.mYayStar.getXform().setSize(20,20);
     this.mYayStar.getXform().setPosition(20,45);
+    
+    this.mScoreMsg = new FontRenderable("Score: " + (this.mFinalScore*10).toString());
+    this.mScoreMsg.setColor([1, 1, 1, 1]);
+    this.mScoreMsg.getXform().setPosition(-20, 45);
+    this.mScoreMsg.setTextHeight(5);
 };
 
 WinScene.prototype.draw = function () {
@@ -117,6 +123,7 @@ WinScene.prototype.drawCamera = function (camera) {
     this.mYayStar.draw(camera);
     this.mYouWinLogo.draw(camera);
     this.mPressQLogo.draw(camera);
+    this.mScoreMsg.draw(camera);
 };
 
 WinScene.prototype.update = function () {

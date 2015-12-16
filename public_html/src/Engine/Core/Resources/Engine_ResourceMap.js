@@ -56,7 +56,16 @@ gEngine.ResourceMap = (function () {
         // in case all loading are done
         _checkForAllLoadCompleted();
     };
-
+    
+    var storeAsset = function (rName, asset) {
+        if (rName in mResourceMap) {
+            mResourceMap[rName].mAsset = asset;
+        } else {
+            mResourceMap[rName] = new MapEntry(rName);
+            mResourceMap[rName].mAsset = asset;
+        }
+    };
+    
     //<editor-fold desc="Asset checking functions">
     var retrieveAsset = function (rName) {
         var r = null;
@@ -101,7 +110,8 @@ gEngine.ResourceMap = (function () {
         retrieveAsset: retrieveAsset,
         unloadAsset: unloadAsset,
         isAssetLoaded: isAssetLoaded,
-        incAssetRefCount: incAssetRefCount
+        incAssetRefCount: incAssetRefCount,
+        storeAsset: storeAsset
         //</editor-fold>
     };
     return mPublic;
